@@ -1,125 +1,188 @@
 import 'package:flutter/material.dart';
+import 'dart:math';
 
 void main() {
-  runApp(const MyApp());
+  runApp(PenaltyShootoutApp());
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  // This widget is the root of your application.
+class PenaltyShootoutApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Card Shootout!',
+      debugShowCheckedModeBanner: false,
+      title: 'Penalty Shootout',
       theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // TRY THIS: Try running your application with "flutter run". You'll see
-        // the application has a purple toolbar. Then, without quitting the app,
-        // try changing the seedColor in the colorScheme below to Colors.green
-        // and then invoke "hot reload" (save your changes or press the "hot
-        // reload" button in a Flutter-supported IDE, or press "r" if you used
-        // the command line to start the app).
-        //
-        // Notice that the counter didn't reset back to zero; the application
-        // state is not lost during the reload. To reset the state, use hot
-        // restart instead.
-        //
-        // This works for code too, not just values: Most code changes can be
-        // tested with just a hot reload.
-        colorScheme: ColorScheme.fromSeed(seedColor: const Color.fromARGB(255, 78, 199, 149)),
-        useMaterial3: true,
+        primarySwatch: Colors.blue,
       ),
-      home: const MyHomePage(title: 'Card Shootout demo!'),
+      home: PenaltyGame(), // Llama a la clase
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
-
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
-  final String title;
+class PenaltyGame extends StatefulWidget {
 
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  _PenaltyGameState createState() => _PenaltyGameState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
-  }
+class _PenaltyGameState extends State<PenaltyGame> {
+  //----VARIABLES----//
+  int playerScore = 0;
+  int cpuScore = 0;
+  bool isPlayerTurn = true;
+  List<List<int>> playerSelectedTiles = []; // En esta var se guardan los cuadrados selecionados del usr
+  List<List<int>> cpuSelectedTiles = []; // En esta var se guardan los cuadrados selecionados del CPU
+  //----VARIABLES----//
 
   @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
     return Scaffold(
       appBar: AppBar(
-        // TRY THIS: Try changing the color here to a specific color (to
-        // Colors.amber, perhaps?) and trigger a hot reload to see the AppBar
-        // change color while the other colors stay the same.
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
+        title: Text("Penalty Shootout"),
       ),
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          //
-          // TRY THIS: Invoke "debug painting" (choose the "Toggle Debug Paint"
-          // action in the IDE, or press "p" in the console), to see the
-          // wireframe for each widget.
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
+      body: Center( // el child column donde se guarda la grid hereda del body Center para que todos los elementos esten centrados
+        child: Column( //hijo donde se va a almacenar la grid
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [ //TODA LA GRID
+          Text(
+            "Elián Fc: $playerScore | CPU: $cpuScore",
+            style: TextStyle(fontSize: 24),
+          ),
+          SizedBox(height: 20),
+          Expanded(
+            child: SizedBox(
+              width: 350, 
+              height: 250,
+              child: GridView.builder(
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 7, //columnas
+                  mainAxisSpacing: 4.0, //espaciado entre filas
+                  crossAxisSpacing: 4.0, //espaciado entre columnas
+                  childAspectRatio: 1.0, //Para que la grid sean cuadraditos
+                ),
+                itemCount: 35, //35 cuadraditos selecionables (5x7 = 35)
+                itemBuilder: (context, index) {
+                  int row = index ~/ 7; // Calculate row from index
+                  int col = index % 7;  // Calculate column from index
+
+                  return GestureDetector( // checkear el estado del bool playerturn para saber si el usr ataja o patea
+                    onTap: () {
+                      if (isPlayerTurn) {
+                        handlePlayerShoot(row, col); //si es el turno del player, llama a la funcion para patear
+                      } else {
+                        handlePlayerSave(row, col); //si es false, por ende el player ataja
+                      }
+                    },
+                    child: GridTile( // Estilo de cada cuadrado
+                      child: Container(
+                        margin: const EdgeInsets.all(4.0),
+                        decoration: BoxDecoration(
+                          color: getColorForTile(row, col),
+                          border: Border.all(color: Colors.black),
+                        ),
+                      ),
+                    ),
+                  );
+                },
+              ),
             ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
-          ],
-        ),
+          ),
+          const SizedBox(height: 20)
+        ],
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+      ),
     );
+  }
+
+
+  //----LOGICA DE PATEAR PLAYER----//
+  void handlePlayerShoot(int row, int col) {
+    setState(() {
+      playerSelectedTiles = [
+        [row, col]
+      ];
+      // una vez guarda los valores en pselectedtiles, llama a la f para que la cpu ataje random y la que compara para ver si es gol
+      cpuSelectSaveZone();
+      checkGoalOrSave();
+      isPlayerTurn = false; // cambia el bool a false para cambiar de posicion
+    });
+  }
+
+  //----LOGICA DE PATEAR PLAYER----//
+  void handlePlayerSave(int row, int col) {
+    if (row < 4 && col < 6) { // gracias chatgpt por ayudarme con la logica para atajar en 2x2 
+      setState(() {
+        playerSelectedTiles = [
+          [row, col],
+          [row + 1, col],
+          [row, col + 1],
+          [row + 1, col + 1]
+        ];
+        // lo mismo que cuando pateas pero a la inversa
+        cpuSelectShootZone();
+        checkGoalOrSave();
+        isPlayerTurn = true;
+      });
+    }
+  }
+
+  //----LOGICA CPU ATAJAR----//
+  void cpuSelectSaveZone() {
+    setState(() {
+      cpuSelectedTiles = getRandom2x2Zone();
+    });
+  }
+
+  //----CPU 2X2 RANDOM----// (chatgpt, hay que revisar)
+  List<List<int>> getRandom2x2Zone() {
+    int row = Random().nextInt(4); // Limit to 4 to stay within bounds
+    int col = Random().nextInt(6); // Limit to 6 to stay within bounds
+    return [
+      [row, col],
+      [row + 1, col],
+      [row, col + 1],
+      [row + 1, col + 1]
+    ];
+  }
+
+  //----LOGICA DE PATEO CPU----//
+  void cpuSelectShootZone() {
+    setState(() {
+      int row = Random().nextInt(5); // Random() para elegir coords al azar en una de las 5 filas
+      int col = Random().nextInt(7); // Random() para elegir coords al azar en una de las 7 columnas
+      cpuSelectedTiles = [
+        [row, col]
+      ];
+    });
+  }
+
+  //----COMPROBACIONES PARA VER SI ES GOL----//
+  void checkGoalOrSave() {
+    if (isPlayerTurn) { //si es el turno del usr, se comprueba si mete gol, si sí, incrementa la var playerscore
+      if (cpuSelectedTiles.any((tile) => tile[0] == playerSelectedTiles[0][0] && tile[1] == playerSelectedTiles[0][1])) {
+        print("CPU atajo");
+      } else {
+        playerScore++;
+        print("USR gol");
+      }
+    } else {
+      //si es el turno de patear de la cpu, se comprueba si mete gol, si sí, incrementa la var playerscore
+      if (playerSelectedTiles.any((tile) => tile[0] == cpuSelectedTiles[0][0] && tile[1] == cpuSelectedTiles[0][1])) {
+        print("USR atajo");
+      } else {
+        cpuScore++;
+        print("CPU gol");
+      }
+    }
+  }
+  // Diferenciar al usr con la cpu
+  Color getColorForTile(int row, int col) {
+    if (playerSelectedTiles.any((tile) => tile[0] == row && tile[1] == col)) {
+      return Colors.blue; //toma los tiles seleccionados por el usr y los pone de azul
+    } else if (cpuSelectedTiles.any((tile) => tile[0] == row && tile[1] == col)) {
+      return Colors.red; //toma los tiles seleccionados por el CPU y los pone de rojo
+    } else {
+      return Colors.white; //si los tiles no estan seleccionados por ni el cpu ni el usr, son blancos
+    }
   }
 }
