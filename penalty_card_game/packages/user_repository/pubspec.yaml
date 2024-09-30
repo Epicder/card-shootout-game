@@ -1,7 +1,7 @@
-name: penalty_card_game
-description: "A new Flutter project."
-publish_to: 'none' 
-version: 1.0.0+1
+name: user_repository
+description: The repo that handle users
+publish_to: 'none'
+version: 0.0.1+1
 
 environment:
   sdk: ^3.5.1
