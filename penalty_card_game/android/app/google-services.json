@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "489390018231",
+    "project_id": "penalty-card-game-login",
+    "storage_bucket": "penalty-card-game-login.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:489390018231:android:ed83b4271be527954b4732",
+        "android_client_info": {
+          "package_name": "com.example.penalty_card_game"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD2J-Q2K2iggXhGBICw5jLq7_NA-wW49pA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
