@@ -51,8 +51,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
 							child: Column(
 								children: [
 									const SizedBox(height: 20),
-									SizedBox(
-										width: MediaQuery.of(context).size.width * 0.9,
+									SizedBox( // EMAIL FIELD
+										width: MediaQuery.of(context).size.width / 3,
 										child: MyTextField(
 											controller: emailController,
 											hintText: 'Email',
@@ -70,8 +70,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
 										),
 									),
 									const SizedBox(height: 10),
-									SizedBox(
-										width: MediaQuery.of(context).size.width * 0.9,
+									SizedBox( // PASSWORD FIELD
+										width: MediaQuery.of(context).size.width / 3,
 										child: MyTextField(
 											controller: passwordController,
 											hintText: 'Password',
@@ -158,27 +158,27 @@ class _SignUpScreenState extends State<SignUpScreen> {
 											crossAxisAlignment: CrossAxisAlignment.start,
 												children: [
 													Text(
-														"⚈  1 uppercase",
+														"⚽ 1 uppercase",
 														style: TextStyle(
 															color: containsUpperCase
 																? Colors.green
-																: Theme.of(context).colorScheme.onBackground
+																: Theme.of(context).colorScheme.onSurface
 														),
 													),
 													Text(
-														"⚈  1 lowercase",
+														"⚽ 1 lowercase",
 														style: TextStyle(
 															color: containsLowerCase
 																? Colors.green
-																: Theme.of(context).colorScheme.onBackground
+																: Theme.of(context).colorScheme.onSurface
 														),
 													),
 													Text(
-														"⚈  1 number",
+														"⚽ 1 number",
 														style: TextStyle(
 															color: containsNumber
 																? Colors.green
-																: Theme.of(context).colorScheme.onBackground
+																: Theme.of(context).colorScheme.onSurface
 														),
 													),
 												],
@@ -187,19 +187,19 @@ class _SignUpScreenState extends State<SignUpScreen> {
 												crossAxisAlignment: CrossAxisAlignment.start,
 												children: [
 													Text(
-														"⚈  1 special character",
+														"⚽ 1 special character",
 														style: TextStyle(
 															color: containsSpecialChar
 																? Colors.green
-																: Theme.of(context).colorScheme.onBackground
+																: Theme.of(context).colorScheme.onSurface
 														),
 													),
 													Text(
-														"⚈  8 minimum character",
+														"⚽ 8 minimum character",
 														style: TextStyle(
 															color: contains8Length
 																? Colors.green
-																: Theme.of(context).colorScheme.onBackground
+																: Theme.of(context).colorScheme.onSurface
 														),
 													),
 												],
@@ -207,8 +207,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
 										],
 									),
 									const SizedBox(height: 10),
-									SizedBox(
-										width: MediaQuery.of(context).size.width * 0.9,
+									SizedBox( // USERNAME FIELD
+										width: MediaQuery.of(context).size.width / 3,
 										child: MyTextField(
 											controller: nameController,
 											hintText: 'Name',
@@ -218,7 +218,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
 											validator: (val) {
 												if(val!.isEmpty) {
 													return 'Please fill in this field';													
-												} else if(val.length > 30) {
+												} else if(val.length > 16) {
 													return 'Name too long';
 												}
 												return null;
@@ -228,7 +228,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
 									SizedBox(height: MediaQuery.of(context).size.height * 0.02),
 									!signUpRequired
 										? SizedBox(
-												width: MediaQuery.of(context).size.width * 0.5,
+												width: MediaQuery.of(context).size.width / 7,
 												child: TextButton(
 													onPressed: () {
 														if (_formKey.currentState!.validate()) {
@@ -249,7 +249,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
 													},
 													style: TextButton.styleFrom(
 														elevation: 3.0,
-														backgroundColor: Theme.of(context).colorScheme.primary,
+														backgroundColor: const Color.fromRGBO(91, 196, 95, 1),
 														foregroundColor: Colors.white,
 														shape: RoundedRectangleBorder(
 															borderRadius: BorderRadius.circular(60)

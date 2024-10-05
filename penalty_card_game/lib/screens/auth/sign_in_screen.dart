@@ -41,13 +41,13 @@ class _SignInScreenState extends State<SignInScreen> {
 					});
 				}
 			},
-			child: Form(
+			child: Form( 
 					key: _formKey,
 					child: Column(
 						children: [
 							const SizedBox(height: 20),
-							SizedBox(
-								width: MediaQuery.of(context).size.width * 0.9,
+							SizedBox( // EMAIL FIELD
+								width: MediaQuery.of(context).size.width / 3,
 								child: MyTextField(
 									controller: emailController,
 									hintText: 'Email',
@@ -66,8 +66,8 @@ class _SignInScreenState extends State<SignInScreen> {
 								)
 							),
 							const SizedBox(height: 10),
-							SizedBox(
-								width: MediaQuery.of(context).size.width * 0.9,
+							SizedBox( // PASSWORD FIELD
+								width: MediaQuery.of(context).size.width / 3,
 								child: MyTextField(
 									controller: passwordController,
 									hintText: 'Password',
@@ -101,7 +101,7 @@ class _SignInScreenState extends State<SignInScreen> {
 							const SizedBox(height: 20),
 							!signInRequired
 								? SizedBox(
-										width: MediaQuery.of(context).size.width * 0.5,
+										width: MediaQuery.of(context).size.width / 7,
 										child: TextButton(
 											onPressed: () {
 												if (_formKey.currentState!.validate()) {
@@ -113,7 +113,7 @@ class _SignInScreenState extends State<SignInScreen> {
 											},
 											style: TextButton.styleFrom(
 												elevation: 3.0,
-												backgroundColor: Theme.of(context).colorScheme.primary,
+												backgroundColor: const Color.fromRGBO(91, 196, 95, 1),
 												foregroundColor: Colors.white,
 												shape: RoundedRectangleBorder(
 													borderRadius: BorderRadius.circular(60)
