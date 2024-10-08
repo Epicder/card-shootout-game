@@ -1,9 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'dart:math';
 
-void main() {
-  runApp(PenaltyShootoutApp());
-}
+import 'package:user_repository/user_repository.dart';
 
 class PenaltyShootoutApp extends StatelessWidget {
   @override
@@ -25,6 +25,7 @@ class PenaltyGame extends StatefulWidget {
 }
 
 class _PenaltyGameState extends State<PenaltyGame> {
+  MyUser? currentUser; // GUARDA LA CLASE MYUSER EN UNA VARIABLE currenUser
   int playerScore = 0;
   int cpuScore = 0;
   int playerPenalties = 0;
@@ -34,6 +35,33 @@ class _PenaltyGameState extends State<PenaltyGame> {
   List<List<int>> playerSelectedTiles = [];
   List<List<int>> cpuSelectedTiles = [];
   List<int>? hoveredTile;
+
+  @override
+  void initState() {
+    super.initState();
+    // obtener el UserID del usuario autenticado
+    FirebaseAuth.instance.authStateChanges().listen((user) {
+      if (user != null) {
+        fetchUserData(user.uid); // fetchear la data del usuario para conseguir su nombre, filtrando por user id
+      }
+    });
+  }
+
+  Future<void> fetchUserData(String userId) async {
+    // consulta a firestore
+    final docSnapshot = await FirebaseFirestore.instance
+        .collection('users')
+        .doc(userId)
+        .get();
+
+    if (docSnapshot.exists) {
+      final userData = docSnapshot.data();
+      setState(() {
+        currentUser = MyUser.fromEntity(MyUserEntity.fromDocument(userData!));
+      });
+    }
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -46,7 +74,7 @@ class _PenaltyGameState extends State<PenaltyGame> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              "Hernan: $playerScore | CPU: $cpuScore",
+              "${currentUser?.name ?? 'Tú Fc'}: $playerScore | CPU: $cpuScore",
               style: TextStyle(fontSize: 24),
             ),
             if (gameEnded)
