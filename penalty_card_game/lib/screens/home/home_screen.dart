@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:penalty_card_game/blocs/sign_in_bloc/sign_in_bloc.dart';
+import 'package:penalty_card_game/screens/home/mvp_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -29,7 +30,7 @@ class HomeScreen extends StatelessWidget {
           onPressed: () {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => const HomeScreen()), // En vez de HomeScreen el mvp
+              MaterialPageRoute(builder: (context) => PenaltyGame()), // En vez de HomeScreen el mvp
             );
           },
           child: const Text('Play'),
