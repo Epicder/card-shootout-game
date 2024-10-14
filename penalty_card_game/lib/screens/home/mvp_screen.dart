@@ -213,11 +213,34 @@ class _PenaltyGameState extends State<PenaltyGame> {
     }
   }
 
-  void endGame() {
-    setState(() {
-      gameEnded = true;
-    });
+ void endGame() async {
+  setState(() {
+    gameEnded = true;
+  });
+
+  // Obtener el uid del usuario autenticado
+  User? currentUser = FirebaseAuth.instance.currentUser;
+  if (currentUser == null) {
+    print("Error: Usuario no autenticado");
+    return;
   }
+
+  String uid = currentUser.uid;
+
+  // Crear un nuevo documento con los resultados en la subcolección "matches" del usuario
+  await FirebaseFirestore.instance.collection('users')
+      .doc(uid)
+      .collection('matches')
+      .add({
+    'playerScore': playerScore,
+    'cpuScore': cpuScore,
+    'date': DateTime.now(),
+  }).then((value) {
+    print("Resultado guardado exitosamente");
+  }).catchError((error) {
+    print("Error al guardar resultado: $error");
+  });
+}
 
   void clearMatrix() {
     playerSelectedTiles.clear();
