@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:penalty_card_game/blocs/sign_in_bloc/sign_in_bloc.dart';
@@ -92,67 +94,118 @@ class HomeScreen extends StatelessWidget {
   }
 
   // Widget para el contenedor de "RECORD"
-  Widget _buildRecordContainer() {
-    return Align(
-      alignment: const Alignment(-0.65, -0.4),
-      child: Container(
-        width: 352.0,
-        height: 194.0,
-        decoration: BoxDecoration(
-          color: const Color(0xD60B1415),
-          boxShadow: [
-            BoxShadow(
-              blurRadius: 15.0,
-              color: const Color.fromARGB(252, 63, 139, 143).withOpacity(0.5),
-              offset: const Offset(0.0, 2.0),
-              spreadRadius: 8.0,
-            ),
-          ],
-          border: Border.all(
-            color: const Color.fromARGB(168, 146, 151, 151),
-            width: 0.5,
+Widget _buildRecordContainer() {
+  return Align(
+    alignment: const Alignment(-0.65, -0.4),
+    child: Container(
+      width: 352.0,
+      height: 300.0, // A AJUSTAR LUEGO
+      decoration: BoxDecoration(
+        color: const Color(0xD60B1415),
+        boxShadow: [
+          BoxShadow(
+            blurRadius: 15.0,
+            color: const Color.fromARGB(252, 63, 139, 143).withOpacity(0.5),
+            offset: const Offset(0.0, 2.0),
+            spreadRadius: 8.0,
           ),
-        ),
-        child: Stack(
-          children: [
-            Align(
-              alignment: const Alignment(0.0, 0.5),
-              child: Text(
-                '5 - 1',
-                style: TextStyle(
-                  fontFamily: 'Lekton',
-                  color: Colors.white,
-                  fontSize: 70.0,
-                  letterSpacing: 10.0,
-                  fontWeight: FontWeight.w800,
-                  fontStyle: FontStyle.italic,
-                  shadows: [
-                    Shadow(
-                      color: Colors.red,
-                      offset: const Offset(3.0, 2.0),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            Align(
-              alignment: const Alignment(0.01, -0.89),
-              child: Text(
-                'RECORD',
-                style: TextStyle(
-                  fontFamily: 'Foldit',
-                  color: Colors.yellow,
-                  fontSize: 40.0,
-                  letterSpacing: 5.0,
-                  fontStyle: FontStyle.italic,
-                ),
-              ),
-            ),
-          ],
+        ],
+        border: Border.all(
+          color: const Color.fromARGB(168, 146, 151, 151),
+          width: 0.5,
         ),
       ),
-    );
+      child: Stack(
+        children: [
+          Align(
+            alignment: const Alignment(0.0, 0.5),
+            child: StreamBuilder(
+              stream: _getAllMatches(),
+              builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return CircularProgressIndicator();
+                } else if (snapshot.hasError) {
+                  return Text("error");
+                } else if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+                  return Text(
+                    'Play one game to see your recent matches!',
+                    style: TextStyle(
+                      fontFamily: 'Lekton',
+                      color: Colors.white,
+                      fontSize: 30.0,
+                      letterSpacing: 3.0,
+                      fontWeight: FontWeight.w800,
+                      fontStyle: FontStyle.italic,
+                    ),
+                  );
+                } else {
+                  // Mostrar la lista de resultados
+                  return ListView.builder(
+                    itemCount: snapshot.data!.docs.length,
+                    itemBuilder: (context, index) {
+                      var match = snapshot.data!.docs[index].data() as Map<String, dynamic>;
+                      int playerScore = match['playerScore'];
+                      int cpuScore = match['cpuScore'];
+
+                      // ASIGNAR TEXTO EN FUNCIÓN DE SI ES WIN O LOSE
+                      String resultText = playerScore > cpuScore ? "Win" : "Lose";
+                      Color resultColor = playerScore > cpuScore ? Colors.green : Colors.red;
+
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 8.0),
+                        child: Text(
+                          '$resultText: $playerScore - $cpuScore',
+                          style: TextStyle(
+                            fontFamily: 'Lekton',
+                            color: resultColor,
+                            fontSize: 30.0,
+                            letterSpacing: 3.0,
+                            fontWeight: FontWeight.w800,
+                            fontStyle: FontStyle.italic,
+                          ),
+                        ),
+                      );
+                    },
+                  );
+                }
+              },
+            ),
+          ),
+          Align(
+            alignment: const Alignment(0.01, -0.89),
+            child: Text(
+              'Historial de Partidas',
+              style: TextStyle(
+                fontFamily: 'Foldit',
+                color: Colors.yellow,
+                fontSize: 30.0,
+                letterSpacing: 3.0,
+                fontStyle: FontStyle.italic,
+              ),
+            ),
+          ),
+        ],
+      ),
+    ),
+  );
+}
+
+// OBTENER LA COLECCIÓN MATCHES PARA MOSTRARLA
+Stream<QuerySnapshot> _getAllMatches() {
+  User? currentUser = FirebaseAuth.instance.currentUser;
+  if (currentUser == null) {
+    throw Exception("Usuario no autenticado");
   }
+
+String uid = currentUser.uid;
+
+ return FirebaseFirestore.instance
+      .collection('users')
+      .doc(uid)
+      .collection('matches')
+      .orderBy('date', descending: true)
+      .snapshots();
+}
 
   // Widget para la imagen del jugador
   Widget _buildPlayerImage() {
@@ -227,110 +280,6 @@ class HomeScreen extends StatelessWidget {
           ),
         ),
       ),
-
-      backgroundColor: Colors.black, // Fondo oscuro para resaltar los elementos
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        title: const Text('RIVALS SEASON 1', style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold, color: Colors.yellow)),
-        actions: [
-          Padding(
-            padding: const EdgeInsets.only(right: 16.0),
-            child: Chip(
-              label: const Text('HERNAN F.C.', style: TextStyle(color: Colors.black)),
-              backgroundColor: Colors.yellow,
-            ),
-          ),
-        ],
-      ),
-      body: Stack(
-        children: [
-          // Fondo de campo de fútbol
-          Positioned.fill(
-            child: Opacity(
-              opacity: 0.2,
-              child: Image.asset(
-                'assets/fondo_menu.jpg', // Imagen del fondo de tu menú
-                fit: BoxFit.cover,
-              ),
-            ),
-          ),
-
-          // Sección de Progreso del Jugador
-          Positioned(
-            top: 100,
-            left: 20,
-            right: 20,
-            child: Container(
-              padding: const EdgeInsets.all(16.0),
-              decoration: BoxDecoration(
-                color: Colors.green[800],
-                borderRadius: BorderRadius.circular(8),
-                border: Border.all(color: Colors.yellow, width: 2),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: const [
-                  Text(
-                    'Rank II - Progress',
-                    style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.yellow),
-                  ),
-                  SizedBox(height: 8),
-                  Text(
-                    'Climb the divisions and earn weekly rewards.',
-                    style: TextStyle(fontSize: 16, color: Colors.white),
-                  ),
-                ],
-              ),
-            ),
-          ),
-
-          // Sección de Carta del Jugador
-          Positioned(
-            top: 120,
-            right: 30,
-            child: Container(
-              width: 150,
-              height: 250,
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                  image: AssetImage('assets/cristiano.jpg'),
-                  fit: BoxFit.cover,
-                ),
-              ),
-            ),
-          ),
-
-          // Botones de Opciones de Juego
-          Positioned(
-            bottom: 100,
-            left: 50,
-            right: 50,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                _gameModeButton('CPU', Colors.red, context),
-                _gameModeButton('Online', Colors.blue, context),
-                _gameModeButton('Friendlies', Colors.green, context),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  // Widget Helper para los botones de opciones de juego
-  Widget _gameModeButton(String title, Color color, BuildContext context) {
-    return ElevatedButton(
-      style: ElevatedButton.styleFrom(
-        backgroundColor: color, // Reemplaza 'primary' por 'backgroundColor'
-        foregroundColor: Colors.white, // Reemplaza 'onPrimary' por 'foregroundColor'
-        padding: const EdgeInsets.symmetric(horizontal: 32.0, vertical: 16.0),      ),
-      onPressed: () {
-        // Acción del botón
-      },
-      child: Text(title),
-    );
-  }
+    ); 
+  }  // Sección de Progreso del Jugador
 }
