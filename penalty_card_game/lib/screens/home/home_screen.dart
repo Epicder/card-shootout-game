@@ -99,7 +99,7 @@ Widget _buildRecordContainer() {
     alignment: const Alignment(-0.65, -0.4),
     child: Container(
       width: 352.0,
-      height: 300.0, // A AJUSTAR LUEGO
+      height: 270.0, // A AJUSTAR LUEGO
       decoration: BoxDecoration(
         color: const Color(0xD60B1415),
         boxShadow: [
@@ -152,7 +152,7 @@ Widget _buildRecordContainer() {
                       Color resultColor = playerScore > cpuScore ? Colors.green : Colors.red;
 
                       return Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 8.0),
+                        padding: const EdgeInsets.only(top: 12.0, left: 10.0),
                         child: Text(
                           '$resultText: $playerScore - $cpuScore',
                           style: TextStyle(
@@ -172,8 +172,9 @@ Widget _buildRecordContainer() {
             ),
           ),
           Align(
-            alignment: const Alignment(0.01, -0.89),
+            alignment: const Alignment(0.01, -1.37),
             child: Text(
+              
               'Historial de Partidas',
               style: TextStyle(
                 fontFamily: 'Foldit',
