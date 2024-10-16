@@ -15,7 +15,7 @@ class DraftScreen extends StatelessWidget {
             child: Opacity(
               opacity: 0.9, // Ajusta la opacidad para que coincida con el diseño
               child: Image.asset(
-                'assets/fondo_draft.jpg', // Ruta de la imagen del fondo
+                'fondo_draft.jpg', // Ruta de la imagen del fondo
                 fit: BoxFit.cover,
               ),
             ),
