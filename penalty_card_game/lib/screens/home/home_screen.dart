@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:penalty_card_game/blocs/sign_in_bloc/sign_in_bloc.dart';
+import 'package:penalty_card_game/screens/home/draft_screen.dart';
 import 'package:penalty_card_game/screens/home/mvp_screen.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -118,7 +119,7 @@ Widget _buildRecordContainer() {
       child: Stack(
         children: [
           Align(
-            alignment: const Alignment(0.0, 0.5),
+            alignment: const Alignment(0.0, 0.0),
             child: StreamBuilder(
               stream: _getAllMatches(),
               builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
@@ -132,7 +133,7 @@ Widget _buildRecordContainer() {
                     style: TextStyle(
                       fontFamily: 'Lekton',
                       color: Colors.white,
-                      fontSize: 30.0,
+                      fontSize: 26.0,
                       letterSpacing: 3.0,
                       fontWeight: FontWeight.w800,
                       fontStyle: FontStyle.italic,
@@ -256,7 +257,7 @@ String uid = currentUser.uid;
         onPressed: () {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => PenaltyGame()),
+            MaterialPageRoute(builder: (context) => DraftScreen()),
           );
         },
         style: ElevatedButton.styleFrom(
