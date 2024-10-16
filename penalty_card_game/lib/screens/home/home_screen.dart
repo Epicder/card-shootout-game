@@ -218,7 +218,7 @@ Widget _buildPlayerImage() {
     child: StreamBuilder<DocumentSnapshot>(
       stream: FirebaseFirestore.instance
           .collection('Delanteros')
-          .doc('luis_suarez') // Cambia el ID al del jugador que quieras mostrar
+          .doc('cristiano_ronaldo') // Cambia el ID al del jugador que quieras mostrar
           .snapshots(),
       builder: (context, snapshot) {
         if (!snapshot.hasData) {
