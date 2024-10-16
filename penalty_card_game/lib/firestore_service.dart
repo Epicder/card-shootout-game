@@ -100,8 +100,8 @@ class FirestoreService {
         'name': 'Luis Suárez',
         'position': 'Forward',
         'level': 88,
-        'country': 'Uruguay',
-        'image': 'URL',
+        'country': 'gs://penalty-card-game-login.appspot.com/country_flags/uruguay.png',
+        'image': 'gs://penalty-card-game-login.appspot.com/players_images/suarez.png',
         'shooting_options': 6
       }
       // Agrega más jugadores de delanteros aquí

@@ -5,6 +5,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:penalty_card_game/blocs/sign_in_bloc/sign_in_bloc.dart';
 import 'package:penalty_card_game/screens/home/draft_screen.dart';
 import 'package:penalty_card_game/screens/home/mvp_screen.dart';
+import 'package:penalty_card_game/player_cards/player_card.dart';
+
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -209,21 +211,33 @@ String uid = currentUser.uid;
       .snapshots();
 }
 
-  // Widget para la imagen del jugador
-  Widget _buildPlayerImage() {
-    return Align(
-      alignment: const Alignment(0.5, -0.31),
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(14.0),
-        child: Image.asset(
-          'assets/cristiano.jpg',
-          width: 121.0,
-          height: 175.0,
-          fit: BoxFit.fill,
-        ),
-      ),
-    );
-  }
+// Widget para la carta del jugador desde Firestore
+Widget _buildPlayerImage() {
+  return Align(
+    alignment: const Alignment(0.5, -0.31),
+    child: StreamBuilder<DocumentSnapshot>(
+      stream: FirebaseFirestore.instance
+          .collection('Delanteros')
+          .doc('luis_suarez') // Cambia el ID al del jugador que quieras mostrar
+          .snapshots(),
+      builder: (context, snapshot) {
+        if (!snapshot.hasData) {
+          return CircularProgressIndicator();
+        }
+
+        var playerData = snapshot.data!.data() as Map<String, dynamic>;
+        return PlayerCard(
+          playerName: playerData['name'],
+          playerPosition: playerData['position'],
+          playerLevel: playerData['level'],
+          playerCountry: playerData['country'],
+          playerImage: playerData['image'],
+          shootingOptions: playerData['shooting_options'],
+        );
+      },
+    ),
+  );
+}
 
   // Widget para el texto "ONE TO WATCH"
   Widget _buildOneToWatchText() {
