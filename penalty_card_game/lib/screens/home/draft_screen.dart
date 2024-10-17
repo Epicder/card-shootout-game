@@ -1,9 +1,57 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:penalty_card_game/screens/home/mvp_screen.dart';
+import 'package:user_repository/user_repository.dart';
 
 
-class DraftScreen extends StatelessWidget {
-  const DraftScreen({super.key});
+class DraftScreenApp extends StatelessWidget {
+@override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      title: 'Penalty Shootout',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+      ),
+      home: DraftScreen(),
+    );
+  }
+}
+
+class DraftScreen extends StatefulWidget {
+  @override
+  _DraftScreenState createState() => _DraftScreenState();
+}
+
+class _DraftScreenState extends State<DraftScreen> {
+  MyUser? currentUser;
+
+  @override
+  void initState() {
+    super.initState();
+    // obtener el UserID del usuario autenticado
+    FirebaseAuth.instance.authStateChanges().listen((user) {
+      if (user != null) {
+        fetchUserData(user.uid); // fetchear la data del usuario para conseguir su nombre, filtrando por user id
+      }
+    });
+  }
+
+  Future<void> fetchUserData(String userId) async {
+    // consulta a firestore
+    final docSnapshot = await FirebaseFirestore.instance
+        .collection('users')
+        .doc(userId)
+        .get();
+
+    if (docSnapshot.exists) {
+      final userData = docSnapshot.data();
+      setState(() {
+        currentUser = MyUser.fromEntity(MyUserEntity.fromDocument(userData!));
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -97,7 +145,7 @@ class DraftScreen extends StatelessWidget {
               ),
               padding: EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0), // Espaciado interno
               child: Text(
-                'USERNAME F.C',
+                "${currentUser?.name ?? 'Your'} FC",
                 style: TextStyle(
                   fontFamily: 'Denk One',
                   color:  Color.fromARGB(255, 0, 0, 0), // Color del texto
