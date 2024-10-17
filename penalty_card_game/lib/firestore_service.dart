@@ -11,6 +11,7 @@ class FirestoreService {
 
       if (doc.exists) {
         print('Player $playerId already exists in Firestore');
+        await _db.collection(collection).doc(playerId).set(playerData);
       } else {
         await _db.collection(collection).doc(playerId).set(playerData);
         print('Player $playerId added successfully');
@@ -100,8 +101,8 @@ class FirestoreService {
         'name': 'Luis Suárez',
         'position': 'Forward',
         'level': 88,
-        'country': 'gs://penalty-card-game-login.appspot.com/country_flags/uruguay.png',
-        'image': 'gs://penalty-card-game-login.appspot.com/players_images/suarez.png',
+        'country': 'https://firebasestorage.googleapis.com/v0/b/penalty-card-game-login.appspot.com/o/country_flags%2Furuguay.png?alt=media&token=1fd1fbe0-5ea8-43af-afdf-c5a012bc1db8',
+        'image': 'https://firebasestorage.googleapis.com/v0/b/penalty-card-game-login.appspot.com/o/players_images%2Fsuarez.png?alt=media&token=3ca13315-8cfa-4499-a52d-85fc6f3c43e6',
         'shooting_options': 6
       }
       // Agrega más jugadores de delanteros aquí
