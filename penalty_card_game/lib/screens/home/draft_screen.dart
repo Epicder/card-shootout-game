@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:penalty_card_game/player_cards/player_card.dart';
 import 'package:penalty_card_game/screens/home/mvp_screen.dart';
 import 'package:user_repository/user_repository.dart';
 
@@ -205,49 +206,342 @@ class _DraftScreenState extends State<DraftScreen> {
   // Método para construir los botones de los espacios de jugadores
   List<Widget> _buildPlayerSlots() {
     return [
-      _playerSlotButton(-0.35, -0.7),
-      _playerSlotButton(0.35, -0.7),
-      _playerSlotButton(0.0, -0.8),
-      _playerSlotButton(-0.20, -0.1),
-      _playerSlotButton(0.20, -0.1),
-      _playerSlotButton(-0.35, 0.5),
-      _playerSlotButton(0.35, 0.5),
-      _playerSlotButton(0.0, 0.85),
+      _playerSlotButtonDEL(-0.35, -0.7),
+      _playerSlotButtonDEL(0.35, -0.7),
+      _playerSlotButtonDEL(0.0, -0.8),
+      _playerSlotButtonMID(-0.20, -0.1),
+      _playerSlotButtonMID(0.20, -0.1),
+      _playerSlotButtonDEF(-0.35, 0.5),
+      _playerSlotButtonDEF(0.35, 0.5),
+      _playerSlotButtonGK(0.0, 0.85),
     ];
   }
 
-  // Widget helper para cada botón de espacio de jugador
-  Widget _playerSlotButton(double x, double y) {
-    return Align(
-      alignment: Alignment(x, y),
-      child: ElevatedButton(
-        onPressed: () {
-          print('Player slot button pressed');
-        },
-        style: ElevatedButton.styleFrom(
-          backgroundColor: Color(0xD468B879),
-          padding: EdgeInsets.zero,
-          fixedSize: Size(52.0, 85.0),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10.0),
-          ),
-        ),
-        child: Text(
-          '+',
-          style: TextStyle(
-            fontFamily: 'Azeret Mono',
-            fontSize: 50.0,
-            color: Colors.white,
-            shadows: [
-              Shadow(
-                color: Colors.black54,
-                offset: Offset(2.0, 2.0),
-                blurRadius: 2.0,
-              ),
-            ],
-          ),
+Widget _playerSlotButtonDEF(double x, double y) {
+  return Align(
+    alignment: Alignment(x, y),
+    child: ElevatedButton(
+      onPressed: () {
+        // Mostrar los jugadores al presionar el botón
+        showAllDefensas(context);
+      },
+      style: ElevatedButton.styleFrom(
+        backgroundColor: Color(0xD468B879),
+        padding: EdgeInsets.zero,
+        fixedSize: Size(52.0, 85.0),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10.0),
         ),
       ),
-    );
+      child: Text(
+        '+',
+        style: TextStyle(
+          fontFamily: 'Azeret Mono',
+          fontSize: 50.0,
+          color: Colors.white,
+          shadows: [
+            Shadow(
+              color: Colors.black54,
+              offset: Offset(2.0, 2.0),
+              blurRadius: 2.0,
+            ),
+          ],
+        ),
+      ),
+    ),
+  );
   }
+
+Widget _playerSlotButtonGK(double x, double y) {
+  return Align(
+    alignment: Alignment(x, y),
+    child: ElevatedButton(
+      onPressed: () {
+        // Mostrar los jugadores al presionar el botón
+        showAllGK(context);
+      },
+      style: ElevatedButton.styleFrom(
+        backgroundColor: Color(0xD468B879),
+        padding: EdgeInsets.zero,
+        fixedSize: Size(52.0, 85.0),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10.0),
+        ),
+      ),
+      child: Text(
+        '+',
+        style: TextStyle(
+          fontFamily: 'Azeret Mono',
+          fontSize: 50.0,
+          color: Colors.white,
+          shadows: [
+            Shadow(
+              color: Colors.black54,
+              offset: Offset(2.0, 2.0),
+              blurRadius: 2.0,
+            ),
+          ],
+        ),
+      ),
+    ),
+  );
+  }
+////////////////////////// DELANTEROS /////////////////////////
+void showAllDelanteros(BuildContext context) {
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        content: Container(
+          width: double.maxFinite,
+          child: StreamBuilder<QuerySnapshot>(
+            stream: FirebaseFirestore.instance.collection('Delanteros').snapshots(),
+            builder: (context, snapshot) {
+              if (!snapshot.hasData) {
+                return Center(child: CircularProgressIndicator());
+              }
+
+              var playerDocs = snapshot.data!.docs;
+              
+              // Mostrar en cuadricula
+              return GridView.builder(
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 5,
+                  crossAxisSpacing: 10.0,
+                  mainAxisSpacing: 10.0,
+                  childAspectRatio: 0.64,
+                ),
+                itemCount: playerDocs.length,
+                itemBuilder: (context, index) {
+                  var playerData = playerDocs[index].data() as Map<String, dynamic>;
+
+                  return PlayerCard(
+                    playerName: playerData['name'],
+                    playerPosition: playerData['position'],
+                    playerLevel: playerData['level'],
+                    playerCountry: playerData['country'],
+                    playerImage: playerData['image'],
+                    shootingOptions: playerData['shooting_options'],
+                  );
+                },
+              );
+            },
+          ),
+        ),
+      );
+    },
+  );
+}
+
+  Widget _playerSlotButtonDEL(double x, double y) {
+  return Align(
+    alignment: Alignment(x, y),
+    child: ElevatedButton(
+      onPressed: () {
+        // Mostrar los jugadores al presionar el botón
+        showAllDelanteros(context);
+      },
+      style: ElevatedButton.styleFrom(
+        backgroundColor: Color(0xD468B879),
+        padding: EdgeInsets.zero,
+        fixedSize: Size(52.0, 85.0),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10.0),
+        ),
+      ),
+      child: Text(
+        '+',
+        style: TextStyle(
+          fontFamily: 'Azeret Mono',
+          fontSize: 50.0,
+          color: Colors.white,
+          shadows: [
+            Shadow(
+              color: Colors.black54,
+              offset: Offset(2.0, 2.0),
+              blurRadius: 2.0,
+            ),
+          ],
+        ),
+      ),
+    ),
+  );
+  }
+  ///////////////////////////////DELANTEROS/////////////////////////////
+
+  //////////////////////////////MEDIOCAMPISTAS//////////////////////////
+  void showAllMediocampista(BuildContext context) {
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        content: Container(
+          width: double.maxFinite,
+          child: StreamBuilder<QuerySnapshot>(
+            stream: FirebaseFirestore.instance.collection('Mediocampistas').snapshots(),
+            builder: (context, snapshot) {
+              if (!snapshot.hasData) {
+                return Center(child: CircularProgressIndicator());
+              }
+
+              var playerDocs = snapshot.data!.docs;
+              
+              // Mostrar en cuadricula
+              return GridView.builder(
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 5,
+                  crossAxisSpacing: 10.0,
+                  mainAxisSpacing: 10.0,
+                  childAspectRatio: 0.64,
+                ),
+                itemCount: playerDocs.length,
+                itemBuilder: (context, index) {
+                  var playerData = playerDocs[index].data() as Map<String, dynamic>;
+
+                  return PlayerCard(
+                    playerName: playerData['name'],
+                    playerPosition: playerData['position'],
+                    playerLevel: playerData['level'],
+                    playerCountry: playerData['country'],
+                    playerImage: playerData['image'],
+                    shootingOptions: playerData['shooting_options'],
+                  );
+                },
+              );
+            },
+          ),
+        ),
+      );
+    },
+  );
+}
+
+  Widget _playerSlotButtonMID(double x, double y) {
+  return Align(
+    alignment: Alignment(x, y),
+    child: ElevatedButton(
+      onPressed: () {
+        // Mostrar los jugadores al presionar el botón
+        showAllMediocampista(context);
+      },
+      style: ElevatedButton.styleFrom(
+        backgroundColor: Color(0xD468B879),
+        padding: EdgeInsets.zero,
+        fixedSize: Size(52.0, 85.0),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10.0),
+        ),
+      ),
+      child: Text(
+        '+',
+        style: TextStyle(
+          fontFamily: 'Azeret Mono',
+          fontSize: 50.0,
+          color: Colors.white,
+          shadows: [
+            Shadow(
+              color: Colors.black54,
+              offset: Offset(2.0, 2.0),
+              blurRadius: 2.0,
+            ),
+          ],
+        ),
+      ),
+    ),
+  );
+  }
+}
+////////////////////////// MEDIOCAMPISTAS /////////////////////////
+
+////////////////////////// DEFENSAS ///////////////////////////////
+
+void showAllDefensas(BuildContext context) {
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        content: Container(
+          width: double.maxFinite,
+          child: StreamBuilder<QuerySnapshot>(
+            stream: FirebaseFirestore.instance.collection('Defensas').snapshots(),
+            builder: (context, snapshot) {
+              if (!snapshot.hasData) {
+                return Center(child: CircularProgressIndicator());
+              }
+
+              var playerDocs = snapshot.data!.docs;
+              
+              // Mostrar en cuadricula
+              return GridView.builder(
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 5,
+                  crossAxisSpacing: 10.0,
+                  mainAxisSpacing: 10.0,
+                  childAspectRatio: 0.64,
+                ),
+                itemCount: playerDocs.length,
+                itemBuilder: (context, index) {
+                  var playerData = playerDocs[index].data() as Map<String, dynamic>;
+
+                  return PlayerCard(
+                    playerName: playerData['name'],
+                    playerPosition: playerData['position'],
+                    playerLevel: playerData['level'],
+                    playerCountry: playerData['country'],
+                    playerImage: playerData['image'],
+                    shootingOptions: playerData['shooting_options'],
+                  );
+                },
+              );
+            },
+          ),
+        ),
+      );
+    },
+  );
+}
+  void showAllGK(BuildContext context) {
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        content: Container(
+          width: double.maxFinite,
+          child: StreamBuilder<QuerySnapshot>(
+            stream: FirebaseFirestore.instance.collection('Goleros').snapshots(),
+            builder: (context, snapshot) {
+              if (!snapshot.hasData) {
+                return Center(child: CircularProgressIndicator());
+              }
+
+              var playerDocs = snapshot.data!.docs;
+              
+              // Mostrar en cuadricula
+              return GridView.builder(
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 5,
+                  crossAxisSpacing: 10.0,
+                  mainAxisSpacing: 10.0,
+                  childAspectRatio: 0.64,
+                ),
+                itemCount: playerDocs.length,
+                itemBuilder: (context, index) {
+                  var playerData = playerDocs[index].data() as Map<String, dynamic>;
+
+                  return PlayerCard(
+                    playerName: playerData['name'],
+                    playerPosition: playerData['position'],
+                    playerLevel: playerData['level'],
+                    playerCountry: playerData['country'],
+                    playerImage: playerData['image'],
+                    shootingOptions: playerData['shooting_options'],
+                  );
+                },
+              );
+            },
+          ),
+        ),
+      );
+    },
+  );
 }
