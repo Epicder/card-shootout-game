@@ -91,39 +91,6 @@ class _DraftScreenState extends State<DraftScreen> {
               ),
             ),
           ),
-
-          // Temporizador
-          Align(
-            alignment: AlignmentDirectional(-0.9, -0.85),
-            child: Container(
-              width: 94.0,
-              height: 57.0,
-              decoration: BoxDecoration(
-                color: Color(0xE0C7292B),
-                border: Border.all(color: Color.fromARGB(200, 152, 1, 1), width: 3.0),
-                boxShadow: [
-                  BoxShadow(
-                    blurRadius: 4.0,
-                    color: Colors.black45,
-                    offset: Offset(0.0, 2.0),
-                  ),
-                ],
-              ),
-              child: Center(
-                child: Text(
-                  '2:00',
-                  style: TextStyle(
-                    fontFamily: 'Kdam Thmor Pro',
-                    fontSize: 30.0,
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
-            ),
-          ),
-
-          // Contenedor con el nombre de usuario
           Align(
             alignment: AlignmentDirectional(0.93, -0.03),
             child: Container(
@@ -157,18 +124,22 @@ class _DraftScreenState extends State<DraftScreen> {
               ),
             ),
           ),
-
-
-          // Botón de "Listo" con el ícono de verificación
           Align(
             alignment: AlignmentDirectional(0.66, -0.04),
             child: GestureDetector(
-              onTap: () {
+            onTap: () async {
+      // Verificar si el draft está completo antes de navegar a la siguiente pantalla
+              bool isDraftComplete = await _checkDraftCompletion();
+
+              if (isDraftComplete) {
                 Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => PenaltyGame()), // Navega a la pantalla de MVP (tanda de penales)
+                context,
+                MaterialPageRoute(builder: (context) => PenaltyGame()), 
                 );
-              },
+              } else {
+        _showIncompleteDraftPopup(context);
+              }
+            },
               child: Container(
                 width: 90.0,
                 height: 90.0,
@@ -213,7 +184,7 @@ class _DraftScreenState extends State<DraftScreen> {
       _playerSlotButtonMID(0.20, -0.1, 2),
       _playerSlotButtonDEF(-0.35, 0.5, 1),
       _playerSlotButtonDEF(0.35, 0.5, 2),
-      _playerSlotButtonGK(0.0, 0.85),
+      _playerSlotButtonGK(0.0, 0.85, 1),
     ];
   }
 
@@ -222,7 +193,6 @@ Widget _playerSlotButtonDEF(double x, double y, int buttonIndex) {
     alignment: Alignment(x, y),
     child: ElevatedButton(
       onPressed: () {
-        // Abrir diálogo de selección solo si no se ha seleccionado un delantero para ese botón
         if (buttonIndex == 1 && !_playerSelected_DEF_1) {
           showDefensasForButton(context, 1);
         } else if (buttonIndex == 2 && !_playerSelected_DEF_2) {
@@ -256,13 +226,14 @@ Widget _playerSlotButtonDEF(double x, double y, int buttonIndex) {
   );
 }
 
-Widget _playerSlotButtonGK(double x, double y) {
+Widget _playerSlotButtonGK(double x, double y, int buttonIndex) {
   return Align(
     alignment: Alignment(x, y),
     child: ElevatedButton(
       onPressed: () {
-        // Mostrar los jugadores al presionar el botón
-        showAllGK(context);
+        if (buttonIndex == 1 && !_playerSelected_GK_1) {
+          showGolerosForButton(context, 1);
+        }
       },
       style: ElevatedButton.styleFrom(
         backgroundColor: Color(0xD468B879),
@@ -315,7 +286,6 @@ void showDelanterosForButton(BuildContext context, int buttonIndex) {
 
               var playerDocs = snapshot.data!.docs;
 
-              // Mostrar en cuadrícula
               return GridView.builder(
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 5,
@@ -328,18 +298,14 @@ void showDelanterosForButton(BuildContext context, int buttonIndex) {
                   var playerData = playerDocs[index].data() as Map<String, dynamic>;
                   String playerId = playerDocs[index].id;
 
-                  // Verificar si el jugador ya ha sido seleccionado
                   bool isSelected = selectedPlayers.contains(playerId);
 
                   return GestureDetector(
                     onTap: () {
-                      // Si el jugador ya ha sido seleccionado, no permitir seleccionarlo de nuevo
                       if (isSelected) {
-                        print('${playerData['name']} ya ha sido seleccionado.');
-                        return; // Salir de la función si el jugador ya está seleccionado
+                        return;
                       }
 
-                      // Verifica cuál botón ha llamado la selección
                       if (buttonIndex == 1 && !_playerSelected_DEL_1) {
                         _playerSelected_DEL_1 = true;
                         _addToDraft(playerId, playerData, context);
@@ -351,7 +317,7 @@ void showDelanterosForButton(BuildContext context, int buttonIndex) {
                         _addToDraft(playerId, playerData, context);
                       }
 
-                      // Agregar el jugador al set de seleccionados
+                      // agregar el jugador al set
                       selectedPlayers.add(playerId);
                     },
                     child: Opacity(
@@ -400,7 +366,6 @@ void showMediocampistasForButton(BuildContext context, int buttonIndex) {
 
               var playerDocs = snapshot.data!.docs;
 
-              // Mostrar en cuadrícula
               return GridView.builder(
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 5,
@@ -418,13 +383,11 @@ void showMediocampistasForButton(BuildContext context, int buttonIndex) {
 
                   return GestureDetector(
                     onTap: () {
-                      // Si el jugador ya ha sido seleccionado, no permitir seleccionarlo de nuevo
                       if (isSelected) {
-                        print('${playerData['name']} ya ha sido seleccionado.');
-                        return; // Salir de la función si el jugador ya está seleccionado
+                        return; 
                       }
 
-                      // Verifica cuál botón ha llamado la selección
+                      // Verifica cuál botón de la pantalla llamó a la funcion
                       if (buttonIndex == 1 && !_playerSelected_MID_1) {
                         _playerSelected_MID_1 = true;
                         _addToDraft(playerId, playerData, context);
@@ -433,11 +396,11 @@ void showMediocampistasForButton(BuildContext context, int buttonIndex) {
                         _addToDraft(playerId, playerData, context);
                       }
 
-                      // Agregar el jugador al set de seleccionados
+                      // Agregar el jugador al set
                       selectedPlayers.add(playerId);
                     },
                     child: Opacity(
-                      opacity: isSelected ? 0.5 : 1.0, // Si está seleccionado, hacer la carta semitransparente
+                      opacity: isSelected ? 0.5 : 1.0,
                       child: PlayerCard(
                         playerName: playerData['name'],
                         playerPosition: playerData['position'],
@@ -480,7 +443,6 @@ void showDefensasForButton(BuildContext context, int buttonIndex) {
 
               var playerDocs = snapshot.data!.docs;
 
-              // Mostrar en cuadrícula
               return GridView.builder(
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 5,
@@ -493,18 +455,15 @@ void showDefensasForButton(BuildContext context, int buttonIndex) {
                   var playerData = playerDocs[index].data() as Map<String, dynamic>;
                   String playerId = playerDocs[index].id;
 
-                  // Verificar si el jugador ya ha sido seleccionado
                   bool isSelected = selectedPlayers.contains(playerId);
 
                   return GestureDetector(
                     onTap: () {
-                      // Si el jugador ya ha sido seleccionado, no permitir seleccionarlo de nuevo
                       if (isSelected) {
-                        print('${playerData['name']} ya ha sido seleccionado.');
-                        return; // Salir de la función si el jugador ya está seleccionado
+                        return;
                       }
 
-                      // Verifica cuál botón ha llamado la selección
+                      // Verifica cuál botón ha llamado la funcion
                       if (buttonIndex == 1 && !_playerSelected_DEF_1) {
                         _playerSelected_DEF_1 = true;
                         _addToDraft(playerId, playerData, context);
@@ -513,11 +472,11 @@ void showDefensasForButton(BuildContext context, int buttonIndex) {
                         _addToDraft(playerId, playerData, context);
                       }
 
-                      // Agregar el jugador al set de seleccionados
+                      // Agregar el jugador al set
                       selectedPlayers.add(playerId);
                     },
                     child: Opacity(
-                      opacity: isSelected ? 0.5 : 1.0, // Si está seleccionado, hacer la carta semitransparente
+                      opacity: isSelected ? 0.5 : 1.0,
                       child: PlayerCard(
                         playerName: playerData['name'],
                         playerPosition: playerData['position'],
@@ -538,16 +497,86 @@ void showDefensasForButton(BuildContext context, int buttonIndex) {
   );
 }
 
-//////////////////////// ADD TO DRAFT COLLECTION USER/////////////////////////////////////
+bool _playerSelected_GK_1 = false;
+
+Set<String> selectedPlayers_GK = {};
+
+void showGolerosForButton(BuildContext context, int buttonIndex) {
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        content: Container(
+          width: double.maxFinite,
+          child: StreamBuilder<QuerySnapshot>(
+            stream: FirebaseFirestore.instance.collection('Goleros').snapshots(),
+            builder: (context, snapshot) {
+              if (!snapshot.hasData) {
+                return Center(child: CircularProgressIndicator());
+              }
+
+              var playerDocs = snapshot.data!.docs;
+
+              return GridView.builder(
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 5,
+                  crossAxisSpacing: 10.0,
+                  mainAxisSpacing: 10.0,
+                  childAspectRatio: 0.64,
+                ),
+                itemCount: playerDocs.length,
+                itemBuilder: (context, index) {
+                  var playerData = playerDocs[index].data() as Map<String, dynamic>;
+                  String playerId = playerDocs[index].id;
+
+                  bool isSelected = selectedPlayers.contains(playerId);
+
+                  return GestureDetector(
+                    onTap: () {
+                      if (isSelected) {
+                        return; 
+                      }
+
+                      // Verifica cuál botón ha llamado la funcion
+                      if (buttonIndex == 1 && !_playerSelected_GK_1) {
+                        _playerSelected_GK_1 = true;
+                        _addToDraft(playerId, playerData, context);
+                      }
+
+                      selectedPlayers.add(playerId);
+                    },
+                    child: Opacity(
+                      opacity: isSelected ? 0.5 : 1.0,
+                      child: PlayerCard(
+                        playerName: playerData['name'],
+                        playerPosition: playerData['position'],
+                        playerLevel: playerData['level'],
+                        playerCountry: playerData['country'],
+                        playerImage: playerData['image'],
+                        shootingOptions: playerData['shooting_options'],
+                      ),
+                    ),
+                  );
+                },
+              );
+            },
+          ),
+        ),
+      );
+    },
+  );
+}
+
+//////////////////////// ADD TO DRAFT COLLECTION USER & other FUNCTIONS/////////////////////////////////////
 void _addToDraft(String playerId, Map<String, dynamic> playerData, BuildContext context) async {
-  // Obtener el usuario actual
+  // usuario actual
   User? currentUser = FirebaseAuth.instance.currentUser;
 
   if (currentUser != null) {
-    // Referencia al documento del usuario actual
+    // referencia al documento del usuario actual
     DocumentReference userRef = FirebaseFirestore.instance.collection('users').doc(currentUser.uid);
 
-    // Añadir el jugador a la subcolección "my_draft"
+    // añadir el jugador a la subcolección "my_draft" en el documento del usuario
     await userRef.collection('my_draft').doc(playerId).set({
       'name': playerData['name'],
       'position': playerData['position'],
@@ -559,13 +588,54 @@ void _addToDraft(String playerId, Map<String, dynamic> playerData, BuildContext 
 
      Navigator.pop(context);
 
-    // Mostrar confirmación (opcional)
+    // debug
     print('${playerData['name']} ha sido añadido a my_draft.');
   }
 }
+
+Future<bool> _checkDraftCompletion() async {
+  // usuario actual
+  User? currentUser = FirebaseAuth.instance.currentUser;
+
+  if (currentUser != null) {
+    // referencia al documento del usuario actual
+    DocumentReference userRef = FirebaseFirestore.instance.collection('users').doc(currentUser.uid);
+
+    // obtener la cantidad de documentos(o sea jugadores guardados) en la subcolección "my_draft"
+    QuerySnapshot draftSnapshot = await userRef.collection('my_draft').get();
+
+    // si hay 8 jugadores
+    if (draftSnapshot.size == 8) {
+      return true; // El draft está completo
+    }
+  }
+
+  return false; // El draft no está completo
+}
+
+// POP UP PARA CUANDO EL DRAFT ESTÁ INCOMPLETO
+void _showIncompleteDraftPopup(BuildContext context) { 
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: Text("Draft incompleto"),
+        content: Text("Completa tu draft para jugar."),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop(); 
+            },
+            child: Text("OK"),
+          ),
+        ],
+      );
+    },
+  );
+}
+
+
 //////////////////////// ADD TO DRAFT COLLECTION USER/////////////////////////////////////
-
-
 
 Widget _playerSlotButtonDEL(double x, double y, int buttonIndex) {
   return Align(
@@ -672,7 +742,6 @@ Widget _playerSlotButtonDEL(double x, double y, int buttonIndex) {
 
               var playerDocs = snapshot.data!.docs;
               
-              // Mostrar en cuadricula
               return GridView.builder(
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 5,
