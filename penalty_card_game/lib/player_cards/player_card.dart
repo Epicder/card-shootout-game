@@ -27,7 +27,7 @@ class PlayerCard extends StatelessWidget {
           image: AssetImage('assets/fondo_cartas.png'), // Fondo de la carta
           fit: BoxFit.cover,
         ),
-        borderRadius: BorderRadius.circular(12.0),
+        borderRadius: BorderRadius.circular(0),
       ),
       child: Stack(
         children: [
@@ -64,8 +64,8 @@ class PlayerCard extends StatelessWidget {
           ),
           // Nivel del jugador
           Positioned(
-            bottom: 20,
-            right: 20,
+            bottom: -7,
+            right: 25,
             child: Text(
               '$playerLevel',
               style: TextStyle(
