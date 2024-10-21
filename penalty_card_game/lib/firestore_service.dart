@@ -31,7 +31,7 @@ class FirestoreService {
         'level': 93,
         'country': 'Portugal',
         'image': 'URL',
-        'shooting_options': 7
+        'shooting_options': 8
       },
       {
         'name': 'Lionel Messi',
@@ -39,7 +39,7 @@ class FirestoreService {
         'level': 94,
         'country': 'Argentina',
         'image': 'URL',
-        'shooting_options': 7
+        'shooting_options': 8
       },      
       {
         'name': 'Robert Lewandowski',
@@ -47,7 +47,7 @@ class FirestoreService {
         'level': 90,
         'country': 'Poland',
         'image': 'URL',
-        'shooting_options': 7
+        'shooting_options': 8
       },
       {
         'name': 'Kylian Mbappé',
@@ -55,7 +55,7 @@ class FirestoreService {
         'level': 92,
         'country': 'France',
         'image': 'URL',
-        'shooting_options': 7
+        'shooting_options': 8
       },
       {
         'name': 'Erling Haaland',
@@ -63,7 +63,7 @@ class FirestoreService {
         'level': 91,
         'country': 'Norway',
         'image': 'URL',
-        'shooting_options': 7
+        'shooting_options': 8
       },
       {
         'name': 'Neymar Jr.',
@@ -71,7 +71,7 @@ class FirestoreService {
         'level': 90,
         'country': 'Brazil',
         'image': 'URL',
-        'shooting_options': 7
+        'shooting_options': 8
       },
       {
         'name': 'Karim Benzema',
@@ -87,7 +87,7 @@ class FirestoreService {
         'level': 90,
         'country': 'England',
         'image': 'URL',
-        'shooting_options': 7
+        'shooting_options': 8
       },
       {
         'name': 'Romelu Lukaku',
@@ -95,7 +95,7 @@ class FirestoreService {
         'level': 83,
         'country': 'Belgium',
         'image': 'URL',
-        'shooting_options': 6
+        'shooting_options': 4
       },
       {
         'name': 'Luis Suárez',
@@ -116,7 +116,7 @@ class FirestoreService {
         'level': 91,
         'country': 'Belgium',
         'image': 'URL',
-        'shooting_options': 7
+        'shooting_options': 8
       },
       {
         'name': 'Luka Modrić',
@@ -185,10 +185,10 @@ class FirestoreService {
       {
         'name': 'Casemiro',
         'position': 'Midfielder',
-        'level': 85,
+        'level': 81,
         'country': 'Brazil',
         'image': 'URL',
-        'shooting_options': 6
+        'shooting_options': 4
       }
       // Agrega más jugadores de mediocampistas aquí
     ];
@@ -201,7 +201,7 @@ class FirestoreService {
         'level': 91,
         'country': 'Netherlands',
         'image': 'URL',
-        'shooting_options': 7
+        'shooting_options': 8
       },
       {
         'name': 'Sergio Ramos',
@@ -241,7 +241,7 @@ class FirestoreService {
         'level': 83,
         'country': 'Brazil',
         'image': 'URL',
-        'shooting_options': 6
+        'shooting_options': 4
       },
       {
         'name': 'Raphaël Varane',
@@ -249,7 +249,7 @@ class FirestoreService {
         'level': 84,
         'country': 'France',
         'image': 'URL',
-        'shooting_options': 6
+        'shooting_options': 4
       },
       {
         'name': 'Jordi Alba',
@@ -257,7 +257,7 @@ class FirestoreService {
         'level': 83,
         'country': 'Spain',
         'image': 'URL',
-        'shooting_options': 6
+        'shooting_options': 4
       },
       {
         'name': 'Trent Alexander-Arnold',
@@ -323,10 +323,10 @@ class FirestoreService {
       {
         'name': 'Ederson Moraes',
         'position': 'Goalkeeper',
-        'level': 89,
+        'level': 90,
         'country': 'Brazil',
         'image': 'URL',
-        'shooting_options': 6
+        'shooting_options': 8
       },
       {
         'name': 'Keylor Navas',

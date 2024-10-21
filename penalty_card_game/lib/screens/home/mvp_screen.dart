@@ -412,23 +412,27 @@ class _PenaltyGameState extends State<PenaltyGame> {
     return Colors.white;
   }
 
-  // Genera las opciones de disparo basadas en el atributo 'shooting_options' del jugador
   List<List<int>> generateShootingOptions(int optionsCount) {
     List<List<int>> shootingOptions = [];
     Random random = Random();
 
-    // Generar posiciones aleatorias en la matriz hasta obtener la cantidad necesaria de opciones
-    while (shootingOptions.length < optionsCount) {
-      int row = random.nextInt(5);  // Hay 5 filas en la matriz (de 0 a 4)
-      int col = random.nextInt(7);  // Hay 7 columnas en la matriz (de 0 a 6)
-      List<int> option = [row, col];
-
-      // Evitar duplicados
-      if (!shootingOptions.contains(option)) {
-        shootingOptions.add(option);
+    // Crear una lista de todas las posiciones disponibles en la matriz
+    List<List<int>> allPositions = [];
+    for (int row = 0; row < 5; row++) {
+      for (int col = 0; col < 7; col++) {
+        allPositions.add([row, col]);
       }
+    }
+
+    // Barajar la lista de posiciones para obtener aleatoriedad
+    allPositions.shuffle(random);
+
+    // Tomar las primeras 'optionsCount' posiciones de la lista barajada
+    for (int i = 0; i < optionsCount; i++) {
+      shootingOptions.add(allPositions[i]);
     }
 
     return shootingOptions;
   }
+
 }
