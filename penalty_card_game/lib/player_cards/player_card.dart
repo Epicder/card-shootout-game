@@ -36,7 +36,7 @@ class PlayerCard extends StatelessWidget {
             left: 10,
             top: 50,
             child: Image.network(
-              playerImage,
+              'https://firebasestorage.googleapis.com/v0/b/penalty-card-game-login.appspot.com/o/country_flags%2Furuguay.png?alt=media&token=1fd1fbe0-5ea8-43af-afdf-c5a012bc1db8',
               width: 131.0,
               height: 233.0,
               fit: BoxFit.fill,
