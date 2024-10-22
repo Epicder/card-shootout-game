@@ -46,15 +46,19 @@ class _SignInScreenState extends State<SignInScreen> {
       },
       child: Form(
         key: _formKey,
-        child: SingleChildScrollView( // Este widget asegura que los elementos se adapten
+        child: SingleChildScrollView(
           child: Container(
+            padding: EdgeInsets.symmetric(
+              horizontal: screenWidth * 0.05, // Proporción horizontal
+              vertical: screenHeight * 0.02, // Proporción vertical
+            ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 SizedBox(height: screenHeight * 0.01),
                 Container(
                   width: screenWidth * 0.36,
-                  padding: const EdgeInsets.all(13),
+                  padding: const EdgeInsets.all(15),
                   decoration: BoxDecoration(
                     color: const Color.fromRGBO(91, 196, 95, 0.7),
                     borderRadius: BorderRadius.circular(10),
@@ -69,59 +73,65 @@ class _SignInScreenState extends State<SignInScreen> {
                   ),
                   child: Column(
                     children: [
-                      MyTextField(
-                        controller: emailController,
-                        hintText: 'Email',
-                        obscureText: false,
-                        keyboardType: TextInputType.emailAddress,
-                        prefixIcon: const Icon(CupertinoIcons.mail_solid),
-                        errorMsg: _errorMsg,
-                        validator: (val) {
-                          if (val!.isEmpty) {
-                            return 'Please fill in this field';
-                          } else if (!RegExp(r'^[\w-\.]+@([\w-]+.)+[\w-]{2,4}$')
-                              .hasMatch(val)) {
-                            return 'Please enter a valid email';
-                          }
-                          return null;
-                        },
+                      Container(
+                        height: 38, // Set your desired height here
+                        child: MyTextField(
+                          controller: emailController,
+                          hintText: 'Email',
+                          obscureText: false,
+                          keyboardType: TextInputType.emailAddress,
+                          prefixIcon: const Icon(CupertinoIcons.mail_solid),
+                          errorMsg: _errorMsg,
+                          validator: (val) {
+                            if (val!.isEmpty) {
+                              return 'Please fill in this field';
+                            } else if (!RegExp(r'^[\w-\.]+@([\w-]+.)+[\w-]{2,4}$')
+                                .hasMatch(val)) {
+                              return 'Please enter a valid email';
+                            }
+                            return null;
+                          },
+                        ),
                       ),
                       const SizedBox(height: 10),
-                      MyTextField(
-                        controller: passwordController,
-                        hintText: 'Password',
-                        obscureText: obscurePassword,
-                        keyboardType: TextInputType.visiblePassword,
-                        prefixIcon: const Icon(CupertinoIcons.lock_fill),
-                        errorMsg: _errorMsg,
-                        validator: (val) {
-                          if (val!.isEmpty) {
-                            return 'Please fill in this field';
-                          } else if (!RegExp(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~`)\%\-(_+=;:,.<>/?"[{\]}\|^]).{8,}$')
-                              .hasMatch(val)) {
-                            return 'Please enter a valid password';
-                          }
-                          return null;
-                        },
-                        suffixIcon: IconButton(
-                          onPressed: () {
-                            setState(() {
-                              obscurePassword = !obscurePassword;
-                              iconPassword = obscurePassword
-                                  ? CupertinoIcons.eye_fill
-                                  : CupertinoIcons.eye_slash_fill;
-                            });
+                      Container(
+                        height: 38, // Set your desired height here
+                        child: MyTextField(
+                          controller: passwordController,
+                          hintText: 'Password',
+                          obscureText: obscurePassword,
+                          keyboardType: TextInputType.visiblePassword,
+                          prefixIcon: const Icon(CupertinoIcons.lock_fill),
+                          errorMsg: _errorMsg,
+                          validator: (val) {
+                            if (val!.isEmpty) {
+                              return 'Please fill in this field';
+                            } else if (!RegExp(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~`)\%\-(_+=;:,.<>/?"[{\]}\|^]).{8,}$')
+                                .hasMatch(val)) {
+                              return 'Please enter a valid password';
+                            }
+                            return null;
                           },
-                          icon: Icon(iconPassword),
+                          suffixIcon: IconButton(
+                            onPressed: () {
+                              setState(() {
+                                obscurePassword = !obscurePassword;
+                                iconPassword = obscurePassword
+                                    ? CupertinoIcons.eye_fill
+                                    : CupertinoIcons.eye_slash_fill;
+                              });
+                            },
+                            icon: Icon(iconPassword),
+                          ),
                         ),
                       ),
                     ],
                   ),
                 ),
-                const SizedBox(height: 10),
+                const SizedBox(height: 7),
                 !signInRequired
                     ? SizedBox(
-                        width: screenWidth * 0.1, // Botón ajustado al 50% del ancho
+                        width: screenWidth * 0.14, // Botón ajustado al 50% del ancho
                         child: TextButton(
                           onPressed: () {
                             if (_formKey.currentState!.validate()) {
@@ -142,13 +152,13 @@ class _SignInScreenState extends State<SignInScreen> {
                           ),
                           child: const Padding(
                             padding: EdgeInsets.symmetric(
-                                horizontal: 5, vertical: 2),
+                                horizontal: 5, vertical: 1),
                             child: Text(
                               'Sign In',
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                 color: Colors.white,
-                                fontSize: 15,
+                                fontSize: 14,
                                 fontWeight: FontWeight.w600,
                               ),
                             ),
