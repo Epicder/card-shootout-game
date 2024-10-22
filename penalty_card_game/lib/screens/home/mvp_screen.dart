@@ -260,10 +260,25 @@ class _PenaltyGameState extends State<PenaltyGame> {
     }
   }
 
-  // Maneja la acción cuando el jugador ataja
   void handlePlayerSave(int row, int col) {
+    // Obtener las shooting_options del portero para determinar el tamaño del área
+    int goalkeeperShootingOptions = goalkeeper!['shooting_options'];
+    int goalkeeperZoneSize = 2; // Valor por defecto para el tamaño de la zona, correspondiente a 4 shooting options
+
+    // Definir el tamaño de la zona basado en las shooting_options
+    if (goalkeeperShootingOptions == 4) {
+      goalkeeperZoneSize = 2; // 2x2 área
+    } else if (goalkeeperShootingOptions == 6) {
+      goalkeeperZoneSize = 3; // 3x3 área
+    } else if (goalkeeperShootingOptions == 8) {
+      goalkeeperZoneSize = 4; // 4x4 área
+    } else {
+      // Opcional: Manejar un valor inesperado de shooting options
+      print("Error: Shooting options del golero no son válidos");
+    }
+
     setState(() {
-      playerSelectedTiles = get3x3Zone(row, col); // El golero ataja automáticamente
+      playerSelectedTiles = getGoalkeeperZone(row, col, goalkeeperZoneSize); // Zona determinada
       cpuSelectShootZone();
       checkGoalOrSave();
       Future.delayed(Duration(seconds: 1), () {
@@ -275,6 +290,25 @@ class _PenaltyGameState extends State<PenaltyGame> {
         });
       });
     });
+  }
+
+  // Función para determinar la zona de atajada del golero según su tamaño
+  List<List<int>> getGoalkeeperZone(int row, int col, int size) {
+    List<List<int>> selectedTiles = [];
+
+    // Calcular las filas y columnas iniciales considerando los bordes de la matriz
+    int startRow = max(0, row - (size ~/ 2));
+    int startCol = max(0, col - (size ~/ 2));
+
+    // Evitar que se salga del límite de la matriz
+    for (int i = 0; i < size; i++) {
+      for (int j = 0; j < size; j++) {
+        if (startRow + i < 5 && startCol + j < 7) {
+          selectedTiles.add([startRow + i, startCol + j]);
+        }
+      }
+    }
+    return selectedTiles;
   }
 
   // Función que maneja la lógica para avanzar al siguiente turno
@@ -345,25 +379,12 @@ class _PenaltyGameState extends State<PenaltyGame> {
     });
   }
 
-  // Genera una zona 3x3 de atajadas para el golero
-  List<List<int>> get3x3Zone(int row, int col) {
-    List<List<int>> selectedTiles = [];
-    int startRow = (row - 1 < 0) ? 0 : (row + 1 > 4) ? 2 : row - 1;
-    int startCol = (col - 1 < 0) ? 0 : (col + 1 > 6) ? 4 : col - 1;
-    for (int i = 0; i < 3; i++) {
-      for (int j = 0; j < 3; j++) {
-        selectedTiles.add([startRow + i, startCol + j]);
-      }
-    }
-    return selectedTiles;
-  }
-
   // Seleccionar automáticamente una zona de atajada para la CPU
   void cpuSelectSaveZone() {
     setState(() {
       int row = Random().nextInt(3) + 1;
       int col = Random().nextInt(5) + 1;
-      cpuSelectedTiles = get3x3Zone(row, col);
+      cpuSelectedTiles = getGoalkeeperZone(row, col, 3); // 3x3 fijo para la CPU
     });
   }
 
@@ -434,5 +455,4 @@ class _PenaltyGameState extends State<PenaltyGame> {
 
     return shootingOptions;
   }
-
 }
