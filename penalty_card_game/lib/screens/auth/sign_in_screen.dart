@@ -48,17 +48,13 @@ class _SignInScreenState extends State<SignInScreen> {
         key: _formKey,
         child: SingleChildScrollView( // Este widget asegura que los elementos se adapten
           child: Container(
-            padding: EdgeInsets.symmetric(
-              horizontal: screenWidth * 0.1, // Proporción horizontal
-              vertical: screenHeight * 0.05, // Proporción vertical
-            ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                SizedBox(height: screenHeight * 0.05),
+                SizedBox(height: screenHeight * 0.01),
                 Container(
-                  width: screenWidth * 0.8, // Ajustar al 80% del ancho de la pantalla
-                  padding: const EdgeInsets.all(20),
+                  width: screenWidth * 0.36,
+                  padding: const EdgeInsets.all(13),
                   decoration: BoxDecoration(
                     color: const Color.fromRGBO(91, 196, 95, 0.7),
                     borderRadius: BorderRadius.circular(10),
@@ -122,10 +118,10 @@ class _SignInScreenState extends State<SignInScreen> {
                     ],
                   ),
                 ),
-                const SizedBox(height: 20),
+                const SizedBox(height: 10),
                 !signInRequired
                     ? SizedBox(
-                        width: screenWidth * 0.5, // Botón ajustado al 50% del ancho
+                        width: screenWidth * 0.1, // Botón ajustado al 50% del ancho
                         child: TextButton(
                           onPressed: () {
                             if (_formKey.currentState!.validate()) {
@@ -146,13 +142,13 @@ class _SignInScreenState extends State<SignInScreen> {
                           ),
                           child: const Padding(
                             padding: EdgeInsets.symmetric(
-                                horizontal: 25, vertical: 5),
+                                horizontal: 5, vertical: 2),
                             child: Text(
                               'Sign In',
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                 color: Colors.white,
-                                fontSize: 16,
+                                fontSize: 15,
                                 fontWeight: FontWeight.w600,
                               ),
                             ),
