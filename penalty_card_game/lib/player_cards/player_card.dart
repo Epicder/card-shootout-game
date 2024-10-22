@@ -18,123 +18,132 @@ class PlayerCard extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: 280.0,
-      height: 460.0,
-      decoration: BoxDecoration(
-        image: DecorationImage(
-          image: AssetImage('assets/fondo_cartas.png'), // Fondo de la carta
-        ),
-        borderRadius: BorderRadius.circular(19.0),
+Widget build(BuildContext context) {
+  final screenWidth = MediaQuery.of(context).size.width;
+  final screenHeight = MediaQuery.of(context).size.height;
+
+  return Container(
+    width: screenWidth * 0.7, // 70% of screen width
+    height: screenHeight * 0.6, // 60% of screen height
+    decoration: BoxDecoration(
+      image: DecorationImage(
+        image: AssetImage('assets/fondo_cartas.png'), // Fondo de la carta
       ),
-      child: Stack(
-        children: [
-          // Imagen del jugador
-          Positioned(
-            left: 10,
-            top: 50,
-            child: Image.network(
-              'https://firebasestorage.googleapis.com/v0/b/penalty-card-game-login.appspot.com/o/country_flags%2Furuguay.png?alt=media&token=1fd1fbe0-5ea8-43af-afdf-c5a012bc1db8',
-              width: 131.0,
-              height: 233.0,
-              fit: BoxFit.fill,
+      borderRadius: BorderRadius.circular(19.0),
+    ),
+    child: Stack(
+      children: [
+        // Imagen del jugador
+        Positioned(
+          left: screenWidth * 0.263, // 2.5% of screen width
+          top: screenHeight * 0.086, // 6.5% of screen height
+          child: Image.network(
+            playerImage, // Aquí deberás pasar el URL de la imagen según tu lógica
+            height: screenHeight * 0.43, // 30% of screen height
+            fit: BoxFit.fill,
+          ),
+        ),
+        // Nombre del jugador
+        Positioned(
+          top: screenHeight * 0.013, // 3% of screen height
+          left: screenWidth * 0.266, // 5% of screen width
+          child: Text(
+            playerName.toUpperCase(),
+            style: TextStyle(
+              fontFamily: 'Spectral SC',
+              fontSize: screenWidth * 0.0155, // 6% of screen width
+              fontWeight: FontWeight.w800,
+              shadows: [
+                Shadow(
+                  color: Colors.grey,
+                  offset: Offset(2.0, 2.0),
+                  blurRadius: 2.0,
+                ),
+              ],
             ),
           ),
-          // Nombre del jugador
-          Positioned(
-            top: 20,
-            left: 20,
-            child: Text(
-              playerName.toUpperCase(),
-              style: TextStyle(
-                fontFamily: 'Spectral SC',
-                fontSize: 22.0,
-                fontWeight: FontWeight.w800,
-                shadows: [
-                  Shadow(
-                    color: Colors.grey,
-                    offset: Offset(2.0, 2.0),
-                    blurRadius: 2.0,
-                  ),
-                ],
-              ),
+        ),
+        // Nivel del jugador
+        Positioned(
+          bottom: screenHeight * 0.03, // 3% of screen height
+          right: screenWidth * 0.282, // 8% of screen width
+          child: Text(
+            '$playerLevel',
+            style: TextStyle(
+              fontFamily: 'Black Ops One',
+              fontSize: screenWidth * 0.035, // 15% of screen width
+              color: Colors.white,
+              shadows: [
+                Shadow(
+                  color: Colors.black,
+                  offset: Offset(2.5, 2.5),
+                ),
+              ],
             ),
           ),
-          // Nivel del jugador
-          Positioned(
-            bottom: 24,
-            right: 33,
-            child: Text(
-              '$playerLevel',
-              style: TextStyle(
-                fontFamily: 'Black Ops One',
-                fontSize: 55.0,
-                color: Colors.white,
-                shadows: [
-                  Shadow(
-                    color: Colors.black,
-                    offset: Offset(2.5, 2.5),
-                  ),
-                ],
-              ),
+        ),
+        // Posición del jugador
+        Positioned(
+          top: screenHeight * 0.2, // 20% of screen height
+          right: screenWidth * 0.05, // 5% of screen width
+          child: Container(
+            padding: EdgeInsets.symmetric(
+              horizontal: screenWidth * 0.217, // 2.5% of screen width
+              vertical: screenHeight * 0.092, // 0.7% of screen height
             ),
-          ),
-          // Posición del jugador
-          Positioned(
-            top: 150,
-            right: 20,
             child: Container(
-              padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
-              decoration: BoxDecoration(
-                color: Colors.green,
-                borderRadius: BorderRadius.circular(5.0),
+            width: screenWidth * 0.076, // 13% of screen width
+            height: screenHeight * 0.047, // 7% of screen height
+            decoration: BoxDecoration(
+              color: Colors.green,
+              borderRadius: BorderRadius.circular(5.0),
+            ),
+            child: Text(
+              playerPosition.toUpperCase(),
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: screenWidth * 0.015, // 4% of screen width
+                fontStyle: FontStyle.italic,
               ),
+            ),
+          ),
+        ),
+        ),
+        // Opciones de tiro
+        Positioned(
+          top: screenHeight * 0.365, // 27% of screen height
+          right: screenWidth * 0.273, // 5% of screen width
+          child: Container(
+            width: screenWidth * 0.030, // 13% of screen width
+            height: screenHeight * 0.06, // 7% of screen height
+            decoration: BoxDecoration(
+              color: Colors.red,
+              borderRadius: BorderRadius.circular(5.0),
+            ),
+            child: Center(
               child: Text(
-                playerPosition.toUpperCase(),
+                '$shootingOptions',
                 style: TextStyle(
                   color: Colors.white,
-                  fontSize: 14.0,
-                  fontStyle: FontStyle.italic,
+                  fontSize: screenWidth * 0.022, // 7% of screen width
+                  fontWeight: FontWeight.bold,
                 ),
               ),
             ),
           ),
-          // Opciones de tiro
-          Positioned(
-            top: 200,
-            right: 20,
-            child: Container(
-              width: 50.0,
-              height: 50.0,
-              decoration: BoxDecoration(
-                color: Colors.red,
-                borderRadius: BorderRadius.circular(5.0),
-              ),
-              child: Center(
-                child: Text(
-                  '$shootingOptions',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 25.0,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
-            ),
+        ),
+        // País
+        Positioned(
+          top: screenHeight * 0.105, // 6.5% of screen height
+          right: screenWidth * 0.235, // 5% of screen width
+          child: Image.network(
+            playerCountry, // Aquí deberás pasar el URL de la bandera según tu lógica
+            width: screenWidth * 0.13, // 8% of screen width
+            height: screenHeight * 0.06, // 3% of screen height
           ),
-          // País
-          Positioned(
-            top: 50,
-            right: 20,
-            child: Image.network(
-              playerCountry, // Aquí deberás pasar el URL de la bandera según tu lógica
-              width: 30.0,
-              height: 20.0,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
+        ),
+      ],
+    ),
+  );
+}
 }

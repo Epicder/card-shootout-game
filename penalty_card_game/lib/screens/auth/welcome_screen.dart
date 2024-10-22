@@ -23,11 +23,6 @@ class _WelcomeScreenState extends State<WelcomeScreen> with TickerProviderStateM
   void initState() {
     super.initState();
 
-    // Fijar la orientación a horizontal
-    SystemChrome.setPreferredOrientations([
-      DeviceOrientation.landscapeRight,
-      DeviceOrientation.landscapeLeft,
-    ]);
 
     tabController = TabController(
       initialIndex: 0,
@@ -36,30 +31,21 @@ class _WelcomeScreenState extends State<WelcomeScreen> with TickerProviderStateM
     );
   }
 
-  @override
-  void dispose() {
-    // al salir de la pantalla, restaurar las orientaciones predeterminadas
-    SystemChrome.setPreferredOrientations([
-      DeviceOrientation.portraitUp,
-      DeviceOrientation.portraitDown,
-    ]);
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Container(
-        // Imagen de fondo que cubre toda la pantalla
-        width: double.infinity,
-        height: double.infinity,
-        decoration: const BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage('login_screen.jpg'),
-            fit: BoxFit.cover,
-          ),
+  return Scaffold(
+    body: Stack(
+      children: [
+        // Imagen de fondo usando Image.asset
+        Image.asset(
+          'assets/login_screen.jpg', // Asegúrate de que la ruta sea correcta
+          fit: BoxFit.cover,
+          width: double.infinity,
+          height: double.infinity,
         ),
-        child: SingleChildScrollView(
+        // El contenido se coloca encima de la imagen de fondo
+        SingleChildScrollView(
           child: SizedBox(
             height: MediaQuery.of(context).size.height,
             width: MediaQuery.of(context).size.width,
@@ -68,7 +54,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> with TickerProviderStateM
                 Align(
                   alignment: Alignment.bottomCenter,
                   child: SizedBox(
-                    height: MediaQuery.of(context).size.height / 1.5, // posicion en pantalla
+                    height: MediaQuery.of(context).size.height / 1.5, // posición en pantalla
                     child: Column(
                       children: [
                         Padding(
@@ -126,7 +112,8 @@ class _WelcomeScreenState extends State<WelcomeScreen> with TickerProviderStateM
             ),
           ),
         ),
-      ),
-    );
-  }
+      ],
+    ),
+  );
+}
 }

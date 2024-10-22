@@ -34,3 +34,9 @@ flutter:
     - assets/fondo_menu.jpg
     - assets/fondo_draft.jpg
     - assets/fondo_cartas.png
+  fonts:
+    - family: Speed
+      fonts:
+        - asset: fonts/Speed+.ttf
+          style: italic
+

@@ -58,7 +58,7 @@ class _SignInScreenState extends State<SignInScreen> {
                 SizedBox(height: screenHeight * 0.01),
                 Container(
                   width: screenWidth * 0.36,
-                  padding: const EdgeInsets.all(15),
+                  padding: const EdgeInsets.all(13),
                   decoration: BoxDecoration(
                     color: const Color.fromRGBO(91, 196, 95, 0.7),
                     borderRadius: BorderRadius.circular(10),

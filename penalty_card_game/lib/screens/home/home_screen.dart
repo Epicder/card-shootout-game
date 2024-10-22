@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:penalty_card_game/blocs/sign_in_bloc/sign_in_bloc.dart';
 import 'package:penalty_card_game/screens/home/draft_screen.dart';
@@ -8,9 +9,32 @@ import 'package:penalty_card_game/screens/home/mvp_screen.dart';
 import 'package:penalty_card_game/player_cards/player_card.dart';
 
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
+  @override
+  _HomeScreenState createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  @override
+  void initState() {
+    super.initState();
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.landscapeRight,
+      DeviceOrientation.landscapeLeft,
+    ]);
+  }
+
+  @override
+  void dispose() {
+    // Restore the orientation to portrait mode when leaving the screen
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+    ]);
+    super.dispose();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -27,26 +51,26 @@ class HomeScreen extends StatelessWidget {
           _buildTitleText(),
 
           // Contenedor de "RECORD"
-          _buildRecordContainer(),
+          _buildRecordContainer(context),
 
           // Imagen del Jugador y el texto "ONE TO WATCH"
           _buildPlayerImage(),
-          _buildOneToWatchText(),
+          _buildOneToWatchText(context),
 
-          // Botones del Menú: CPU, ONLINE, FRIEND
-          _buildGameModeButton(context, 'CPU', const Alignment(-0.53, 0.8)),
-          _buildGameModeButton(context, 'ONLINE', const Alignment(0.0, 0.8)),
-          _buildGameModeButton(context, 'FRIEND', const Alignment(0.61, 0.8)),
+          // Botones del Menú: CPU
+          _buildGameModeButton(context, 'Play!', const Alignment(0.0, 0.8)),
+
         ],
       ),
     );
   }
+  
 
   // Widget para el fondo de imagen
   Widget _buildBackgroundImage() {
     return Positioned.fill(
       child: Opacity(
-        opacity: 0.3, // Ajusta la opacidad para que el fondo sea más tenue
+        opacity: 0.8,
         child: Image.asset(
           'assets/fondo_menu.jpg', // Asegúrate de que esta ruta sea correcta
           fit: BoxFit.cover, // La imagen cubrirá toda la pantalla
@@ -97,18 +121,23 @@ class HomeScreen extends StatelessWidget {
   }
 
   // Widget para el contenedor de "RECORD"
-Widget _buildRecordContainer() {
+Widget _buildRecordContainer(BuildContext context) {
+  final screenWidth = MediaQuery.of(context).size.width;
+  final screenHeight = MediaQuery.of(context).size.height;
+
   return Align(
     alignment: const Alignment(-0.65, -0.4),
     child: Container(
-      width: 352.0,
-      height: 270.0, // A AJUSTAR LUEGO
+      width: screenWidth * 0.4, // 80% of screen width
+      height: screenHeight * 0.6, // 40% of screen height
       decoration: BoxDecoration(
         color: const Color(0xD60B1415),
+        borderRadius: BorderRadius.circular(20),
+
         boxShadow: [
           BoxShadow(
             blurRadius: 15.0,
-            color: const Color.fromARGB(252, 63, 139, 143).withOpacity(0.5),
+            color: const Color.fromRGBO(91, 196, 95, 0.7).withOpacity(0.5),
             offset: const Offset(0.0, 2.0),
             spreadRadius: 8.0,
           ),
@@ -135,7 +164,7 @@ Widget _buildRecordContainer() {
                     style: TextStyle(
                       fontFamily: 'Lekton',
                       color: Colors.white,
-                      fontSize: 26.0,
+                      fontSize: screenWidth * 0.05, // 5% of screen width
                       letterSpacing: 3.0,
                       fontWeight: FontWeight.w800,
                       fontStyle: FontStyle.italic,
@@ -152,16 +181,16 @@ Widget _buildRecordContainer() {
 
                       // ASIGNAR TEXTO EN FUNCIÓN DE SI ES WIN O LOSE
                       String resultText = playerScore > cpuScore ? "Win" : "Lose";
-                      Color resultColor = playerScore > cpuScore ? Colors.green : Colors.red;
+                      Color resultColor = playerScore > cpuScore ? Colors.green : const Color.fromARGB(255, 197, 54, 43);
 
                       return Padding(
-                        padding: const EdgeInsets.only(top: 12.0, left: 10.0),
+                        padding: EdgeInsets.only(top: screenHeight * 0.01, left: screenWidth * 0.03), // 2% of screen height, 3% of screen width
                         child: Text(
                           '$resultText: $playerScore - $cpuScore',
                           style: TextStyle(
                             fontFamily: 'Lekton',
                             color: resultColor,
-                            fontSize: 30.0,
+                            fontSize: screenWidth * 0.038, // 6% of screen width
                             letterSpacing: 3.0,
                             fontWeight: FontWeight.w800,
                             fontStyle: FontStyle.italic,
@@ -175,15 +204,14 @@ Widget _buildRecordContainer() {
             ),
           ),
           Align(
-            alignment: const Alignment(0.01, -1.37),
+            alignment: const Alignment(-1.0, -1.37),
             child: Text(
-              
-              'Historial de Partidas',
+              'RECORD',
               style: TextStyle(
-                fontFamily: 'Foldit',
+                fontFamily: 'Speed',
                 color: Colors.yellow,
-                fontSize: 30.0,
-                letterSpacing: 3.0,
+                fontSize: screenWidth * 0.055, // 7% of screen width
+                letterSpacing: 2.5,
                 fontStyle: FontStyle.italic,
               ),
             ),
@@ -214,11 +242,11 @@ String uid = currentUser.uid;
 // Widget para la carta del jugador desde Firestore
 Widget _buildPlayerImage() {
   return Align(
-    alignment: const Alignment(0.5, -0.31),
+    alignment: const Alignment(1.8, -0.31),
     child: StreamBuilder<DocumentSnapshot>(
       stream: FirebaseFirestore.instance
           .collection('Delanteros')
-          .doc('cristiano_ronaldo') // Cambia el ID al del jugador que quieras mostrar
+          .doc('luis_suárez') // Cambia el ID al del jugador que quieras mostrar
           .snapshots(),
       builder: (context, snapshot) {
         if (!snapshot.hasData) {
@@ -240,28 +268,31 @@ Widget _buildPlayerImage() {
 }
 
   // Widget para el texto "ONE TO WATCH"
-  Widget _buildOneToWatchText() {
-    return Align(
-      alignment: const Alignment(0.87, -0.1),
-      child: Text(
-        'ONE\nTO\nWATCH',
-        style: TextStyle(
-          fontFamily: 'Fugaz One',
-          color: const Color(0xFFFFE73D),
-          fontSize: 25.0,
-          letterSpacing: 2.0,
-          fontWeight: FontWeight.w600,
-          shadows: [
-            Shadow(
-              color: const Color(0xC0EE8B60),
-              offset: const Offset(-2.5, 0.0),
-            ),
-          ],
-          height: 1.8,
-        ),
+  Widget _buildOneToWatchText(BuildContext context) {
+  final screenWidth = MediaQuery.of(context).size.width;
+  final screenHeight = MediaQuery.of(context).size.height;
+
+  return Align(
+    alignment: Alignment(0.94, -0.1),
+    child: Text(
+      'ONE\nTO\nWATCH',
+      style: TextStyle(
+        fontFamily: 'Fugaz One',
+        color: const Color(0xFFFFE73D),
+        fontSize: screenWidth * 0.025, // 6% of screen width
+        letterSpacing: 2.0,
+        fontWeight: FontWeight.w600,
+        shadows: [
+          Shadow(
+            color: const Color(0xC0EE8B60),
+            offset: Offset(-screenWidth * 0.004, 0.0), // 0.6% of screen width
+          ),
+        ],
+        height: 1.8,
       ),
-    );
-  }
+    ),
+  );
+}
 
   // Widget para los botones del menú
   Widget _buildGameModeButton(BuildContext context, String text, Alignment alignment) {
@@ -275,13 +306,13 @@ Widget _buildPlayerImage() {
           );
         },
         style: ElevatedButton.styleFrom(
-          backgroundColor: const Color.fromARGB(255, 38, 45, 52),
-          foregroundColor: const Color.fromARGB(255, 255, 230, 0),
+          backgroundColor: const Color.fromARGB(255, 48, 139, 80),
+          foregroundColor: const Color.fromARGB(255, 213, 239, 82),
           padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 16.0),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(14.0),
             side: BorderSide(
-              color: const Color.fromARGB(255, 88, 197, 255),
+              color: const Color.fromARGB(255, 71, 230, 140),
               width: 2.0,
             ),
           ),
@@ -290,8 +321,8 @@ Widget _buildPlayerImage() {
           text,
           style: const TextStyle(
             fontFamily: 'Foldit',
-            fontSize: 20.0,
-            letterSpacing: 3.0,
+            fontSize: 18.0,
+            letterSpacing: 2.0,
             fontWeight: FontWeight.w600,
           ),
         ),
