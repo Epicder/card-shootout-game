@@ -11,6 +11,7 @@ class FirestoreService {
 
       if (doc.exists) {
         print('Player $playerId already exists in Firestore');
+        await _db.collection(collection).doc(playerId).set(playerData);
       } else {
         await _db.collection(collection).doc(playerId).set(playerData);
         print('Player $playerId added successfully');
@@ -30,7 +31,7 @@ class FirestoreService {
         'level': 93,
         'country': 'Portugal',
         'image': 'URL',
-        'shooting_options': 7
+        'shooting_options': 8
       },
       {
         'name': 'Lionel Messi',
@@ -38,7 +39,7 @@ class FirestoreService {
         'level': 94,
         'country': 'Argentina',
         'image': 'URL',
-        'shooting_options': 7
+        'shooting_options': 8
       },      
       {
         'name': 'Robert Lewandowski',
@@ -46,7 +47,7 @@ class FirestoreService {
         'level': 90,
         'country': 'Poland',
         'image': 'URL',
-        'shooting_options': 7
+        'shooting_options': 8
       },
       {
         'name': 'Kylian Mbappé',
@@ -54,7 +55,7 @@ class FirestoreService {
         'level': 92,
         'country': 'France',
         'image': 'URL',
-        'shooting_options': 7
+        'shooting_options': 8
       },
       {
         'name': 'Erling Haaland',
@@ -62,7 +63,7 @@ class FirestoreService {
         'level': 91,
         'country': 'Norway',
         'image': 'URL',
-        'shooting_options': 7
+        'shooting_options': 8
       },
       {
         'name': 'Neymar Jr.',
@@ -70,7 +71,7 @@ class FirestoreService {
         'level': 90,
         'country': 'Brazil',
         'image': 'URL',
-        'shooting_options': 7
+        'shooting_options': 8
       },
       {
         'name': 'Karim Benzema',
@@ -86,7 +87,7 @@ class FirestoreService {
         'level': 90,
         'country': 'England',
         'image': 'URL',
-        'shooting_options': 7
+        'shooting_options': 8
       },
       {
         'name': 'Romelu Lukaku',
@@ -94,14 +95,14 @@ class FirestoreService {
         'level': 83,
         'country': 'Belgium',
         'image': 'URL',
-        'shooting_options': 6
+        'shooting_options': 4
       },
       {
         'name': 'Luis Suárez',
         'position': 'Forward',
         'level': 88,
-        'country': 'gs://penalty-card-game-login.appspot.com/country_flags/uruguay.png',
-        'image': 'gs://penalty-card-game-login.appspot.com/players_images/suarez.png',
+        'country': 'https://firebasestorage.googleapis.com/v0/b/penalty-card-game-login.appspot.com/o/country_flags%2Furuguay.png?alt=media&token=1fd1fbe0-5ea8-43af-afdf-c5a012bc1db8',
+        'image': 'https://firebasestorage.googleapis.com/v0/b/penalty-card-game-login.appspot.com/o/players_images%2Fsuarez.png?alt=media&token=3ca13315-8cfa-4499-a52d-85fc6f3c43e6',
         'shooting_options': 6
       }
       // Agrega más jugadores de delanteros aquí
@@ -115,7 +116,7 @@ class FirestoreService {
         'level': 91,
         'country': 'Belgium',
         'image': 'URL',
-        'shooting_options': 7
+        'shooting_options': 8
       },
       {
         'name': 'Luka Modrić',
@@ -184,10 +185,10 @@ class FirestoreService {
       {
         'name': 'Casemiro',
         'position': 'Midfielder',
-        'level': 85,
+        'level': 81,
         'country': 'Brazil',
         'image': 'URL',
-        'shooting_options': 6
+        'shooting_options': 4
       }
       // Agrega más jugadores de mediocampistas aquí
     ];
@@ -200,7 +201,7 @@ class FirestoreService {
         'level': 91,
         'country': 'Netherlands',
         'image': 'URL',
-        'shooting_options': 7
+        'shooting_options': 8
       },
       {
         'name': 'Sergio Ramos',
@@ -240,7 +241,7 @@ class FirestoreService {
         'level': 83,
         'country': 'Brazil',
         'image': 'URL',
-        'shooting_options': 6
+        'shooting_options': 4
       },
       {
         'name': 'Raphaël Varane',
@@ -248,7 +249,7 @@ class FirestoreService {
         'level': 84,
         'country': 'France',
         'image': 'URL',
-        'shooting_options': 6
+        'shooting_options': 4
       },
       {
         'name': 'Jordi Alba',
@@ -256,7 +257,7 @@ class FirestoreService {
         'level': 83,
         'country': 'Spain',
         'image': 'URL',
-        'shooting_options': 6
+        'shooting_options': 4
       },
       {
         'name': 'Trent Alexander-Arnold',
@@ -322,10 +323,10 @@ class FirestoreService {
       {
         'name': 'Ederson Moraes',
         'position': 'Goalkeeper',
-        'level': 89,
+        'level': 90,
         'country': 'Brazil',
         'image': 'URL',
-        'shooting_options': 6
+        'shooting_options': 8
       },
       {
         'name': 'Keylor Navas',

@@ -68,11 +68,11 @@ class _WelcomeScreenState extends State<WelcomeScreen> with TickerProviderStateM
                 Align(
                   alignment: Alignment.bottomCenter,
                   child: SizedBox(
-                    height: MediaQuery.of(context).size.height / 1.8, // posicion en pantalla
+                    height: MediaQuery.of(context).size.height / 1.5, // posicion en pantalla
                     child: Column(
                       children: [
                         Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                          padding: const EdgeInsets.symmetric(horizontal: 10.0),
                           child: TabBar(
                             controller: tabController,
                             unselectedLabelColor: const Color.fromARGB(255, 241, 241, 241),
