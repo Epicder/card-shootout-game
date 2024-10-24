@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -59,17 +61,7 @@ class _DraftScreenState extends State<DraftScreen> {
     return Scaffold(
       body: Stack(
         children: [
-          // Fondo del draft
-          Positioned.fill(
-            child: Opacity(
-              opacity: 0.9, // Ajusta la opacidad para que coincida con el diseño
-              child: Image.asset(
-                'fondo_draft.jpg', // Ruta de la imagen del fondo
-                fit: BoxFit.cover,
-              ),
-            ),
-          ),
-
+          _buildBackgroundImage(),
           // Texto "TEAM DRAFT"
           Align(
             alignment: AlignmentDirectional(0.92, -0.89),
@@ -169,6 +161,26 @@ class _DraftScreenState extends State<DraftScreen> {
 
           // Botones de los jugadores (lugares para seleccionar los jugadores)
           ..._buildPlayerSlots(),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildBackgroundImage() {
+    return Positioned.fill(
+      child: Stack(
+        fit: StackFit.expand,
+        children: [
+          Image.asset(
+            'assets/fondo_draft.jpg',
+            fit: BoxFit.cover,
+          ),
+          BackdropFilter(
+            filter: ImageFilter.blur(sigmaX: 2.5, sigmaY: 2.5),
+            child: Container(
+              color: Colors.black.withOpacity(0.0),
+            ),
+          ),
         ],
       ),
     );
@@ -288,10 +300,9 @@ void showDelanterosForButton(BuildContext context, int buttonIndex) {
 
               return GridView.builder(
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 4,
-                  crossAxisSpacing: 10.0,
+                  crossAxisCount: 1,
+                  crossAxisSpacing: 5.0,
                   mainAxisSpacing: 10.0,
-                  childAspectRatio: 0.64,
                 ),
                 itemCount: playerDocs.length,
                 itemBuilder: (context, index) {

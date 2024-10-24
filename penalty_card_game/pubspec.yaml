@@ -36,8 +36,10 @@ flutter:
     - assets/fondo_cartas.png
     - assets/fondo_penales.png
   fonts:
-    - family: Speed
+    - family: Speedway
       fonts:
-        - asset: fonts/Speed+.ttf
+        - asset: fonts/Speedway.ttf
           style: italic
-
+    - family: Sport
+      fonts:
+        - asset: fonts/SPORTVIPER.ttf
