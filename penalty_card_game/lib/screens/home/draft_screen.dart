@@ -288,10 +288,9 @@ void showDelanterosForButton(BuildContext context, int buttonIndex) {
 
               return GridView.builder(
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 4,
-                  crossAxisSpacing: 10.0,
+                  crossAxisCount: 1,
+                  crossAxisSpacing: 5.0,
                   mainAxisSpacing: 10.0,
-                  childAspectRatio: 0.64,
                 ),
                 itemCount: playerDocs.length,
                 itemBuilder: (context, index) {
