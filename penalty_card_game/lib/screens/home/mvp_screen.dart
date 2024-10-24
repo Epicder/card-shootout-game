@@ -93,88 +93,58 @@ class _PenaltyGameState extends State<PenaltyGame> {
     print("Equipo cargado correctamente: $userTeam");
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("Penalty Shootout"),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            // Mostrar el marcador actual del juego
-            Text(
-              "${currentUser?.name ?? 'Tú Fc'}: $playerScore | CPU: $cpuScore",
-              style: TextStyle(fontSize: 24),
-            ),
-            // Mostrar el ganador si el juego ha terminado
-            if (gameEnded)
-              Column(
-                children: [
-                  Text(
-                    playerScore > cpuScore ? 'Jugador Gana!' : 'CPU Gana!',
-                    style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
-                  ),
-                  ElevatedButton(
-                    onPressed: resetGame,
-                    child: Text('Reiniciar Tanda de Penales'),
-                  ),
-                ],
+@override
+Widget build(BuildContext context) {
+  return Scaffold(
+    appBar: AppBar(
+      title: Text("Penalty Shootout"),
+    ),
+    body: Stack(
+      children: [
+        // Imagen de fondo
+        Positioned.fill(
+          child: Image.asset(
+            'assets/fondo_penales.png', // Asegúrate de que el nombre del archivo sea correcto
+            fit: BoxFit.fill, // Ajustar para que cubra toda la pantalla
+          ),
+        ),
+        // Centrar la matriz
+        Align(
+          alignment: Alignment(0.0, -0.8), // Ajusta estos valores para mover la matriz a mano
+          child: Column(
+            mainAxisSize: MainAxisSize.min, // Para que solo ocupe el espacio de la matriz
+            children: [
+              // Mostrar el marcador actual del juego
+              Text(
+                "${currentUser?.name ?? 'Tú Fc'}: $playerScore | CPU: $cpuScore",
+                style: TextStyle(fontSize: 24, color: Colors.white), // Color blanco para mayor contraste
               ),
-            const SizedBox(height: 20),
-            if (isLoading)
-              // Mostrar indicador de carga mientras se cargan los datos del equipo
-              CircularProgressIndicator()
-            else
-              Expanded(
-                child: Column(
+              const SizedBox(height: 20),
+              if (isLoading)
+                CircularProgressIndicator()
+              else
+                Column(
                   children: [
-                    // Seleccionar un jugador para ejecutar el penal si es turno del jugador
-                    if (isPlayerTurn && selectedPlayer == null)
-                      Column(
-                        children: [
-                          Text("Selecciona un jugador para ejecutar el penal:"),
-                          for (var player in userTeam.where((p) => p['position'] != 'Goalkeeper' && !usedPlayers.contains(p)))
-                            ElevatedButton(
-                              onPressed: () {
-                                setState(() {
-                                  selectedPlayer = player;
-                                  usedPlayers.add(player); // Agregar el jugador a la lista de usados
-                                  // Generar las posiciones aleatorias de disparo según 'shooting_options'
-                                  shootingOptions = generateShootingOptions(player['shooting_options']);
-                                  // Reiniciar la lista de jugadores si todos han ejecutado
-                                  if (usedPlayers.length == userTeam.length - 1) {
-                                    usedPlayers.clear();
-                                  }
-                                });
-                              },
-                              child: Text("${player['name']} - ${player['position']}"),
-                            ),
-                          const SizedBox(height: 20),
-                        ],
-                      )
-                    else if (isPlayerTurn && selectedPlayer != null)
-                      // Mostrar el jugador seleccionado para ejecutar el penal
-                      Text("Jugador seleccionado: ${selectedPlayer!['name']}"),
-
-                    // Mostrar el golero automáticamente si es turno de atajar
-                    if (!isPlayerTurn) Text("Ataja el golero: ${goalkeeper!['name']}"),
-
-                    const SizedBox(height: 20),
-
-                    // Mostrar la matriz de 7x5 donde se ejecutan los penales
-                    SizedBox(
-                      width: 350,
-                      height: 250,
-                      child: GridView.builder(
-                        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 7,
-                          mainAxisSpacing: 4.0,
-                          crossAxisSpacing: 4.0,
-                          childAspectRatio: 1.0,
+                    // Ajuste de tamaño y centrado de la matriz
+                    Container(
+                      width: 267.0,  // Ancho del arco/matriz ajustado a tu diseño
+                      height: 175.0,  // Alto del arco/matriz ajustado a tu diseño
+                      decoration: BoxDecoration(
+                        color: const Color.fromARGB(255, 46, 45, 45), // Fondo transparente
+                        border: Border.all(
+                          color: Colors.white, // Borde blanco alrededor de la matriz
+                          width: 0.0,
                         ),
-                        itemCount: 35,
+                      ),
+                      child: GridView.builder(
+                        padding: EdgeInsets.zero,
+                        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 7, // 7 columnas
+                          mainAxisSpacing: 10.0, // Espaciado vertical ajustado a 10.0
+                          crossAxisSpacing: 15.0, // Espaciado horizontal ajustado a 15.0
+                          childAspectRatio: 1.0, // Proporción de aspecto 1:1
+                        ),
+                        itemCount: 35, // 7x5 = 35 celdas
                         itemBuilder: (context, index) {
                           int row = index ~/ 7;
                           int col = index % 7;
@@ -194,9 +164,8 @@ class _PenaltyGameState extends State<PenaltyGame> {
                               },
                               child: GridTile(
                                 child: Container(
-                                  margin: const EdgeInsets.all(4.0),
                                   decoration: BoxDecoration(
-                                    color: getColorForTile(row, col),
+                                    color: getColorForTile(row, col), // Usar el color según la lógica del juego
                                     border: Border.all(color: Colors.black),
                                   ),
                                 ),
@@ -208,13 +177,63 @@ class _PenaltyGameState extends State<PenaltyGame> {
                     ),
                   ],
                 ),
-              ),
-            const SizedBox(height: 20)
-          ],
+            ],
+          ),
         ),
+        // Los botones de los jugadores alineados debajo de la matriz
+        Align(
+          alignment: Alignment(0.0, 0.88), // Ajusta la posición de los botones en relación a la pantalla
+          child: Wrap(
+            alignment: WrapAlignment.center, // Centramos los botones
+            spacing: 10.0, // Espacio horizontal entre los botones
+            runSpacing: 10.0, // Espacio vertical si los botones no caben en una sola línea
+            children: userTeam.map((player) => _buildPlayerButton(player)).toList(),
+          ),
+        ),
+      ],
+    ),
+  );
+}
+
+// Modificación de la función para crear los botones
+Widget _buildPlayerButton(Map<String, dynamic> player) {
+  // Dividimos el nombre y el apellido en líneas separadas
+  String playerName = player['name'];
+  List<String> splitName = playerName.split(' ');
+  String firstName = splitName.first; // Primer nombre
+  String lastName = splitName.length > 1 ? splitName.last : ''; // Apellido (si existe)
+
+  return ElevatedButton(
+    onPressed: () {
+      setState(() {
+        selectedPlayer = player; // Asignar el jugador seleccionado
+      });
+    },
+    style: ElevatedButton.styleFrom(
+      backgroundColor: Color(0xE0B0B7C3), // Color del botón
+      foregroundColor: Color(0xFF080707), // Color del texto
+      padding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0), // Padding ajustado
+      textStyle: TextStyle(
+        fontFamily: 'Play', // Fuente Play
+        fontSize: 12.0, // Tamaño del texto reducido para que quepa mejor
       ),
-    );
-  }
+      elevation: 10.0, // Sombra en el botón
+      side: BorderSide(
+        color: Colors.white, // Borde blanco
+        width: 2.0,
+      ),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(8.0), // Bordes redondeados
+      ),
+    ),
+    child: Text(
+      '$firstName\n$lastName', // Nombre y apellido con salto de línea
+      textAlign: TextAlign.center, // Centrar el texto dentro del botón
+    ),
+  );
+}
+
+
 
   // Muestra el cuadro que está siendo "hovered" (cuando el mouse pasa por encima)
   void _onHoverEnter(int row, int col) {
