@@ -46,16 +46,17 @@ Widget build(BuildContext context) {
         // Nombre del jugador
         Positioned(
           top: screenHeight * 0.013, // 3% of screen height
-          left: screenWidth * 0.266, // 5% of screen width
+          left: screenWidth * 0.269, // 5% of screen width
           child: Text(
             playerName.toUpperCase(),
             style: TextStyle(
-              fontFamily: 'Spectral SC',
-              fontSize: screenWidth * 0.0155, // 6% of screen width
+              fontFamily: 'SPEED',
+              fontSize: screenWidth * 0.0175, // 6% of screen width
               fontWeight: FontWeight.w800,
+              color: const Color.fromARGB(255, 56, 199, 73),
               shadows: [
                 Shadow(
-                  color: Colors.grey,
+                  color: const Color.fromARGB(255, 12, 78, 3),
                   offset: Offset(2.0, 2.0),
                   blurRadius: 2.0,
                 ),
@@ -95,7 +96,7 @@ Widget build(BuildContext context) {
             width: screenWidth * 0.076, // 13% of screen width
             height: screenHeight * 0.047, // 7% of screen height
             decoration: BoxDecoration(
-              color: Colors.green,
+              color: const Color.fromARGB(255, 56, 199, 73).withOpacity(0.7),
               borderRadius: BorderRadius.circular(5.0),
             ),
             child: Text(
@@ -117,7 +118,7 @@ Widget build(BuildContext context) {
             width: screenWidth * 0.030, // 13% of screen width
             height: screenHeight * 0.06, // 7% of screen height
             decoration: BoxDecoration(
-              color: Colors.red,
+              color: Colors.red.withOpacity(0.77),
               borderRadius: BorderRadius.circular(5.0),
             ),
             child: Center(

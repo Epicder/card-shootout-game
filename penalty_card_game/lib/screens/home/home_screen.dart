@@ -9,7 +9,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:penalty_card_game/blocs/sign_in_bloc/sign_in_bloc.dart';
 import 'package:penalty_card_game/screens/home/draft_screen.dart';
 import 'package:penalty_card_game/screens/home/mvp_screen.dart';
-import 'package:penalty_card_game/player_cards/player_card.dart';
+import 'package:penalty_card_game/player_cards/player_card_menu.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -288,7 +288,7 @@ class _HomeScreenState extends State<HomeScreen> {
     final screenHeight = MediaQuery.of(context).size.height;
 
     return Align(
-      alignment: Alignment(0.90, -0.1),
+      alignment: Alignment(0.9, -0.1),
       child: Text(
         'ONE\nTO\nWATCH',
         style: TextStyle(

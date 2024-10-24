@@ -3,7 +3,7 @@ import 'dart:ui';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:penalty_card_game/player_cards/player_card.dart';
+import 'package:penalty_card_game/player_cards/player_card_menu.dart';
 import 'package:penalty_card_game/screens/home/mvp_screen.dart';
 import 'package:user_repository/user_repository.dart';
 
@@ -300,7 +300,7 @@ void showDelanterosForButton(BuildContext context, int buttonIndex) {
 
               return GridView.builder(
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 1,
+                  crossAxisCount: 2,
                   crossAxisSpacing: 5.0,
                   mainAxisSpacing: 10.0,
                 ),
@@ -379,10 +379,9 @@ void showMediocampistasForButton(BuildContext context, int buttonIndex) {
 
               return GridView.builder(
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 5,
+                  crossAxisCount: 3,
                   crossAxisSpacing: 10.0,
                   mainAxisSpacing: 10.0,
-                  childAspectRatio: 0.64,
                 ),
                 itemCount: playerDocs.length,
                 itemBuilder: (context, index) {
@@ -456,10 +455,9 @@ void showDefensasForButton(BuildContext context, int buttonIndex) {
 
               return GridView.builder(
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 5,
+                  crossAxisCount: 3,
                   crossAxisSpacing: 10.0,
                   mainAxisSpacing: 10.0,
-                  childAspectRatio: 0.64,
                 ),
                 itemCount: playerDocs.length,
                 itemBuilder: (context, index) {
@@ -530,10 +528,9 @@ void showGolerosForButton(BuildContext context, int buttonIndex) {
 
               return GridView.builder(
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 5,
+                  crossAxisCount: 3,
                   crossAxisSpacing: 10.0,
                   mainAxisSpacing: 10.0,
-                  childAspectRatio: 0.64,
                 ),
                 itemCount: playerDocs.length,
                 itemBuilder: (context, index) {
@@ -755,10 +752,9 @@ Widget _playerSlotButtonDEL(double x, double y, int buttonIndex) {
               
               return GridView.builder(
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 5,
+                  crossAxisCount: 3,
                   crossAxisSpacing: 10.0,
                   mainAxisSpacing: 10.0,
-                  childAspectRatio: 0.64,
                 ),
                 itemCount: playerDocs.length,
                 itemBuilder: (context, index) {
