@@ -23,8 +23,8 @@ Widget build(BuildContext context) {
   final screenHeight = MediaQuery.of(context).size.height;
 
   return Container(
-    width: screenWidth * 0.7, // 70% of screen width
-    height: screenHeight * 0.6, // 60% of screen height
+    width: screenWidth * 0.68, // 70% of screen width
+    height: screenHeight * 0.58, // 60% of screen height
     decoration: BoxDecoration(
       image: DecorationImage(
         image: AssetImage('assets/fondo_cartas.png'), // Fondo de la carta
@@ -35,11 +35,11 @@ Widget build(BuildContext context) {
       children: [
         // Imagen del jugador
         Positioned(
-          left: screenWidth * 0.263, // 2.5% of screen width
-          top: screenHeight * 0.086, // 6.5% of screen height
+          left: screenWidth * 0.260, // 2.5% of screen width
+          top: screenHeight * 0.09, // 6.5% of screen height
           child: Image.network(
             playerImage, // Aquí deberás pasar el URL de la imagen según tu lógica
-            height: screenHeight * 0.43, // 30% of screen height
+            height: screenHeight * 0.44, // 30% of screen height
             fit: BoxFit.fill,
           ),
         ),
@@ -51,9 +51,9 @@ Widget build(BuildContext context) {
             playerName.toUpperCase(),
             style: TextStyle(
               fontFamily: 'SPEED',
-              fontSize: screenWidth * 0.0175, // 6% of screen width
+              fontSize: screenWidth * 0.018, // 6% of screen width
               fontWeight: FontWeight.w800,
-              color: const Color.fromARGB(255, 56, 199, 73),
+              color: const Color.fromARGB(255, 248, 248, 248),
               shadows: [
                 Shadow(
                   color: const Color.fromARGB(255, 12, 78, 3),
@@ -66,14 +66,14 @@ Widget build(BuildContext context) {
         ),
         // Nivel del jugador
         Positioned(
-          bottom: screenHeight * 0.03, // 3% of screen height
-          right: screenWidth * 0.282, // 8% of screen width
+          bottom: screenHeight * 0.033, // 3% of screen height
+          right: screenWidth * 0.272, // 8% of screen width
           child: Text(
             '$playerLevel',
             style: TextStyle(
               fontFamily: 'Black Ops One',
-              fontSize: screenWidth * 0.035, // 15% of screen width
-              color: Colors.white,
+              fontSize: screenWidth * 0.042, // 15% of screen width
+              color: const Color.fromARGB(255, 255, 255, 255),
               shadows: [
                 Shadow(
                   color: Colors.black,
@@ -85,62 +85,71 @@ Widget build(BuildContext context) {
         ),
         // Posición del jugador
         Positioned(
-          top: screenHeight * 0.2, // 20% of screen height
-          right: screenWidth * 0.05, // 5% of screen width
+          top: screenHeight * 0.25, // 28% of screen height
+          right: screenWidth * 0.045, // 4.4% of screen width
           child: Container(
             padding: EdgeInsets.symmetric(
-              horizontal: screenWidth * 0.217, // 2.5% of screen width
-              vertical: screenHeight * 0.092, // 0.7% of screen height
+              horizontal: screenWidth * 0.217, // Ajusta según tu diseño
+              vertical: screenHeight * 0.092, // Ajusta según tu diseño
             ),
             child: Container(
-            width: screenWidth * 0.076, // 13% of screen width
-            height: screenHeight * 0.047, // 7% of screen height
-            decoration: BoxDecoration(
-              color: const Color.fromARGB(255, 56, 199, 73).withOpacity(0.7),
-              borderRadius: BorderRadius.circular(5.0),
-            ),
-            child: Text(
-              playerPosition.toUpperCase(),
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: screenWidth * 0.015, // 4% of screen width
-                fontStyle: FontStyle.italic,
+              width: screenWidth * 0.086, // 8.6% of screen width
+              height: screenHeight * 0.047, // Ajusta el tamaño según tu diseño
+              decoration: BoxDecoration(
+                color: const Color.fromARGB(255, 5, 197, 28).withOpacity(1),
+                borderRadius: BorderRadius.circular(5.0),
+              ),
+              child: Center( // Asegura que el texto esté centrado dentro del contenedor
+                child: Text(
+                  playerPosition.toUpperCase(),
+                  textAlign: TextAlign.center, // Centra el texto horizontalmente
+                  style: TextStyle(
+                    fontWeight: FontWeight.w600,
+                    color: Colors.white,
+                    fontSize: screenWidth * 0.018, // Ajusta el tamaño según tu diseño
+                    fontStyle: FontStyle.normal,
+                  ),
+                ),
               ),
             ),
           ),
         ),
-        ),
-        // Opciones de tiro
+        // Opciones de tiro (centrar número en un círculo con borde)
         Positioned(
-          top: screenHeight * 0.365, // 27% of screen height
-          right: screenWidth * 0.273, // 5% of screen width
+          top: screenHeight * 0.20, // Ajusta según tu diseño
+          right: screenWidth * 0.263, // Ajusta según tu diseño
           child: Container(
-            width: screenWidth * 0.030, // 13% of screen width
-            height: screenHeight * 0.06, // 7% of screen height
+            width: screenWidth * 0.035, // Ajusta el ancho para que sea más pequeño si es necesario
+            height: screenWidth * 0.035, // Ajusta la altura para que sea igual al ancho, formando un círculo
             decoration: BoxDecoration(
-              color: Colors.red.withOpacity(0.77),
-              borderRadius: BorderRadius.circular(5.0),
+              color: Colors.red.withOpacity(1),
+              shape: BoxShape.circle, // Asegura que sea un círculo perfecto
+              border: Border.all( // Añadir un borde
+                color: Colors.white,
+                width: 2.0,
+              ),
             ),
             child: Center(
               child: Text(
                 '$shootingOptions',
                 style: TextStyle(
                   color: Colors.white,
-                  fontSize: screenWidth * 0.022, // 7% of screen width
+                  fontSize: screenWidth * 0.025, // Ajusta el tamaño según tu diseño
                   fontWeight: FontWeight.bold,
                 ),
               ),
             ),
           ),
         ),
-        // País
+
+        // Bandera del país (reducir tamaño)
         Positioned(
-          top: screenHeight * 0.105, // 6.5% of screen height
-          right: screenWidth * 0.235, // 5% of screen width
+          top: screenHeight * 0.10, // Ajusta según tu diseño
+          right: screenWidth * 0.243, // Ajusta según tu diseño
           child: Image.network(
             playerCountry, // Aquí deberás pasar el URL de la bandera según tu lógica
-            width: screenWidth * 0.13, // 8% of screen width
-            height: screenHeight * 0.06, // 3% of screen height
+            width: screenWidth * 0.08, // Ajustado para reducir el ancho
+            height: screenHeight * 0.045, // Ajustado para reducir la altura
           ),
         ),
       ],

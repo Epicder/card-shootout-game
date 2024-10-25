@@ -61,8 +61,8 @@ class _HomeScreenState extends State<HomeScreen> {
           _buildOneToWatchText(context),
 
           // Botones del Menú: CPU
-          _buildGameModeButton(context, '⚽ Start a new match!', const Alignment(-0.56, 0.8)),
-          _buildChangePlayerButton(context, 'Change', const Alignment(0.63, 0.8)),
+          _buildGameModeButton(context, '⚽ PLAY ', const Alignment(-0.56, 0.8)),
+          _buildChangePlayerButton(context, 'CHANGE', const Alignment(0.63, 0.8)),
         ],
       ),
     );
@@ -76,12 +76,12 @@ class _HomeScreenState extends State<HomeScreen> {
         children: [
           Image.asset(
             'assets/fondo_menu.jpg',
-            fit: BoxFit.cover,
+            fit: BoxFit.fill,
           ),
           BackdropFilter(
-            filter: ImageFilter.blur(sigmaX: 2.5, sigmaY: 2.5),
+            filter: ImageFilter.blur(sigmaX: 2.8, sigmaY: 2.8),
             child: Container(
-              color: Colors.black.withOpacity(0.0),
+              color: Colors.black.withOpacity(0.3),
             ),
           ),
         ],
@@ -124,13 +124,13 @@ class _HomeScreenState extends State<HomeScreen> {
           boxShadow: [
             BoxShadow(
               blurRadius: 15.0,
-              color: const Color.fromRGBO(91, 196, 95, 0.7).withOpacity(0.5),
+              color: const Color.fromARGB(176, 0, 0, 0).withOpacity(0.5),
               offset: const Offset(0.0, 2.0),
               spreadRadius: 8.0,
             ),
           ],
           border: Border.all(
-            color: const Color.fromARGB(255, 41, 141, 52),
+            color: const Color.fromARGB(255, 172, 166, 0),
             width: 3.2,
           ),
         ),
@@ -166,24 +166,24 @@ class _HomeScreenState extends State<HomeScreen> {
                         int cpuScore = match['cpuScore'];
 
                         // ASIGNAR TEXTO EN FUNCIÓN DE SI ES WIN O LOSE
-                        String resultText = playerScore > cpuScore ? "Win" : "Lose";
+                        String resultText = playerScore > cpuScore ? "WIN" : "LOSE";
                         Color resultColor = playerScore > cpuScore ? const Color(0xFF82eca5) : const Color.fromARGB(255, 197, 54, 43);
 
                         return Column(
                           children: [
                             Padding(
-                              padding: EdgeInsets.only(top: screenHeight * 0.01, left: screenWidth * 0.01), // 1% of screen height, 1% of screen width
+                              padding: EdgeInsets.only(top: screenHeight * 0.01, left: screenWidth * 0.0), // 1% of screen height, 1% of screen width
                               child: Align(
-                                alignment: Alignment.centerLeft,
+                                alignment: Alignment.center,
                                 child: Text(
                                   '$resultText: $playerScore - $cpuScore',
                                   style: TextStyle(
-                                    fontFamily: 'Lekton',
+                                    fontFamily: 'SPORT',
                                     color: resultColor,
-                                    fontSize: screenWidth * 0.038, // 3.8% of screen width
-                                    letterSpacing: 3.0,
+                                    fontSize: screenWidth * 0.05, // 3.8% of screen width
+                                    letterSpacing: 7.0,
                                     fontWeight: FontWeight.w800,
-                                    fontStyle: FontStyle.italic,
+                                    fontStyle: FontStyle.normal,
                                     shadows: [
                                       Shadow(
                                         color: resultColor.withOpacity(0.8), // Color del glow con opacidad
@@ -195,10 +195,10 @@ class _HomeScreenState extends State<HomeScreen> {
                               ),
                             ),
                             Divider(
-                              color: const Color.fromARGB(255, 32, 139, 55), // Color de la línea separadora
-                              thickness: 0.4, // Grosor de la línea separadora
-                              indent: screenWidth * 0.01, // Indentación desde la izquierda
-                              endIndent: screenWidth * 0.02, // Indentación desde la derecha
+                              color: const Color.fromARGB(255, 229, 255, 0), // Color de la línea separadora
+                              thickness: 0.5, // Grosor de la línea separadora
+                              indent: screenWidth * 0.03, // Indentación desde la izquierda
+                              endIndent: screenWidth * 0.03, // Indentación desde la derecha
                             ),
                           ],
                         );
@@ -209,25 +209,24 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
             Align(
-              alignment: const Alignment(-1.0, -1.43),
+              alignment: const Alignment(-0.1, -1.35),
               child: Text(
                 'RECORD',
                 style: TextStyle(
                   fontFamily: 'Speedway',
-                  color: const Color.fromARGB(255, 60, 214, 78),
+                  color: const Color.fromARGB(255, 255, 235, 15),
                   shadows: [
                     Shadow(
-                      color: const Color(0xFF013D09),
+                      color: const Color.fromARGB(255, 0, 0, 0),
                       offset: Offset(screenWidth * 0.012, 1.5), // 0.6% of screen width
                     ),
                     Shadow(
-                      color: const Color(0xFF41E854).withOpacity(0.5), // Verde con opacidad para el glow
-                      blurRadius: 30.0, // Radio del blur para el glow
+                      color: const Color.fromARGB(255, 2, 2, 2).withOpacity(0.8), // Verde con opacidad para el glow
+                      blurRadius: 40.0, // Radio del blur para el glow
                     ),
                   ],
-                  fontSize: screenWidth * 0.0515, // 5.15% of screen width
-                  letterSpacing: 7.5,
-                  fontStyle: FontStyle.italic,
+                  fontSize: screenWidth * 0.055, // 5.15% of screen width
+                  letterSpacing: 8,
                 ),
               ),
             ),
@@ -257,7 +256,7 @@ class _HomeScreenState extends State<HomeScreen> {
   // Widget para la carta del jugador desde Firestore
   Widget _buildPlayerImage() {
     return Align(
-      alignment: const Alignment(1.8, -0.31),
+      alignment: const Alignment(1.5, -0.31),
       child: StreamBuilder<DocumentSnapshot>(
         stream: FirebaseFirestore.instance
             .collection('Delanteros')
@@ -288,18 +287,18 @@ class _HomeScreenState extends State<HomeScreen> {
     final screenHeight = MediaQuery.of(context).size.height;
 
     return Align(
-      alignment: Alignment(0.9, -0.1),
+      alignment: Alignment(0.86, -0.1),
       child: Text(
         'ONE\nTO\nWATCH',
         style: TextStyle(
           fontFamily: 'SPORT',
-          color: const Color.fromARGB(255, 56, 199, 73),
-          fontSize: screenWidth * 0.035, // 6% of screen width
+          color: const Color.fromARGB(255, 255, 238, 1),
+          fontSize: screenWidth * 0.045, // 6% of screen width
           letterSpacing: 2.0,
-          fontWeight: FontWeight.w600,
+          fontWeight: FontWeight.bold,
           shadows: [
             Shadow(
-              color: const Color.fromARGB(255, 12, 78, 3),
+              color: const Color.fromARGB(255, 168, 95, 0),
               offset: Offset(-screenWidth * 0.004, 0.0), // 0.6% of screen width
             ),
           ],
@@ -312,18 +311,18 @@ class _HomeScreenState extends State<HomeScreen> {
   // Widget para los botones del menú
   Widget _buildGameModeButton(BuildContext context, String text, Alignment alignment) {
     return Align(
-      alignment: alignment,
+      alignment: const Alignment(-0.48, 0.84),
       child: Container(
         decoration: BoxDecoration(
           boxShadow: [
             BoxShadow(
-              color: const Color.fromRGBO(91, 196, 95, 0.7).withOpacity(0.70), // El color del brillo
+              color: const Color.fromARGB(197, 0, 0, 0).withOpacity(0.9), // El color del brillo
               spreadRadius: 5,
-              blurRadius: 12,
+              blurRadius: 18,
               offset: Offset(0, 0),
             ),
           ],
-          borderRadius: BorderRadius.circular(55.0), // Bordes redondeados que coinciden con el botón
+          borderRadius: BorderRadius.circular(80.0), // Bordes redondeados que coinciden con el botón
         ),
         child: ElevatedButton(
           onPressed: () {
@@ -333,20 +332,20 @@ class _HomeScreenState extends State<HomeScreen> {
             );
           },
           style: ElevatedButton.styleFrom(
-            backgroundColor: const Color.fromARGB(255, 56, 199, 73),
-            foregroundColor: Colors.white,
-            padding: const EdgeInsets.symmetric(horizontal: 25.0, vertical: 9.0),
+            backgroundColor:  const Color.fromARGB(226, 130, 236, 165),
+            foregroundColor: const Color.fromARGB(255, 0, 0, 0),
+            padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 9.0),
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(55.0),
+              borderRadius: BorderRadius.circular(15.0),
             ),
           ),
           child: Text(
             text,
             style: const TextStyle(
-              fontFamily: 'Lekton',
-              fontSize: 17.0,
+              fontFamily: 'SPORT',
+              fontSize: 30.0,
               letterSpacing: 1.2,
-              fontWeight: FontWeight.w600,
+              fontWeight: FontWeight.normal,
             ),
           ),
         ),
@@ -357,13 +356,13 @@ class _HomeScreenState extends State<HomeScreen> {
   // Widget para el botón "Change"
   Widget _buildChangePlayerButton(BuildContext context, String text, Alignment alignment) {
     return Align(
-      alignment: alignment,
+      alignment: const Alignment(0.52, 0.75),
       child: Container(
         decoration: BoxDecoration(
           boxShadow: [
             BoxShadow(
-              color: const Color.fromRGBO(91, 196, 95, 0.7).withOpacity(0.70), // El color del brillo
-              spreadRadius: 5,
+              color:const Color.fromARGB(255, 0, 0, 0), // El color del brillo
+              spreadRadius: 3,
               blurRadius: 12,
               offset: Offset(0, 0),
             ),
@@ -379,20 +378,20 @@ class _HomeScreenState extends State<HomeScreen> {
             });
           },
           style: ElevatedButton.styleFrom(
-            backgroundColor: const Color.fromARGB(255, 56, 199, 73),
-            foregroundColor: Colors.white,
-            padding: const EdgeInsets.symmetric(horizontal: 25.0, vertical: 9.0),
+            backgroundColor: const Color.fromARGB(226, 130, 236, 165),
+            foregroundColor: const Color.fromARGB(174, 0, 0, 0),
+            padding: const EdgeInsets.symmetric(horizontal: 5.0, vertical: 6.0),
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(55.0),
+              borderRadius: BorderRadius.circular(15),
             ),
           ),
           child: Text(
             text,
             style: const TextStyle(
-              fontFamily: 'Lekton',
-              fontSize: 17.0,
+              fontFamily: 'SPORT',
+              fontSize: 22.0,
               letterSpacing: 1.2,
-              fontWeight: FontWeight.w600,
+              fontWeight: FontWeight.normal,
             ),
           ),
         ),

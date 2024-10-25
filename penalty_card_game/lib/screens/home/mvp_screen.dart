@@ -101,7 +101,7 @@ class _PenaltyGameState extends State<PenaltyGame> {
           // Fondo de pantalla con opacidad
           Positioned.fill(
             child: Opacity(
-              opacity: 0.9, // Ajusta la opacidad aquí
+              opacity: 1, // Ajusta la opacidad aquí
               child: Image.asset(
                 'assets/fondo_penales.png', // Asegúrate de que esta ruta sea correcta
                 fit: BoxFit.fill,
@@ -111,20 +111,22 @@ class _PenaltyGameState extends State<PenaltyGame> {
           // Texto "Selecciona tu ejecutante" arriba de la lista de jugadores
           if (showPlayerList)
             Positioned(
-              left: 25,
-              top: 30, // Ajusta la posición del texto en la pantalla
+              left: 30,
+              top: 20, // Ajusta la posición del texto en la pantalla
               child: Text(
                 "SELECCIONA \nTU EJECUTANTE",
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                  fontSize: 20.0,
-                  fontWeight: FontWeight.w800,
-                  color: const Color.fromARGB(255, 238, 246, 80),
+                  fontFamily: 'SPORT',
+                  fontSize: 25.0,
+                  letterSpacing: 2.0,
+                  fontWeight: FontWeight.bold,
+                  color: const Color.fromARGB(255, 255, 230, 7),
                   shadows: [
                     Shadow(
                       blurRadius: 10.0,
-                      color: const Color.fromARGB(255, 0, 0, 0).withOpacity(0.7),
-                      offset: Offset(0, 2),
+                      color: const Color.fromARGB(255, 0, 0, 0).withOpacity(1),
+                      offset: Offset(4, 4),
                     ),
                   ],
                 ),
@@ -134,7 +136,7 @@ class _PenaltyGameState extends State<PenaltyGame> {
           if (showPlayerList)
             Positioned(
               left: 40,
-              top: 80,
+              top: 75,
               bottom: 10,
               child: SizedBox(
                 width: 100,
@@ -173,7 +175,8 @@ class _PenaltyGameState extends State<PenaltyGame> {
                                   player['name'],
                                   textAlign: TextAlign.center,
                                   style: const TextStyle(
-                                    fontSize: 17.0,
+                                    fontFamily: '',
+                                    fontSize: 20.0,
                                     color: Color.fromARGB(255, 0, 0, 0),
                                     fontWeight: FontWeight.bold,
                                   ),
@@ -336,19 +339,19 @@ class _PenaltyGameState extends State<PenaltyGame> {
                     child: Text(
                       "GK TURN  -  ${goalkeeper?['name'] ?? 'Golero'}",
                       style: TextStyle(
-                        fontSize: 22,
+                        fontSize: 24,
                         fontWeight: FontWeight.bold,
-                        color: const Color.fromARGB(255, 255, 255, 255),
+                        color: const Color.fromARGB(255, 250, 238, 0),
                         letterSpacing: 1.5,
                         shadows: [
                           Shadow(
                             blurRadius: 5.0,
-                            color: Colors.black.withOpacity(0.7),
-                            offset: Offset(4, 2),
+                            color: Colors.black.withOpacity(0.8),
+                            offset: Offset(2, 2),
                           ),
                         ],
-                        decorationColor: Colors.black.withOpacity(0.5),
-                        decorationThickness: 4,
+                        decorationColor: Colors.black.withOpacity(0.9),
+                        decorationThickness: 8,
                       ),
                     ),
                   ),
@@ -359,19 +362,19 @@ class _PenaltyGameState extends State<PenaltyGame> {
                     child: Text(
                       "PLAYER SHOOTING  -  ${selectedPlayer?['name'] ?? 'Jugador'}",
                       style: TextStyle(
-                        fontSize: 22,
+                        fontSize: 24,
                         fontWeight: FontWeight.bold,
-                        color: const Color.fromARGB(255, 255, 255, 255),
+                        color: const Color.fromARGB(255, 250, 238, 0),
                         letterSpacing: 1.5,
                         shadows: [
                           Shadow(
                             blurRadius: 5.0,
-                            color: const Color.fromARGB(255, 0, 0, 0).withOpacity(0.7),
-                            offset: Offset(4, 2),
+                            color: const Color.fromARGB(255, 0, 0, 0).withOpacity(0.8),
+                            offset: Offset(2, 2),
                           ),
                         ],
                         decorationColor: Colors.black.withOpacity(0.8),
-                        decorationThickness: 4,
+                        decorationThickness: 8,
                       ),
                     ),
                   ),
