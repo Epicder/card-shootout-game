@@ -1,9 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:penalty_card_game/screens/home/home_screen.dart';
 import 'dart:math';
 import 'package:user_repository/user_repository.dart';
-
 
 class PenaltyShootoutApp extends StatelessWidget {
   @override
@@ -43,15 +43,15 @@ class _PenaltyGameState extends State<PenaltyGame> {
   Map<String, dynamic>? selectedPlayer; // Jugador seleccionado para ejecutar el penal
   Map<String, dynamic>? goalkeeper; // Golero seleccionado automáticamente
   bool isLoading = true; // Indicador de carga
+  bool showPlayerList = true; // Controlar si se muestra la lista de jugadores
 
   @override
   void initState() {
     super.initState();
-    // Obtener el UserID del usuario autenticado
     FirebaseAuth.instance.authStateChanges().listen((user) {
       if (user != null) {
-        fetchUserData(user.uid); // Obtener datos del usuario
-        fetchUserTeam(user.uid); // Cargar equipo seleccionado desde Firebase
+        fetchUserData(user.uid);
+        fetchUserTeam(user.uid); // Asegúrate de llamar a esta función para cargar el equipo
       }
     });
   }
@@ -86,154 +86,302 @@ class _PenaltyGameState extends State<PenaltyGame> {
 
     setState(() {
       userTeam = team;
-      goalkeeper = userTeam.firstWhere((player) => player['position'] == 'Goalkeeper'); // Seleccionar el golero
+      goalkeeper = userTeam.firstWhere((player) => player['position'] == 'Goalkeeper', orElse: () => <String, dynamic>{}); // Seleccionar el golero
       isLoading = false; // Finaliza la carga
     });
 
     print("Equipo cargado correctamente: $userTeam");
   }
 
-@override
-Widget build(BuildContext context) {
-  return Scaffold(
-    appBar: AppBar(
-      title: Text("Penalty Shootout"),
-    ),
-    body: Stack(
-      children: [
-        // Imagen de fondo
-        Positioned.fill(
-          child: Image.asset(
-            'assets/fondo_penales.png', // Asegúrate de que el nombre del archivo sea correcto
-            fit: BoxFit.fill, // Ajustar para que cubra toda la pantalla
-          ),
-        ),
-        // Centrar la matriz
-        Align(
-          alignment: Alignment(0.0, -0.8), // Ajusta estos valores para mover la matriz a mano
-          child: Column(
-            mainAxisSize: MainAxisSize.min, // Para que solo ocupe el espacio de la matriz
-            children: [
-              // Mostrar el marcador actual del juego
-              Text(
-                "${currentUser?.name ?? 'Tú Fc'}: $playerScore | CPU: $cpuScore",
-                style: TextStyle(fontSize: 24, color: Colors.white), // Color blanco para mayor contraste
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Stack(
+        children: [
+          // Fondo de pantalla con opacidad
+          Positioned.fill(
+            child: Opacity(
+              opacity: 0.9, // Ajusta la opacidad aquí
+              child: Image.asset(
+                'assets/fondo_penales.png', // Asegúrate de que esta ruta sea correcta
+                fit: BoxFit.fill,
               ),
-              const SizedBox(height: 20),
-              if (isLoading)
-                CircularProgressIndicator()
-              else
-                Column(
-                  children: [
-                    // Ajuste de tamaño y centrado de la matriz
-                    Container(
-                      width: 267.0,  // Ancho del arco/matriz ajustado a tu diseño
-                      height: 175.0,  // Alto del arco/matriz ajustado a tu diseño
-                      decoration: BoxDecoration(
-                        color: const Color.fromARGB(255, 46, 45, 45), // Fondo transparente
-                        border: Border.all(
-                          color: Colors.white, // Borde blanco alrededor de la matriz
-                          width: 0.0,
-                        ),
-                      ),
-                      child: GridView.builder(
-                        padding: EdgeInsets.zero,
-                        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 7, // 7 columnas
-                          mainAxisSpacing: 10.0, // Espaciado vertical ajustado a 10.0
-                          crossAxisSpacing: 15.0, // Espaciado horizontal ajustado a 15.0
-                          childAspectRatio: 1.0, // Proporción de aspecto 1:1
-                        ),
-                        itemCount: 35, // 7x5 = 35 celdas
-                        itemBuilder: (context, index) {
-                          int row = index ~/ 7;
-                          int col = index % 7;
-
-                          return MouseRegion(
-                            onEnter: (_) => _onHoverEnter(row, col),
-                            onExit: (_) => _onHoverExit(),
-                            child: GestureDetector(
-                              onTap: () {
-                                if (!gameEnded && (isPlayerTurn && selectedPlayer != null) || !isPlayerTurn) {
-                                  if (isPlayerTurn) {
-                                    handlePlayerShoot(row, col);
-                                  } else {
-                                    handlePlayerSave(row, col);
-                                  }
-                                }
-                              },
-                              child: GridTile(
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                    color: getColorForTile(row, col), // Usar el color según la lógica del juego
-                                    border: Border.all(color: Colors.black),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          );
-                        },
-                      ),
+            ),
+          ),
+          // Texto "Selecciona tu ejecutante" arriba de la lista de jugadores
+          if (showPlayerList)
+            Positioned(
+              left: 25,
+              top: 30, // Ajusta la posición del texto en la pantalla
+              child: Text(
+                "SELECCIONA \nTU EJECUTANTE",
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 20.0,
+                  fontWeight: FontWeight.w800,
+                  color: const Color.fromARGB(255, 238, 246, 80),
+                  shadows: [
+                    Shadow(
+                      blurRadius: 10.0,
+                      color: const Color.fromARGB(255, 0, 0, 0).withOpacity(0.7),
+                      offset: Offset(0, 2),
                     ),
                   ],
                 ),
-            ],
+              ),
+            ),
+          // Colocar los botones de los jugadores a la izquierda
+          if (showPlayerList)
+            Positioned(
+              left: 40,
+              top: 80,
+              bottom: 10,
+              child: SizedBox(
+                width: 100,
+                child: Column(
+                  children: [
+                    if (!isLoading)
+                      Expanded(
+                        child: ListView.builder(
+                          itemCount: userTeam.where((p) => p['position'] != 'Goalkeeper' && !usedPlayers.contains(p)).length,
+                          itemBuilder: (context, index) {
+                            var player = userTeam.where((p) => p['position'] != 'Goalkeeper' && !usedPlayers.contains(p)).elementAt(index);
+                            return Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 8.0),
+                              child: ElevatedButton(
+                                onPressed: () {
+                                  setState(() {
+                                    selectedPlayer = player;
+                                    usedPlayers.add(player);
+                                    shootingOptions = generateShootingOptions(player['shooting_options']);
+                                    showPlayerList = false; // Ocultar la lista de jugadores
+                                    if (usedPlayers.length == userTeam.length - 1) {
+                                      usedPlayers.clear();
+                                    }
+                                  });
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
+                                  backgroundColor: const Color.fromARGB(255, 199, 189, 0),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(12.0),
+                                  ),
+                                  elevation: 8,
+                                  shadowColor: Color.fromARGB(255, 0, 0, 0),
+                                ),
+                                child: Text(
+                                  player['name'],
+                                  textAlign: TextAlign.center,
+                                  style: const TextStyle(
+                                    fontSize: 17.0,
+                                    color: Color.fromARGB(255, 0, 0, 0),
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
+                            );
+                          },
+                        ),
+                      ),
+                  ],
+                ),
+              ),
+            ),
+          // Insertar el "arco" usando los bordes del contenedor detrás de la matriz
+          Positioned(
+            top: 100, // Ajusta la posición del contenedor
+            left: 175, // Ajusta para alinear el arco con la matriz
+            child: Container(
+              width: 430, // Ajusta el tamaño horizontal del contenedor para que coincida con la matriz
+              height: 225, // Ajusta el tamaño vertical del contenedor
+              decoration: BoxDecoration(
+                border: Border(
+                  left: BorderSide(
+                    color: Colors.white, // Color para los postes laterales
+                    width: 12.0, // Grosor de los postes
+                  ),
+                  right: BorderSide(
+                    color: Colors.white, // Color para el otro poste
+                    width: 12.0, // Grosor de los postes
+                  ),
+                  top: BorderSide(
+                    color: Colors.white, // Color para el travesaño
+                    width: 12.0, // Grosor del travesaño (puede ser un poco más grueso que los postes)
+                  ),
+                  // Si deseas agregar un borde inferior opcional
+                  bottom: BorderSide(
+                    color: const Color.fromARGB(68, 10, 52, 0), // Sin borde inferior, representa el césped
+                    width: 20,
+                  ),
+                ),
+                boxShadow: [
+                  BoxShadow(
+                    color: const Color.fromARGB(211, 0, 0, 0).withOpacity(0.7), // Color de la sombra
+                    blurRadius: 15, // Difuminado de la sombra
+                    offset: Offset(4, 5), // Desplazamiento de la sombra
+                  ),
+                ],
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(1), // Espacio entre los bordes externos e internos
+                child: Container(
+                  decoration: BoxDecoration(
+                    border: Border(
+                      left: BorderSide(
+                        color: const Color.fromARGB(255, 178, 178, 178), // Color para el borde interno de los postes
+                        width: 2.0, // Grosor del borde interno
+                      ),
+                      right: BorderSide(
+                        color: Color.fromARGB(255, 178, 178, 178), // Color para el borde interno del otro poste
+                        width: 2.0, // Grosor del borde interno
+                      ),
+                      top: BorderSide(
+                        color: Color.fromARGB(195, 178, 178, 178), // Color para el borde interno del travesaño
+                        width: 2.0, // Grosor del borde interno del travesaño
+                      ),
+                      bottom: BorderSide(
+                        color: Colors.transparent, // Sin borde inferior, representa el césped
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ),
           ),
-        ),
-        // Los botones de los jugadores alineados debajo de la matriz
-        Align(
-          alignment: Alignment(0.0, 0.88), // Ajusta la posición de los botones en relación a la pantalla
-          child: Wrap(
-            alignment: WrapAlignment.center, // Centramos los botones
-            spacing: 10.0, // Espacio horizontal entre los botones
-            runSpacing: 10.0, // Espacio vertical si los botones no caben en una sola línea
-            children: userTeam.map((player) => _buildPlayerButton(player)).toList(),
+          // Posicionar el contenido del juego (matriz y marcador)
+          Positioned(
+            top: 10, // Ajusta para mover la matriz hacia abajo o arriba
+            left: 190, // Ajusta para mover la matriz hacia la izquierda o derecha
+            child: Column(
+              children: [
+                // Marcador
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 30.0, vertical: 5.0),
+                  margin: const EdgeInsets.only(bottom: 20, top: 5),
+                  decoration: BoxDecoration(
+                    color: const Color.fromARGB(255, 255, 0, 0).withOpacity(0.9),
+                    borderRadius: BorderRadius.circular(10.0),
+                    border: Border.all(
+                      color: const Color.fromARGB(255, 255, 255, 255),
+                      width: 4.0,
+                    ),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.6),
+                        blurRadius: 12,
+                        offset: Offset(2, 4),
+                      ),
+                    ],
+                  ),
+                  child: Text(
+                    "${currentUser?.name ?? 'Tú Fc'}  $playerScore  |  $cpuScore  CPU",
+                    style: const TextStyle(
+                      fontSize: 28,
+                      fontWeight: FontWeight.bold,
+                      color: Color.fromARGB(255, 255, 255, 255),
+                      letterSpacing: 1.5,
+                    ),
+                  ),
+                ),
+                // Mostrar la matriz de 7x5 centrada
+                SizedBox(
+                  width: 400, // Ajusta el tamaño total horizontal de la matriz
+                  height: 250, // Ajusta el tamaño total vertical de la matriz
+                  child: GridView.builder(
+                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 7, // Mantener las 7 columnas
+                      mainAxisSpacing: 6.0,
+                      crossAxisSpacing: 1.0,
+                      childAspectRatio: 1.7, // Forma cuadrada
+                    ),
+                    itemCount: 35, // Mantener los 35 cuadrados (7x5)
+                    itemBuilder: (context, index) {
+                      int row = index ~/ 7;
+                      int col = index % 7;
+
+                      return MouseRegion(
+                        onEnter: (_) => _onHoverEnter(row, col),
+                        onExit: (_) => _onHoverExit(),
+                        child: GestureDetector(
+                          onTap: () {
+                            if (!gameEnded && (isPlayerTurn && selectedPlayer != null) || !isPlayerTurn) {
+                              if (isPlayerTurn) {
+                                handlePlayerShoot(row, col);
+                              } else {
+                                handlePlayerSave(row, col);
+                              }
+                            }
+                          },
+                          child: GridTile(
+                            child: Container(
+                              margin: const EdgeInsets.all(4.0),
+                              decoration: BoxDecoration(
+                                color: getColorForTile(row, col),
+                                border: Border.all(
+                                  color: const Color.fromARGB(255, 166, 166, 166),
+                                  width: 3.0,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+                // Mostrar el mensaje "Ataja (nombre del golero)" cuando sea el turno del usuario de atajar
+                if (!isPlayerTurn)
+                  Padding(
+                    padding: const EdgeInsets.only(top: 10.0),
+                    child: Text(
+                      "GK TURN  -  ${goalkeeper?['name'] ?? 'Golero'}",
+                      style: TextStyle(
+                        fontSize: 22,
+                        fontWeight: FontWeight.bold,
+                        color: const Color.fromARGB(255, 255, 255, 255),
+                        letterSpacing: 1.5,
+                        shadows: [
+                          Shadow(
+                            blurRadius: 5.0,
+                            color: Colors.black.withOpacity(0.7),
+                            offset: Offset(4, 2),
+                          ),
+                        ],
+                        decorationColor: Colors.black.withOpacity(0.5),
+                        decorationThickness: 4,
+                      ),
+                    ),
+                  ),
+                // Mostrar el mensaje "EJECUTA (nombre del jugador)" cuando sea el turno de disparar
+                if (isPlayerTurn && selectedPlayer != null)
+                  Padding(
+                    padding: const EdgeInsets.only(top: 10.0),
+                    child: Text(
+                      "PLAYER SHOOTING  -  ${selectedPlayer?['name'] ?? 'Jugador'}",
+                      style: TextStyle(
+                        fontSize: 22,
+                        fontWeight: FontWeight.bold,
+                        color: const Color.fromARGB(255, 255, 255, 255),
+                        letterSpacing: 1.5,
+                        shadows: [
+                          Shadow(
+                            blurRadius: 5.0,
+                            color: const Color.fromARGB(255, 0, 0, 0).withOpacity(0.7),
+                            offset: Offset(4, 2),
+                          ),
+                        ],
+                        decorationColor: Colors.black.withOpacity(0.8),
+                        decorationThickness: 4,
+                      ),
+                    ),
+                  ),
+              ],
+            ),
           ),
-        ),
-      ],
-    ),
-  );
-}
-
-// Modificación de la función para crear los botones
-Widget _buildPlayerButton(Map<String, dynamic> player) {
-  // Dividimos el nombre y el apellido en líneas separadas
-  String playerName = player['name'];
-  List<String> splitName = playerName.split(' ');
-  String firstName = splitName.first; // Primer nombre
-  String lastName = splitName.length > 1 ? splitName.last : ''; // Apellido (si existe)
-
-  return ElevatedButton(
-    onPressed: () {
-      setState(() {
-        selectedPlayer = player; // Asignar el jugador seleccionado
-      });
-    },
-    style: ElevatedButton.styleFrom(
-      backgroundColor: Color(0xE0B0B7C3), // Color del botón
-      foregroundColor: Color(0xFF080707), // Color del texto
-      padding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0), // Padding ajustado
-      textStyle: TextStyle(
-        fontFamily: 'Play', // Fuente Play
-        fontSize: 12.0, // Tamaño del texto reducido para que quepa mejor
+        ],
       ),
-      elevation: 10.0, // Sombra en el botón
-      side: BorderSide(
-        color: Colors.white, // Borde blanco
-        width: 2.0,
-      ),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(8.0), // Bordes redondeados
-      ),
-    ),
-    child: Text(
-      '$firstName\n$lastName', // Nombre y apellido con salto de línea
-      textAlign: TextAlign.center, // Centrar el texto dentro del botón
-    ),
-  );
-}
-
-
+    );
+  }
 
   // Muestra el cuadro que está siendo "hovered" (cuando el mouse pasa por encima)
   void _onHoverEnter(int row, int col) {
@@ -264,6 +412,7 @@ Widget _buildPlayerButton(Map<String, dynamic> player) {
             isPlayerTurn = false;
             playerPenalties++;
             selectedPlayer = null; // Reiniciar la selección para el siguiente penal
+            showPlayerList = false; // Mantener oculta la lista durante la atajada
 
             // Si ya todos los jugadores ejecutaron, reiniciar la lista de usados
             if (usedPlayers.length == userTeam.length - 1) {
@@ -305,6 +454,7 @@ Widget _buildPlayerButton(Map<String, dynamic> player) {
         setState(() {
           isPlayerTurn = true;
           cpuPenalties++;
+          showPlayerList = true; // Volver a mostrar la lista de jugadores cuando sea turno del jugador
           if (!gameEnded) handleNextRound(); // Llamar a la función para pasar al siguiente turno
         });
       });
@@ -350,7 +500,6 @@ Widget _buildPlayerButton(Map<String, dynamic> player) {
     }
   }
 
-  // Función que maneja el fin del juego y guarda los resultados en Firebase
   void endGame() async {
     setState(() {
       gameEnded = true;
@@ -376,6 +525,44 @@ Widget _buildPlayerButton(Map<String, dynamic> player) {
     }).catchError((error) {
       print("Error al guardar resultado: $error");
     });
+
+    // Mostrar mensaje con el ganador
+    String resultMessage;
+    if (playerScore > cpuScore) {
+      resultMessage = "¡Ganaste la tanda de penales!";
+    } else {
+      resultMessage = "La CPU ganó la tanda de penales.";
+    }
+
+    // Mostrar diálogo al final del juego
+    showDialog(
+      context: context,
+      barrierDismissible: false, // Evita que se cierre el diálogo tocando fuera
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text("Fin del juego"),
+          content: Text(resultMessage),
+          actions: <Widget>[
+            ElevatedButton(
+              onPressed: () {
+                Navigator.of(context).pop(); // Cierra el diálogo
+                resetGame(); // Reiniciar el juego
+              },
+              child: Text("Reiniciar partido"),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.of(context).pop(); // Cierra el diálogo
+                Navigator.of(context).pushReplacement(
+                  MaterialPageRoute(builder: (context) => HomeScreen()), // Salir al menú (debes tener esta pantalla configurada)
+                );
+              },
+              child: Text("Salir al menú"),
+            ),
+          ],
+        );
+      },
+    );
   }
 
   // Limpia la matriz después de cada penal
@@ -385,7 +572,6 @@ Widget _buildPlayerButton(Map<String, dynamic> player) {
     shootingOptions.clear(); // Limpiar las opciones de disparo al terminar el penal
   }
 
-  // Resetea el juego para empezar una nueva tanda
   void resetGame() {
     setState(() {
       playerScore = 0;
@@ -395,6 +581,15 @@ Widget _buildPlayerButton(Map<String, dynamic> player) {
       isPlayerTurn = true;
       gameEnded = false;
       clearMatrix();
+      
+      // Reiniciar la lista de jugadores usados
+      usedPlayers.clear(); 
+
+      // Mostrar nuevamente la lista de jugadores desde el inicio
+      showPlayerList = true;
+
+      // Reiniciar el jugador seleccionado
+      selectedPlayer = null; 
     });
   }
 
@@ -445,7 +640,7 @@ Widget _buildPlayerButton(Map<String, dynamic> player) {
       return const Color.fromARGB(255, 91, 195, 107);
     } else if (shootingOptions.any((option) => option[0] == row && option[1] == col)) {
       // Resaltar las opciones de disparo disponibles en verde
-      return const Color.fromARGB(255, 12, 86, 235);
+      return const Color.fromARGB(255, 0, 59, 252);
     } else if (hoveredTile != null && hoveredTile![0] == row && hoveredTile![1] == col) {
       return const Color.fromARGB(255, 91, 195, 107);
     }
