@@ -35,7 +35,7 @@ Widget build(BuildContext context) {
       children: [
         // Imagen del jugador
         Positioned(
-          left: screenWidth * 0.056, // 2.5% of screen width
+          left: screenWidth * 0.060, // 2.5% of screen width
           top: screenHeight * 0.066, // 6.5% of screen height
           child: Image.network(
             playerImage, // Aquí deberás pasar el URL de la imagen según tu lógica

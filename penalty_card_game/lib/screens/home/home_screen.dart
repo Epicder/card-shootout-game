@@ -124,14 +124,14 @@ class _HomeScreenState extends State<HomeScreen> {
           boxShadow: [
             BoxShadow(
               blurRadius: 15.0,
-              color: const Color.fromARGB(176, 0, 0, 0).withOpacity(0.5),
+              color: const Color.fromARGB(255, 247, 229, 39).withOpacity(0.30),
               offset: const Offset(0.0, 2.0),
-              spreadRadius: 8.0,
+              spreadRadius: 5.0,
             ),
           ],
           border: Border.all(
-            color: const Color.fromARGB(255, 172, 166, 0),
-            width: 3.2,
+            color: const Color.fromARGB(255, 194, 187, 2),
+            width: 3,
           ),
         ),
         child: Stack(
@@ -209,20 +209,20 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
             Align(
-              alignment: const Alignment(-0.1, -1.35),
+              alignment: const Alignment(-0.1, -1.48),
               child: Text(
                 'RECORD',
                 style: TextStyle(
                   fontFamily: 'Speedway',
-                  color: const Color.fromARGB(255, 255, 235, 15),
+                  color: const Color.fromARGB(255, 221, 204, 13),
                   shadows: [
                     Shadow(
                       color: const Color.fromARGB(255, 0, 0, 0),
                       offset: Offset(screenWidth * 0.012, 1.5), // 0.6% of screen width
                     ),
                     Shadow(
-                      color: const Color.fromARGB(255, 2, 2, 2).withOpacity(0.8), // Verde con opacidad para el glow
-                      blurRadius: 40.0, // Radio del blur para el glow
+                      color: const Color.fromARGB(255, 247, 229, 39).withOpacity(0.66), // Verde con opacidad para el glow
+                      blurRadius: 77.0, // Radio del blur para el glow
                     ),
                   ],
                   fontSize: screenWidth * 0.055, // 5.15% of screen width
@@ -301,6 +301,10 @@ class _HomeScreenState extends State<HomeScreen> {
               color: const Color.fromARGB(255, 168, 95, 0),
               offset: Offset(-screenWidth * 0.004, 0.0), // 0.6% of screen width
             ),
+            Shadow(
+                      color: const Color.fromARGB(255, 247, 229, 39).withOpacity(0.63), // Verde con opacidad para el glow
+                      blurRadius: 77.0, // Radio del blur para el glow
+                    ),
           ],
           height: 1.8,
         ),
@@ -316,13 +320,13 @@ class _HomeScreenState extends State<HomeScreen> {
         decoration: BoxDecoration(
           boxShadow: [
             BoxShadow(
-              color: const Color.fromARGB(197, 0, 0, 0).withOpacity(0.9), // El color del brillo
+              color: const Color.fromARGB(226, 130, 236, 165).withOpacity(0.55), // El color del brillo
               spreadRadius: 5,
               blurRadius: 18,
               offset: Offset(0, 0),
             ),
           ],
-          borderRadius: BorderRadius.circular(80.0), // Bordes redondeados que coinciden con el botón
+         borderRadius: BorderRadius.circular(60), // Bordes redondeados que coinciden con el botón
         ),
         child: ElevatedButton(
           onPressed: () {
@@ -333,17 +337,17 @@ class _HomeScreenState extends State<HomeScreen> {
           },
           style: ElevatedButton.styleFrom(
             backgroundColor:  const Color.fromARGB(226, 130, 236, 165),
-            foregroundColor: const Color.fromARGB(255, 0, 0, 0),
-            padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 9.0),
+            foregroundColor: const Color.fromARGB(255, 255, 255, 255),
+            padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 7.0),
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(15.0),
+              borderRadius: BorderRadius.circular(60),
             ),
           ),
           child: Text(
             text,
             style: const TextStyle(
               fontFamily: 'SPORT',
-              fontSize: 30.0,
+              fontSize: 27.0,
               letterSpacing: 1.2,
               fontWeight: FontWeight.normal,
             ),
@@ -356,18 +360,18 @@ class _HomeScreenState extends State<HomeScreen> {
   // Widget para el botón "Change"
   Widget _buildChangePlayerButton(BuildContext context, String text, Alignment alignment) {
     return Align(
-      alignment: const Alignment(0.52, 0.75),
+      alignment: const Alignment(0.57, 0.84),
       child: Container(
         decoration: BoxDecoration(
           boxShadow: [
             BoxShadow(
-              color:const Color.fromARGB(255, 0, 0, 0), // El color del brillo
-              spreadRadius: 3,
-              blurRadius: 12,
+              color:const Color.fromARGB(226, 130, 236, 165).withOpacity(0.55), // El color del brillo
+              spreadRadius: 2,
+              blurRadius: 10,
               offset: Offset(0, 0),
             ),
           ],
-          borderRadius: BorderRadius.circular(55.0), // Bordes redondeados que coinciden con el botón
+          borderRadius: BorderRadius.circular(60), // Bordes redondeados que coinciden con el botón
         ),
         child: ElevatedButton(
           onPressed: () async {
@@ -379,18 +383,18 @@ class _HomeScreenState extends State<HomeScreen> {
           },
           style: ElevatedButton.styleFrom(
             backgroundColor: const Color.fromARGB(226, 130, 236, 165),
-            foregroundColor: const Color.fromARGB(174, 0, 0, 0),
-            padding: const EdgeInsets.symmetric(horizontal: 5.0, vertical: 6.0),
+            foregroundColor: const Color.fromARGB(255, 255, 255, 255),
+            padding: const EdgeInsets.symmetric(horizontal: 28.0, vertical: 7.0),
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(15),
+              borderRadius: BorderRadius.circular(60),
             ),
           ),
           child: Text(
             text,
             style: const TextStyle(
               fontFamily: 'SPORT',
-              fontSize: 22.0,
-              letterSpacing: 1.2,
+              fontSize: 27.0,
+              letterSpacing: 1.3,
               fontWeight: FontWeight.normal,
             ),
           ),

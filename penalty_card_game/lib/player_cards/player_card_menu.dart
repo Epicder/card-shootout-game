@@ -66,8 +66,8 @@ Widget build(BuildContext context) {
         ),
         // Nivel del jugador
         Positioned(
-          bottom: screenHeight * 0.033, // 3% of screen height
-          right: screenWidth * 0.272, // 8% of screen width
+          bottom: screenHeight * 0.020, // 3% of screen height
+          right: screenWidth * 0.269, // 8% of screen width
           child: Text(
             '$playerLevel',
             style: TextStyle(
@@ -97,7 +97,7 @@ Widget build(BuildContext context) {
               height: screenHeight * 0.047, // Ajusta el tamaño según tu diseño
               decoration: BoxDecoration(
                 color: const Color.fromARGB(255, 5, 197, 28).withOpacity(1),
-                borderRadius: BorderRadius.circular(5.0),
+                borderRadius: BorderRadius.circular(3.0),
               ),
               child: Center( // Asegura que el texto esté centrado dentro del contenedor
                 child: Text(
@@ -106,7 +106,7 @@ Widget build(BuildContext context) {
                   style: TextStyle(
                     fontWeight: FontWeight.w600,
                     color: Colors.white,
-                    fontSize: screenWidth * 0.018, // Ajusta el tamaño según tu diseño
+                    fontSize: screenWidth * 0.014, // Ajusta el tamaño según tu diseño
                     fontStyle: FontStyle.normal,
                   ),
                 ),
@@ -122,11 +122,11 @@ Widget build(BuildContext context) {
             width: screenWidth * 0.035, // Ajusta el ancho para que sea más pequeño si es necesario
             height: screenWidth * 0.035, // Ajusta la altura para que sea igual al ancho, formando un círculo
             decoration: BoxDecoration(
-              color: Colors.red.withOpacity(1),
+              color: Colors.red,
               shape: BoxShape.circle, // Asegura que sea un círculo perfecto
               border: Border.all( // Añadir un borde
                 color: Colors.white,
-                width: 2.0,
+                width: 1.4,
               ),
             ),
             child: Center(
@@ -134,7 +134,7 @@ Widget build(BuildContext context) {
                 '$shootingOptions',
                 style: TextStyle(
                   color: Colors.white,
-                  fontSize: screenWidth * 0.025, // Ajusta el tamaño según tu diseño
+                  fontSize: screenWidth * 0.020, // Ajusta el tamaño según tu diseño
                   fontWeight: FontWeight.bold,
                 ),
               ),

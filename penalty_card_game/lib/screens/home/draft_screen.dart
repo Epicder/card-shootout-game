@@ -64,20 +64,20 @@ class _DraftScreenState extends State<DraftScreen> {
           _buildBackgroundImage(),
           // Texto "TEAM DRAFT"
           Align(
-            alignment: AlignmentDirectional(1, -0.8),
+            alignment: AlignmentDirectional(1, -0.7),
             child: Text(
               'TEAM \n    DRAFT',
               style: TextStyle(
                 fontFamily: 'Speedway',
-                fontSize: 35.0,
-                color: const Color.fromARGB(255, 60, 214, 78),
+                fontSize: 33.0,
+                color: const Color.fromARGB(255, 221, 204, 13),
                   shadows: [
                     Shadow(
-                      color: const Color(0xFF013D09),
+                      color: const Color.fromARGB(255, 0, 0, 0),
                       offset: Offset( 2.012, 2.5), // 0.6% of screen width
                     ),
                     Shadow(
-                      color: const Color(0xFF41E854).withOpacity(0.5), // Verde con opacidad para el glow
+                      color: const Color.fromARGB(255, 247, 229, 39).withOpacity(0.66), // Verde con opacidad para el glow
                       blurRadius: 30.0, // Radio del blur para el glow
                     ),
                   ],
@@ -190,15 +190,15 @@ class _DraftScreenState extends State<DraftScreen> {
   // Método para construir los botones de los espacios de jugadores
   List<Widget> _buildPlayerSlots() {
     return [
-      _playerSlotButtonDEL(-0.35, -0.7, 1),
-      _playerSlotButtonDEL(0.35, -0.7, 2),
-      _playerSlotButtonDEL(0.0, -0.8, 3),
-      _playerSlotButtonMID(-0.20, -0.1, 1),
-      _playerSlotButtonMID(0.20, -0.1, 2),
-      _playerSlotButtonDEF(-0.35, 0.5, 1),
-      _playerSlotButtonDEF(0.35, 0.5, 2),
-      _playerSlotButtonGK(0.0, 0.85, 1),
-    ];
+    _playerSlotButtonDEL(-0.42, -0.7, 1),
+    _playerSlotButtonDEL(0.28, -0.7, 2),
+    _playerSlotButtonDEL(-0.07, -0.8, 3),
+    _playerSlotButtonMID(-0.27, -0.1, 1),
+    _playerSlotButtonMID(0.13, -0.1, 2),
+    _playerSlotButtonDEF(-0.42, 0.5, 1),
+    _playerSlotButtonDEF(0.28, 0.5, 2),
+    _playerSlotButtonGK(-0.07, 0.85, 1),
+  ];
   }
 
 Widget _playerSlotButtonDEF(double x, double y, int buttonIndex) {
@@ -260,7 +260,7 @@ Widget _playerSlotButtonGK(double x, double y, int buttonIndex) {
         '+',
         style: TextStyle(
           fontFamily: 'Azeret Mono',
-          fontSize: 50.0,
+          fontSize: 40.0,
           color: Colors.white,
           shadows: [
             Shadow(
@@ -287,74 +287,91 @@ void showDelanterosForButton(BuildContext context, int buttonIndex) {
   showDialog(
     context: context,
     builder: (BuildContext context) {
-      return AlertDialog(
-        content: Container(
-          width: double.maxFinite,
-          child: StreamBuilder<QuerySnapshot>(
-            stream: FirebaseFirestore.instance.collection('Delanteros').snapshots(),
-            builder: (context, snapshot) {
-              if (!snapshot.hasData) {
-                return Center(child: CircularProgressIndicator());
-              }
-
-              var playerDocs = snapshot.data!.docs;
-
-              return GridView.builder(
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 3,
-                  crossAxisSpacing: 10.0,
-                  mainAxisSpacing: 10.0,
+      return BackdropFilter(
+        filter: ImageFilter.blur(sigmaX: 3.0, sigmaY: 3.0), // Añade el desenfoque aquí
+        child: AlertDialog(
+          backgroundColor: const Color.fromARGB(255, 49, 173, 63).withOpacity(0.8),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(10.0)),
+            side: BorderSide(color: Colors.white, width: 2.0),
+          ),
+          content: Container(
+            width: double.maxFinite,
+            decoration: BoxDecoration(
+              color: const Color.fromARGB(255, 47, 168, 61).withOpacity(0.8),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.white.withOpacity(0.5),
+                  blurRadius: 10.0,
+                  spreadRadius: 5.0,
                 ),
-                itemCount: playerDocs.length,
-                itemBuilder: (context, index) {
-                  var playerData = playerDocs[index].data() as Map<String, dynamic>;
-                  String playerId = playerDocs[index].id;
+              ],
+            ),
+            child: StreamBuilder<QuerySnapshot>(
+              stream: FirebaseFirestore.instance.collection('Delanteros').snapshots(),
+              builder: (context, snapshot) {
+                if (!snapshot.hasData) {
+                  return Center(child: CircularProgressIndicator());
+                }
 
-                  bool isSelected = selectedPlayers.contains(playerId);
+                var playerDocs = snapshot.data!.docs;
 
-                  return GestureDetector(
-                    onTap: () {
-                      if (isSelected) {
-                        return;
-                      }
+                return GridView.builder(
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 3,
+                    crossAxisSpacing: 10.0,
+                    mainAxisSpacing: 10.0,
+                  ),
+                  itemCount: playerDocs.length,
+                  itemBuilder: (context, index) {
+                    var playerData = playerDocs[index].data() as Map<String, dynamic>;
+                    String playerId = playerDocs[index].id;
 
-                      if (buttonIndex == 1 && !_playerSelected_DEL_1) {
-                        _playerSelected_DEL_1 = true;
-                        _addToDraft(playerId, playerData, context);
-                      } else if (buttonIndex == 2 && !_playerSelected_DEL_2) {
-                        _playerSelected_DEL_2 = true;
-                        _addToDraft(playerId, playerData, context);
-                      } else if (buttonIndex == 3 && !_playerSelected_DEL_3) {
-                        _playerSelected_DEL_3 = true;
-                        _addToDraft(playerId, playerData, context);
-                      }
+                    bool isSelected = selectedPlayers.contains(playerId);
 
-                      // agregar el jugador al set
-                      selectedPlayers.add(playerId);
-                    },
-                    child: Opacity(
-                      opacity: isSelected ? 0.5 : 1.0, // Si está seleccionado, hacer la carta semitransparente
-                      child: PlayerCardDraft(
-                        playerName: playerData['name'],
-                        playerPosition: playerData['position'],
-                        playerLevel: playerData['level'],
-                        playerCountry: playerData['country'],
-                        playerImage: playerData['image'],
-                        shootingOptions: playerData['shooting_options'],
+                    return GestureDetector(
+                      onTap: () {
+                        if (isSelected) {
+                          return;
+                        }
+
+                        if (buttonIndex == 1 && !_playerSelected_DEL_1) {
+                          _playerSelected_DEL_1 = true;
+                          _addToDraft(playerId, playerData, context);
+                        } else if (buttonIndex == 2 && !_playerSelected_DEL_2) {
+                          _playerSelected_DEL_2 = true;
+                          _addToDraft(playerId, playerData, context);
+                        } else if (buttonIndex == 3 && !_playerSelected_DEL_3) {
+                          _playerSelected_DEL_3 = true;
+                          _addToDraft(playerId, playerData, context);
+                        }
+
+                        // agregar el jugador al set
+                        selectedPlayers.add(playerId);
+                      },
+                      child: Opacity(
+                        opacity: isSelected ? 0.5 : 1.0, // Si está seleccionado, hacer la carta semitransparente
+                        child: PlayerCardDraft(
+                          playerName: playerData['name'],
+                          playerPosition: playerData['position'],
+                          playerLevel: playerData['level'],
+                          playerCountry: playerData['country'],
+                          playerImage: playerData['image'],
+                          shootingOptions: playerData['shooting_options'],
+                        ),
                       ),
-                    ),
-                  );
-                },
-              );
-            },
+                    );
+                  },
+                );
+              },
+            ),
           ),
         ),
       );
     },
   );
 }
-////////////////////////// MOSTRAR DELANTEROS /////////////////////////
-
+///////////////////////////////////////////////// /////////////////////////
 
 ////////////////////////// MOSTRAR MEDIOCAMPISTAS /////////////////////////
 bool _playerSelected_MID_1 = false;
@@ -366,72 +383,90 @@ void showMediocampistasForButton(BuildContext context, int buttonIndex) {
   showDialog(
     context: context,
     builder: (BuildContext context) {
-      return AlertDialog(
-        content: Container(
-          width: double.maxFinite,
-          child: StreamBuilder<QuerySnapshot>(
-            stream: FirebaseFirestore.instance.collection('Mediocampistas').snapshots(),
-            builder: (context, snapshot) {
-              if (!snapshot.hasData) {
-                return Center(child: CircularProgressIndicator());
-              }
-
-              var playerDocs = snapshot.data!.docs;
-
-              return GridView.builder(
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 3,
-                  crossAxisSpacing: 10.0,
-                  mainAxisSpacing: 10.0,
+      return BackdropFilter(
+        filter: ImageFilter.blur(sigmaX: 3.0, sigmaY: 3.0), // Añade el desenfoque aquí
+        child: AlertDialog(
+          backgroundColor: const Color.fromARGB(255, 49, 173, 63).withOpacity(0.8),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(10.0)),
+            side: BorderSide(color: Colors.white, width: 2.0),
+          ),
+          content: Container(
+            width: double.maxFinite,
+            decoration: BoxDecoration(
+              color: const Color.fromARGB(255, 47, 168, 61).withOpacity(0.8),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.white.withOpacity(0.5),
+                  blurRadius: 10.0,
+                  spreadRadius: 5.0,
                 ),
-                itemCount: playerDocs.length,
-                itemBuilder: (context, index) {
-                  var playerData = playerDocs[index].data() as Map<String, dynamic>;
-                  String playerId = playerDocs[index].id;
+              ],
+            ),
+            child: StreamBuilder<QuerySnapshot>(
+              stream: FirebaseFirestore.instance.collection('Mediocampistas').snapshots(),
+              builder: (context, snapshot) {
+                if (!snapshot.hasData) {
+                  return Center(child: CircularProgressIndicator());
+                }
 
-                  // Verificar si el jugador ya ha sido seleccionado
-                  bool isSelected = selectedPlayers.contains(playerId);
+                var playerDocs = snapshot.data!.docs;
 
-                  return GestureDetector(
-                    onTap: () {
-                      if (isSelected) {
-                        return; 
-                      }
+                return GridView.builder(
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 3,
+                    crossAxisSpacing: 10.0,
+                    mainAxisSpacing: 10.0,
+                  ),
+                  itemCount: playerDocs.length,
+                  itemBuilder: (context, index) {
+                    var playerData = playerDocs[index].data() as Map<String, dynamic>;
+                    String playerId = playerDocs[index].id;
 
-                      // Verifica cuál botón de la pantalla llamó a la funcion
-                      if (buttonIndex == 1 && !_playerSelected_MID_1) {
-                        _playerSelected_MID_1 = true;
-                        _addToDraft(playerId, playerData, context);
-                      } else if (buttonIndex == 2 && !_playerSelected_MID_2) {
-                        _playerSelected_MID_2 = true;
-                        _addToDraft(playerId, playerData, context);
-                      }
+                    // Verificar si el jugador ya ha sido seleccionado
+                    bool isSelected = selectedPlayers.contains(playerId);
 
-                      // Agregar el jugador al set
-                      selectedPlayers.add(playerId);
-                    },
-                    child: Opacity(
-                      opacity: isSelected ? 0.5 : 1.0,
-                      child: PlayerCardDraft(
-                        playerName: playerData['name'],
-                        playerPosition: playerData['position'],
-                        playerLevel: playerData['level'],
-                        playerCountry: playerData['country'],
-                        playerImage: playerData['image'],
-                        shootingOptions: playerData['shooting_options'],
+                    return GestureDetector(
+                      onTap: () {
+                        if (isSelected) {
+                          return; 
+                        }
+
+                        // Verifica cuál botón de la pantalla llamó a la funcion
+                        if (buttonIndex == 1 && !_playerSelected_MID_1) {
+                          _playerSelected_MID_1 = true;
+                          _addToDraft(playerId, playerData, context);
+                        } else if (buttonIndex == 2 && !_playerSelected_MID_2) {
+                          _playerSelected_MID_2 = true;
+                          _addToDraft(playerId, playerData, context);
+                        }
+
+                        // Agregar el jugador al set
+                        selectedPlayers.add(playerId);
+                      },
+                      child: Opacity(
+                        opacity: isSelected ? 0.5 : 1.0,
+                        child: PlayerCardDraft(
+                          playerName: playerData['name'],
+                          playerPosition: playerData['position'],
+                          playerLevel: playerData['level'],
+                          playerCountry: playerData['country'],
+                          playerImage: playerData['image'],
+                          shootingOptions: playerData['shooting_options'],
+                        ),
                       ),
-                    ),
-                  );
-                },
-              );
-            },
+                    );
+                  },
+                );
+              },
+            ),
           ),
         ),
       );
     },
   );
 }
-
+//////////////////////////////////////////////////////////////////////////
 
 bool _playerSelected_DEF_1 = false;
 bool _playerSelected_DEF_2 = false;
@@ -442,141 +477,182 @@ void showDefensasForButton(BuildContext context, int buttonIndex) {
   showDialog(
     context: context,
     builder: (BuildContext context) {
-      return AlertDialog(
-        content: Container(
-          width: double.maxFinite,
-          child: StreamBuilder<QuerySnapshot>(
-            stream: FirebaseFirestore.instance.collection('Defensas').snapshots(),
-            builder: (context, snapshot) {
-              if (!snapshot.hasData) {
-                return Center(child: CircularProgressIndicator());
-              }
-
-              var playerDocs = snapshot.data!.docs;
-
-              return GridView.builder(
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 3,
-                  crossAxisSpacing: 10.0,
-                  mainAxisSpacing: 10.0,
+      return BackdropFilter(
+        filter: ImageFilter.blur(sigmaX: 3.0, sigmaY: 3.0), // Añade el desenfoque aquí
+        child: AlertDialog(
+          backgroundColor: const Color.fromARGB(255, 49, 173, 63).withOpacity(0.8),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(10.0)),
+            side: BorderSide(color: Colors.white, width: 2.0),
+          ),
+          content: Container(
+            width: double.maxFinite,
+            decoration: BoxDecoration(
+              color: const Color.fromARGB(255, 47, 168, 61).withOpacity(0.8),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.white.withOpacity(0.5),
+                  blurRadius: 10.0,
+                  spreadRadius: 5.0,
                 ),
-                itemCount: playerDocs.length,
-                itemBuilder: (context, index) {
-                  var playerData = playerDocs[index].data() as Map<String, dynamic>;
-                  String playerId = playerDocs[index].id;
+              ],
+            ),
+            child: StreamBuilder<QuerySnapshot>(
+              stream: FirebaseFirestore.instance.collection('Defensas').snapshots(),
+              builder: (context, snapshot) {
+                if (!snapshot.hasData) {
+                  return Center(child: CircularProgressIndicator());
+                }
 
-                  bool isSelected = selectedPlayers.contains(playerId);
+                var playerDocs = snapshot.data!.docs;
 
-                  return GestureDetector(
-                    onTap: () {
-                      if (isSelected) {
-                        return;
-                      }
+                return GridView.builder(
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 3,
+                    crossAxisSpacing: 10.0,
+                    mainAxisSpacing: 10.0,
+                  ),
+                  itemCount: playerDocs.length,
+                  itemBuilder: (context, index) {
+                    var playerData = playerDocs[index].data() as Map<String, dynamic>;
+                    String playerId = playerDocs[index].id;
 
-                      // Verifica cuál botón ha llamado la funcion
-                      if (buttonIndex == 1 && !_playerSelected_DEF_1) {
-                        _playerSelected_DEF_1 = true;
-                        _addToDraft(playerId, playerData, context);
-                      } else if (buttonIndex == 2 && !_playerSelected_DEF_2) {
-                        _playerSelected_DEF_2 = true;
-                        _addToDraft(playerId, playerData, context);
-                      }
+                    bool isSelected = selectedPlayers.contains(playerId);
 
-                      // Agregar el jugador al set
-                      selectedPlayers.add(playerId);
-                    },
-                    child: Opacity(
-                      opacity: isSelected ? 0.5 : 1.0,
-                      child: PlayerCardDraft(
-                        playerName: playerData['name'],
-                        playerPosition: playerData['position'],
-                        playerLevel: playerData['level'],
-                        playerCountry: playerData['country'],
-                        playerImage: playerData['image'],
-                        shootingOptions: playerData['shooting_options'],
+                    return GestureDetector(
+                      onTap: () {
+                        if (isSelected) {
+                          return;
+                        }
+
+                        // Verifica cuál botón ha llamado la funcion
+                        if (buttonIndex == 1 && !_playerSelected_DEF_1) {
+                          _playerSelected_DEF_1 = true;
+                          _addToDraft(playerId, playerData, context);
+                        } else if (buttonIndex == 2 && !_playerSelected_DEF_2) {
+                          _playerSelected_DEF_2 = true;
+                          _addToDraft(playerId, playerData, context);
+                        }
+
+                        // Agregar el jugador al set
+                        selectedPlayers.add(playerId);
+                      },
+                      child: Opacity(
+                        opacity: isSelected ? 0.5 : 1.0,
+                        child: PlayerCardDraft(
+                          playerName: playerData['name'],
+                          playerPosition: playerData['position'],
+                          playerLevel: playerData['level'],
+                          playerCountry: playerData['country'],
+                          playerImage: playerData['image'],
+                          shootingOptions: playerData['shooting_options'],
+                        ),
                       ),
-                    ),
-                  );
-                },
-              );
-            },
+                    );
+                  },
+                );
+              },
+            ),
           ),
         ),
       );
     },
   );
 }
+//////////////////////////////////////////////////////////////////////////
 
+///////////////////////////// MOSTRAR GOLEROS ////////////////////////////
 bool _playerSelected_GK_1 = false;
 
 Set<String> selectedPlayers_GK = {};
 
 void showGolerosForButton(BuildContext context, int buttonIndex) {
+
   showDialog(
     context: context,
     builder: (BuildContext context) {
-      return AlertDialog(
-        content: Container(
-          width: double.maxFinite,
-          child: StreamBuilder<QuerySnapshot>(
-            stream: FirebaseFirestore.instance.collection('Goleros').snapshots(),
-            builder: (context, snapshot) {
-              if (!snapshot.hasData) {
-                return Center(child: CircularProgressIndicator());
-              }
-
-              var playerDocs = snapshot.data!.docs;
-
-              return GridView.builder(
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 3,
-                  crossAxisSpacing: 10.0,
-                  mainAxisSpacing: 10.0,
+      return BackdropFilter(
+        filter: ImageFilter.blur(sigmaX: 3.0, sigmaY: 3.0), // Añade el desenfoque aquí
+        child: AlertDialog(
+          backgroundColor: const Color.fromARGB(255, 49, 173, 63).withOpacity(0.8),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(10.0)),
+            side: BorderSide(color: Colors.white, width: 2.0),
+          ),
+          content: Container(
+            width: double.maxFinite,
+            decoration: BoxDecoration(
+              color: const Color.fromARGB(255, 47, 168, 61).withOpacity(0.8),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.white.withOpacity(0.5),
+                  blurRadius: 10.0,
+                  spreadRadius: 5.0,
                 ),
-                itemCount: playerDocs.length,
-                itemBuilder: (context, index) {
-                  var playerData = playerDocs[index].data() as Map<String, dynamic>;
-                  String playerId = playerDocs[index].id;
+              ],
+            ),
+            child: StreamBuilder<QuerySnapshot>(
+              stream: FirebaseFirestore.instance.collection('Goleros').snapshots(),
+              builder: (context, snapshot) {
+                if (!snapshot.hasData) {
+                  return Center(child: CircularProgressIndicator());
+                }
 
-                  bool isSelected = selectedPlayers.contains(playerId);
+                var playerDocs = snapshot.data!.docs;
 
-                  return GestureDetector(
-                    onTap: () {
-                      if (isSelected) {
-                        return; 
-                      }
+                return GridView.builder(
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 3,
+                    crossAxisSpacing: 10.0,
+                    mainAxisSpacing: 10.0,
+                  ),
+                  itemCount: playerDocs.length,
+                  itemBuilder: (context, index) {
+                    var playerData = playerDocs[index].data() as Map<String, dynamic>;
+                    String playerId = playerDocs[index].id;
 
-                      // Verifica cuál botón ha llamado la funcion
-                      if (buttonIndex == 1 && !_playerSelected_GK_1) {
-                        _playerSelected_GK_1 = true;
-                        _addToDraft(playerId, playerData, context);
-                      }
+                    bool isSelected = selectedPlayers.contains(playerId);
 
-                      selectedPlayers.add(playerId);
-                    },
-                    child: Opacity(
-                      opacity: isSelected ? 0.5 : 1.0,
-                      child: PlayerCardDraft(
-                        playerName: playerData['name'],
-                        playerPosition: playerData['position'],
-                        playerLevel: playerData['level'],
-                        playerCountry: playerData['country'],
-                        playerImage: playerData['image'],
-                        shootingOptions: playerData['shooting_options'],
+                    return GestureDetector(
+                      onTap: () {
+                        if (isSelected) {
+                          return; 
+                        }
+
+                        // Verifica cuál botón ha llamado la funcion
+                        if (buttonIndex == 1 && !_playerSelected_GK_1) {
+                          _playerSelected_GK_1 = true;
+                          _addToDraft(playerId, playerData, context);
+                        }
+
+                        selectedPlayers.add(playerId);
+                      },
+                      child: Opacity(
+                        opacity: isSelected ? 0.5 : 1.0,
+                        child: PlayerCardDraft(
+                          playerName: playerData['name'],
+                          playerPosition: playerData['position'],
+                          playerLevel: playerData['level'],
+                          playerCountry: playerData['country'],
+                          playerImage: playerData['image'],
+                          shootingOptions: playerData['shooting_options'],
+                        ),
                       ),
-                    ),
-                  );
-                },
-              );
-            },
+                    );
+                  },
+                );
+              },
+            ),
           ),
         ),
       );
     },
   );
 }
+//////////////////////////////////////////////////////////////////////////
 
-//////////////////////// ADD TO DRAFT COLLECTION USER & other FUNCTIONS/////////////////////////////////////
+
+//////////////////////// ADD TO DRAFT COLLECTION USER & other FUNCTIONS///
 void _addToDraft(String playerId, Map<String, dynamic> playerData, BuildContext context) async {
   // usuario actual
   User? currentUser = FirebaseAuth.instance.currentUser;
@@ -627,17 +703,61 @@ void _showIncompleteDraftPopup(BuildContext context) {
   showDialog(
     context: context,
     builder: (BuildContext context) {
-      return AlertDialog(
-        title: Text("Draft incompleto"),
-        content: Text("Completa tu draft para jugar."),
-        actions: [
-          TextButton(
-            onPressed: () {
-              Navigator.of(context).pop(); 
-            },
-            child: Text("OK"),
+      return BackdropFilter(
+        filter: ImageFilter.blur(sigmaX: 3.0, sigmaY: 3.0), // Añade el desenfoque aquí
+        child: AlertDialog(
+          backgroundColor: const Color.fromARGB(255, 55, 196, 71).withOpacity(0.8),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(10.0)),
+            side: BorderSide(color: Colors.white, width: 2.0),
           ),
-        ],
+          title: Text(
+            "Incomplete Draft",
+            style: TextStyle(
+              color: Colors.white,
+              shadows: [
+                Shadow(
+                  blurRadius: 10.0,
+                  color: Colors.white,
+                  offset: Offset(0, 0),
+                ),
+              ],
+            ),
+          ),
+          content: Text(
+            "Complete your draft to Play!",
+            style: TextStyle(
+              color: Colors.white,
+              shadows: [
+                Shadow(
+                  blurRadius: 10.0,
+                  color: Colors.white,
+                  offset: Offset(0, 0),
+                ),
+              ],
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(); 
+              },
+              child: Text(
+                "OK",
+                style: TextStyle(
+                  color: Colors.white,
+                  shadows: [
+                    Shadow(
+                      blurRadius: 10.0,
+                      color: Colors.white,
+                      offset: Offset(0, 0),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
       );
     },
   );
@@ -672,7 +792,7 @@ Widget _playerSlotButtonDEL(double x, double y, int buttonIndex) {
         '+',
         style: TextStyle(
           fontFamily: 'Azeret Mono',
-          fontSize: 50.0,
+          fontSize: 40.0,
           color: Colors.white,
           shadows: [
             Shadow(
@@ -715,7 +835,7 @@ Widget _playerSlotButtonDEL(double x, double y, int buttonIndex) {
         '+',
         style: TextStyle(
           fontFamily: 'Azeret Mono',
-          fontSize: 50.0,
+          fontSize: 40.0,
           color: Colors.white,
           shadows: [
             Shadow(
