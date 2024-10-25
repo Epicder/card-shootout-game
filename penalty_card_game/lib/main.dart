@@ -19,8 +19,8 @@ void main() async {
   );
 
   // Llamar a la función de carga de jugadores
-  //FirestoreService firestoreService = FirestoreService();
-  //firestoreService.addMultiplePlayers();
+  FirestoreService firestoreService = FirestoreService();
+  firestoreService.addMultiplePlayers();
 
   Bloc.observer = SimpleBlocObserver();
   runApp(MyApp(FirebaseUserRepo()));

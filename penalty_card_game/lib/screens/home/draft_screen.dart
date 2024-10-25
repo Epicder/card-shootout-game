@@ -3,7 +3,7 @@ import 'dart:ui';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:penalty_card_game/player_cards/player_card_menu.dart';
+import 'package:penalty_card_game/player_cards/player_card_draft.dart';
 import 'package:penalty_card_game/screens/home/mvp_screen.dart';
 import 'package:user_repository/user_repository.dart';
 
@@ -300,8 +300,8 @@ void showDelanterosForButton(BuildContext context, int buttonIndex) {
 
               return GridView.builder(
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                  crossAxisSpacing: 5.0,
+                  crossAxisCount: 3,
+                  crossAxisSpacing: 10.0,
                   mainAxisSpacing: 10.0,
                 ),
                 itemCount: playerDocs.length,
@@ -333,7 +333,7 @@ void showDelanterosForButton(BuildContext context, int buttonIndex) {
                     },
                     child: Opacity(
                       opacity: isSelected ? 0.5 : 1.0, // Si está seleccionado, hacer la carta semitransparente
-                      child: PlayerCard(
+                      child: PlayerCardDraft(
                         playerName: playerData['name'],
                         playerPosition: playerData['position'],
                         playerLevel: playerData['level'],
@@ -411,7 +411,7 @@ void showMediocampistasForButton(BuildContext context, int buttonIndex) {
                     },
                     child: Opacity(
                       opacity: isSelected ? 0.5 : 1.0,
-                      child: PlayerCard(
+                      child: PlayerCardDraft(
                         playerName: playerData['name'],
                         playerPosition: playerData['position'],
                         playerLevel: playerData['level'],
@@ -486,7 +486,7 @@ void showDefensasForButton(BuildContext context, int buttonIndex) {
                     },
                     child: Opacity(
                       opacity: isSelected ? 0.5 : 1.0,
-                      child: PlayerCard(
+                      child: PlayerCardDraft(
                         playerName: playerData['name'],
                         playerPosition: playerData['position'],
                         playerLevel: playerData['level'],
@@ -555,7 +555,7 @@ void showGolerosForButton(BuildContext context, int buttonIndex) {
                     },
                     child: Opacity(
                       opacity: isSelected ? 0.5 : 1.0,
-                      child: PlayerCard(
+                      child: PlayerCardDraft(
                         playerName: playerData['name'],
                         playerPosition: playerData['position'],
                         playerLevel: playerData['level'],
@@ -760,7 +760,7 @@ Widget _playerSlotButtonDEL(double x, double y, int buttonIndex) {
                 itemBuilder: (context, index) {
                   var playerData = playerDocs[index].data() as Map<String, dynamic>;
 
-                  return PlayerCard(
+                  return PlayerCardDraft(
                     playerName: playerData['name'],
                     playerPosition: playerData['position'],
                     playerLevel: playerData['level'],
