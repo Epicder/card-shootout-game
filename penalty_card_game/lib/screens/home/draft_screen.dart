@@ -64,35 +64,38 @@ class _DraftScreenState extends State<DraftScreen> {
           _buildBackgroundImage(),
           // Texto "TEAM DRAFT"
           Align(
-            alignment: AlignmentDirectional(0.92, -0.89),
+            alignment: AlignmentDirectional(1, -0.8),
             child: Text(
-              'TEAM DRAFT',
+              'TEAM \n    DRAFT',
               style: TextStyle(
-                fontFamily: 'Poller One',
-                fontSize: 20.0,
+                fontFamily: 'Speedway',
+                fontSize: 35.0,
+                color: const Color.fromARGB(255, 60, 214, 78),
+                  shadows: [
+                    Shadow(
+                      color: const Color(0xFF013D09),
+                      offset: Offset( 2.012, 2.5), // 0.6% of screen width
+                    ),
+                    Shadow(
+                      color: const Color(0xFF41E854).withOpacity(0.5), // Verde con opacidad para el glow
+                      blurRadius: 30.0, // Radio del blur para el glow
+                    ),
+                  ],
                 fontWeight: FontWeight.w900,
-                letterSpacing: 2.0,
-                color: Colors.tealAccent,
-                shadows: [
-                  Shadow(
-                    color: const Color.fromARGB(135, 255, 254, 254),
-                    offset: Offset(0, 0),
-                    blurRadius: 40.0,
-                  )
-                ],
+                letterSpacing: 5.0,
               ),
             ),
           ),
           Align(
-            alignment: AlignmentDirectional(0.93, -0.03),
+            alignment: AlignmentDirectional(0.97, 0.09),
             child: Container(
               width: 120.0,
               height: 30.0,
               decoration: BoxDecoration(
-                color: Colors.white, // Fondo blanco
-                borderRadius: BorderRadius.circular(5.0),
+                color: const Color.fromARGB(255, 9, 207, 68),
+                borderRadius: BorderRadius.circular(3.0),
                 border: Border.all(
-                  color:  Color.fromARGB(185, 51, 144, 197), // Color del borde
+                  color: const Color.fromARGB(255, 14, 136, 14), // Color del borde
                   width: 2.0,
                 ),
                 boxShadow: [
@@ -108,8 +111,8 @@ class _DraftScreenState extends State<DraftScreen> {
                 "${currentUser?.name ?? 'Your'} FC",
                 style: TextStyle(
                   fontFamily: 'Denk One',
-                  color:  Color.fromARGB(255, 0, 0, 0), // Color del texto
-                  fontSize: 12.0, // Tamaño del texto
+                  color:  Color.fromARGB(255, 255, 255, 255), // Color del texto
+                  fontSize: 13.0, // Tamaño del texto
                   fontWeight: FontWeight.bold,
                   letterSpacing: 1.0,
                 ),
@@ -117,12 +120,10 @@ class _DraftScreenState extends State<DraftScreen> {
             ),
           ),
           Align(
-            alignment: AlignmentDirectional(0.66, -0.04),
+            alignment: AlignmentDirectional(0.66, 0.1),
             child: GestureDetector(
             onTap: () async {
-      // Verificar si el draft está completo antes de navegar a la siguiente pantalla
               bool isDraftComplete = await _checkDraftCompletion();
-
               if (isDraftComplete) {
                 Navigator.push(
                 context,
@@ -133,10 +134,10 @@ class _DraftScreenState extends State<DraftScreen> {
               }
             },
               child: Container(
-                width: 90.0,
-                height: 90.0,
+                width: 70.0,
+                height: 70.0,
                 decoration: BoxDecoration(
-                  color: Color(0xFF39D2C0),
+                  color: const Color.fromARGB(255, 56, 199, 73),
                   shape: BoxShape.circle,
                   boxShadow: [
                     BoxShadow(
@@ -146,14 +147,14 @@ class _DraftScreenState extends State<DraftScreen> {
                     ),
                   ],
                   border: Border.all(
-                    color: Color.fromARGB(190, 11, 87, 200),
+                    color: const Color.fromARGB(255, 41, 141, 52),
                     width: 3.0,
                   ),
                 ),
                 child: Icon(
                   Icons.check,
                   color: Colors.white,
-                  size: 60.0,
+                  size: 40.0,
                 ),
               ),
             ),
@@ -214,7 +215,7 @@ Widget _playerSlotButtonDEF(double x, double y, int buttonIndex) {
       style: ElevatedButton.styleFrom(
         backgroundColor: Color(0xD468B879),
         padding: EdgeInsets.zero,
-        fixedSize: Size(52.0, 85.0),
+        fixedSize: Size(12.0, 85.0),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10.0),
         ),
@@ -223,7 +224,7 @@ Widget _playerSlotButtonDEF(double x, double y, int buttonIndex) {
         '+',
         style: TextStyle(
           fontFamily: 'Azeret Mono',
-          fontSize: 50.0,
+          fontSize: 40.0,
           color: Colors.white,
           shadows: [
             Shadow(
