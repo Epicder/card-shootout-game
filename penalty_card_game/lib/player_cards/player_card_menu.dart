@@ -66,13 +66,13 @@ Widget build(BuildContext context) {
         ),
         // Nivel del jugador
         Positioned(
-          bottom: screenHeight * 0.020, // 3% of screen height
-          right: screenWidth * 0.269, // 8% of screen width
+          bottom: screenHeight * 0.033, // 3% of screen height
+          right: screenWidth * 0.272, // 8% of screen width
           child: Text(
             '$playerLevel',
             style: TextStyle(
               fontFamily: 'Black Ops One',
-              fontSize: screenWidth * 0.042, // 15% of screen width
+              fontSize: screenWidth * 0.040, // 15% of screen width
               color: const Color.fromARGB(255, 255, 255, 255),
               shadows: [
                 Shadow(
