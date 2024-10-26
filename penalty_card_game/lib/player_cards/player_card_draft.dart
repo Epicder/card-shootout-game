@@ -46,7 +46,7 @@ Widget build(BuildContext context) {
         // Nombre del jugador
         Positioned(
           top: screenHeight * 0.013, // 3% of screen height
-          left: screenWidth * 0.060, // 5% of screen width
+          left: screenWidth * 0.066, // 5% of screen width
           child: Text(
             playerName.toUpperCase(),
             style: TextStyle(
@@ -66,8 +66,8 @@ Widget build(BuildContext context) {
         ),
         // Nivel del jugador
         Positioned(
-          bottom: screenHeight * 0.027, // 3% of screen height
-          right: screenWidth * 0.070, // 8% of screen width
+          bottom: screenHeight * 0.033, // 3% of screen height
+          right: screenWidth * 0.0725, // 8% of screen width
           child: Text(
             '$playerLevel',
             style: TextStyle(
@@ -93,7 +93,7 @@ Widget build(BuildContext context) {
               vertical: screenHeight * 0.092, // 0.7% of screen height
             ),
             child: Container(
-            width: screenWidth * 0.076, // 13% of screen width
+            width: screenWidth * 0.086, // 13% of screen width
             height: screenHeight * 0.047, // 7% of screen height
             decoration: BoxDecoration(
                 color: const Color.fromARGB(255, 5, 197, 28).withOpacity(1),
@@ -117,7 +117,7 @@ Widget build(BuildContext context) {
         // Opciones de tiro
         Positioned(
           top: screenHeight * 0.170, // 27% of screen height
-          right: screenWidth * 0.070, // 5% of screen width
+          right: screenWidth * 0.067, // 5% of screen width
           child: Container(
             width: screenWidth * 0.030, // 13% of screen width
             height: screenHeight * 0.136, // 7% of screen height

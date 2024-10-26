@@ -131,7 +131,7 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           ],
           border: Border.all(
-            color: const Color.fromARGB(138, 194, 188, 2),
+            color: const Color.fromARGB(137, 127, 154, 17),
             width: 2,
           ),
         ),
@@ -148,14 +148,21 @@ class _HomeScreenState extends State<HomeScreen> {
                     return Text("error");
                   } else if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
                     return Text(
-                      'Play one game to see your recent matches!',
+                      'PLAY ONE GAME \n TO SEE \n YOUR RECENT MATCHES!',
+                      textAlign: TextAlign.center,
                       style: TextStyle(
-                        fontFamily: 'Lekton',
-                        color: Colors.white,
-                        fontSize: screenWidth * 0.05, // 5% of screen width
-                        letterSpacing: 3.0,
-                        fontWeight: FontWeight.w800,
-                        fontStyle: FontStyle.italic,
+                        fontFamily: 'SPORT',
+                        color: const Color.fromARGB(255, 255, 222, 7),
+                        fontSize: screenWidth * 0.046, // 5% of screen width
+                        letterSpacing: 4.0,
+                        fontWeight: FontWeight.w500,
+                        fontStyle: FontStyle.normal,
+                        shadows: [
+                          Shadow(
+                            color: const Color.fromARGB(255, 255, 255, 254),
+                            offset: Offset(1, 1),
+                            ),
+                          ],
                       ),
                     );
                   } else {
@@ -210,7 +217,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
             Align(
-              alignment: const Alignment(-0.1, -1.69),
+              alignment: const Alignment(0.1, -1.69),
               child: Text(
                 'RECORD',
                 style: TextStyle(
@@ -218,12 +225,12 @@ class _HomeScreenState extends State<HomeScreen> {
                   color: const Color.fromARGB(255, 221, 204, 13),
                   shadows: [
                     Shadow(
-                      color: const Color.fromARGB(255, 0, 0, 0),
-                      offset: Offset(screenWidth * 0.012, 1.5), // 0.6% of screen width
+                      color: const Color.fromARGB(192, 5, 183, 11),
+                      offset: Offset( 2.012, 2.5), // 0.6% of screen width
                     ),
                     Shadow(
-                      color: const Color.fromARGB(255, 188, 176, 43).withOpacity(0.70), // Verde con opacidad para el glow
-                      blurRadius: 77.0, // Radio del blur para el glow
+                      color: const Color.fromARGB(255, 4, 4, 4).withOpacity(0.8), // Verde con opacidad para el glow
+                      blurRadius: 10.0, // Radio del blur para el glow
                     ),
                   ],
                   fontSize: screenWidth * 0.055, // 5.15% of screen width
@@ -344,7 +351,7 @@ Widget _buildPlayerImage() {
         decoration: BoxDecoration(
           boxShadow: [
             BoxShadow(
-              color: const Color.fromARGB(226, 130, 236, 165).withOpacity(0.55), // El color del brillo
+              color: const Color.fromARGB(225, 0, 0, 0).withOpacity(0.55), // El color del brillo
               spreadRadius: 3,
               blurRadius: 12,
               offset: Offset(0, 0),
@@ -389,7 +396,7 @@ Widget _buildPlayerImage() {
         decoration: BoxDecoration(
           boxShadow: [
             BoxShadow(
-              color: const Color.fromARGB(226, 130, 236, 165).withOpacity(0.55), // El color del brillo
+              color: const Color.fromARGB(225, 0, 0, 0).withOpacity(0.55), // El color del brillo
               spreadRadius: 3,
               blurRadius: 12,
               offset: Offset(0, 0),

@@ -73,7 +73,7 @@ Widget build(BuildContext context) {
             style: TextStyle(
               fontFamily: 'Black Ops One',
               fontSize: screenWidth * 0.040, // 15% of screen width
-              color: const Color.fromARGB(255, 255, 255, 255),
+              color: const Color.fromARGB(255, 251, 253, 253),
               shadows: [
                 Shadow(
                   color: Colors.black,

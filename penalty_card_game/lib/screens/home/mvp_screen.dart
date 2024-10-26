@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:penalty_card_game/screens/home/home_screen.dart';
 import 'dart:math';
 import 'package:user_repository/user_repository.dart';
+import 'package:penalty_card_game/player_cards/player_card_mvp.dart';
 
 class PenaltyShootoutApp extends StatelessWidget {
   @override
@@ -201,15 +202,15 @@ class _PenaltyGameState extends State<PenaltyGame> {
                 border: Border(
                   left: BorderSide(
                     color: Colors.white, // Color para los postes laterales
-                    width: 12.0, // Grosor de los postes
+                    width: 10.0, // Grosor de los postes
                   ),
                   right: BorderSide(
                     color: Colors.white, // Color para el otro poste
-                    width: 12.0, // Grosor de los postes
+                    width: 10.0, // Grosor de los postes
                   ),
                   top: BorderSide(
                     color: Colors.white, // Color para el travesaño
-                    width: 12.0, // Grosor del travesaño (puede ser un poco más grueso que los postes)
+                    width: 10.0, // Grosor del travesaño (puede ser un poco más grueso que los postes)
                   ),
                   // Si deseas agregar un borde inferior opcional
                   bottom: BorderSide(

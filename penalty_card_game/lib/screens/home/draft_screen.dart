@@ -65,38 +65,38 @@ class _DraftScreenState extends State<DraftScreen> {
           _buildBackgroundImage(),
           // Texto "TEAM DRAFT"
           Align(
-            alignment: AlignmentDirectional(1, -0.7),
+            alignment: AlignmentDirectional(-0.9, -0.8),
             child: Text(
-              'TEAM \n    DRAFT',
+              'TEAM\n DRAFT',
               style: TextStyle(
                 fontFamily: 'Speedway',
-                fontSize: 33.0,
+                fontSize: 26.0,
                 color: const Color.fromARGB(255, 221, 204, 13),
                   shadows: [
                     Shadow(
-                      color: const Color.fromARGB(255, 0, 0, 0),
+                      color: const Color.fromARGB(255, 5, 183, 11),
                       offset: Offset( 2.012, 2.5), // 0.6% of screen width
                     ),
                     Shadow(
-                      color: const Color.fromARGB(255, 247, 229, 39).withOpacity(0.66), // Verde con opacidad para el glow
-                      blurRadius: 30.0, // Radio del blur para el glow
+                      color: const Color.fromARGB(255, 0, 0, 0).withOpacity(0.8), // Verde con opacidad para el glow
+                      blurRadius: 10.0, // Radio del blur para el glow
                     ),
                   ],
-                fontWeight: FontWeight.w900,
-                letterSpacing: 5.0,
+                fontWeight: FontWeight.w600,
+                letterSpacing: 8.0,
               ),
             ),
           ),
           Align(
-            alignment: AlignmentDirectional(0.97, 0.09),
+            alignment: AlignmentDirectional(0.95, -0.08),
             child: Container(
               width: 120.0,
-              height: 30.0,
+              height: 32.0,
               decoration: BoxDecoration(
-                color: const Color.fromARGB(255, 9, 207, 68),
-                borderRadius: BorderRadius.circular(3.0),
+                color: const Color.fromARGB(123, 242, 242, 242),
+                borderRadius: BorderRadius.circular(50.0),
                 border: Border.all(
-                  color: const Color.fromARGB(255, 14, 136, 14), // Color del borde
+                  color: const Color.fromARGB(255, 255, 255, 255), // Color del borde
                   width: 2.0,
                 ),
                 boxShadow: [
@@ -110,10 +110,11 @@ class _DraftScreenState extends State<DraftScreen> {
               padding: EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0), // Espaciado interno
               child: Text(
                 "${currentUser?.name ?? 'Your'} FC",
+                textAlign: TextAlign.right,
                 style: TextStyle(
-                  fontFamily: 'Denk One',
+                  fontFamily: 'Rubik Wet Paint',
                   color:  Color.fromARGB(255, 255, 255, 255), // Color del texto
-                  fontSize: 13.0, // Tamaño del texto
+                  fontSize: 15.0, // Tamaño del texto
                   fontWeight: FontWeight.bold,
                   letterSpacing: 1.0,
                 ),
@@ -121,7 +122,7 @@ class _DraftScreenState extends State<DraftScreen> {
             ),
           ),
           Align(
-            alignment: AlignmentDirectional(0.66, 0.1),
+            alignment: AlignmentDirectional(0.65, -0.09),
             child: GestureDetector(
             onTap: () async {
               bool isDraftComplete = await _checkDraftCompletion();
@@ -135,10 +136,10 @@ class _DraftScreenState extends State<DraftScreen> {
               }
             },
               child: Container(
-                width: 70.0,
-                height: 70.0,
+                width: 90.0,
+                height: 90.0,
                 decoration: BoxDecoration(
-                  color: const Color.fromARGB(255, 56, 199, 73),
+                  color: const Color.fromARGB(255, 46, 208, 65),
                   shape: BoxShape.circle,
                   boxShadow: [
                     BoxShadow(
@@ -148,14 +149,14 @@ class _DraftScreenState extends State<DraftScreen> {
                     ),
                   ],
                   border: Border.all(
-                    color: const Color.fromARGB(255, 41, 141, 52),
-                    width: 3.0,
+                    color: const Color.fromARGB(255, 255, 255, 255),
+                    width: 4.0,
                   ),
                 ),
                 child: Icon(
                   Icons.check,
                   color: Colors.white,
-                  size: 40.0,
+                  size: 70.0,
                 ),
               ),
             ),
@@ -207,14 +208,14 @@ Map<String, ValueNotifier<Map<int, Map<String, dynamic>>>> selectedCards = {
 
 List<Widget> _buildPlayerSlots() {
   return [
-    _playerSlotButton('Delanteros', -0.42, -0.7, 1),
-    _playerSlotButton('Delanteros', 0.28, -0.7, 2),
-    _playerSlotButton('Delanteros', -0.07, -0.8, 3),
-    _playerSlotButton('Mediocampistas', -0.27, -0.1, 1),
-    _playerSlotButton('Mediocampistas', 0.13, -0.1, 2),
-    _playerSlotButton('Defensas', -0.42, 0.5, 1),
-    _playerSlotButton('Defensas', 0.28, 0.5, 2),
-    _playerSlotButton('Goleros', -0.07, 0.85, 1),
+    _playerSlotButton('Delanteros', -0.35, -0.7, 1),
+    _playerSlotButton('Delanteros', 0.35, -0.7, 2),
+    _playerSlotButton('Delanteros', 0, -0.8, 3),
+    _playerSlotButton('Mediocampistas', -0.15, -0.1, 1),
+    _playerSlotButton('Mediocampistas', 0.15, -0.1, 2),
+    _playerSlotButton('Defensas', -0.35, 0.5, 1),
+    _playerSlotButton('Defensas', 0.355, 0.5, 2),
+    _playerSlotButton('Goleros', 0.001, 0.85, 1),
   ];
 }
 
@@ -273,19 +274,18 @@ void showPlayersForButton(BuildContext context, String position, int buttonIndex
       return BackdropFilter(
         filter: ImageFilter.blur(sigmaX: 3.0, sigmaY: 3.0),
         child: AlertDialog(
-          backgroundColor: const Color.fromARGB(255, 49, 173, 63).withOpacity(0.8),
+          backgroundColor: const Color.fromARGB(76, 2, 78, 32).withOpacity(0.8),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.all(Radius.circular(10.0)),
-            side: BorderSide(color: Colors.white, width: 2.0),
+            side: BorderSide(color: const Color.fromARGB(202, 247, 215, 7), width: 4.0),
           ),
           content: Container(
             width: double.maxFinite,
             decoration: BoxDecoration(
-              color: const Color.fromARGB(255, 47, 168, 61).withOpacity(0.8),
+              color: const Color.fromARGB(0, 255, 255, 255).withOpacity(0),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.white.withOpacity(0.5),
-                  blurRadius: 10.0,
+                  color: const Color.fromARGB(0, 255, 255, 255).withOpacity(0.0),
                   spreadRadius: 5.0,
                 ),
               ],
