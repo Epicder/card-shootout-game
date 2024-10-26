@@ -154,12 +154,12 @@ class _PenaltyGameState extends State<PenaltyGame> {
                               child: ElevatedButton(
                                 onPressed: () {
                                   setState(() {
-                                    selectedPlayer = player;
-                                    usedPlayers.add(player);
+                                    selectedPlayer = player;  // Almacena el jugador seleccionado
+                                    usedPlayers.add(player);  // Marca al jugador como usado
                                     shootingOptions = generateShootingOptions(player['shooting_options']);
-                                    showPlayerList = false; // Ocultar la lista de jugadores
+                                    showPlayerList = false;  // Ocultar la lista de jugadores después de seleccionar
                                     if (usedPlayers.length == userTeam.length - 1) {
-                                      usedPlayers.clear();
+                                      usedPlayers.clear();  // Reinicia la lista de jugadores usados si ya se han usado todos
                                     }
                                   });
                                 },
@@ -382,6 +382,29 @@ class _PenaltyGameState extends State<PenaltyGame> {
               ],
             ),
           ),
+          Positioned(
+            right: -25, // Ajusta la posición a la derecha
+            top: 110, // Alinea con la parte superior de la pantalla
+            child: isPlayerTurn && selectedPlayer != null
+              ? PlayerCardMVP( // Mostrar la carta del ejecutante cuando sea el turno del jugador
+                  playerName: selectedPlayer!['name'],
+                  playerPosition: selectedPlayer!['position'],
+                  playerLevel: selectedPlayer!['level'],
+                  playerCountry: selectedPlayer!['country'],
+                  playerImage: selectedPlayer!['image'],
+                  shootingOptions: selectedPlayer!['shooting_options'],
+                )
+              : (!isPlayerTurn && goalkeeper != null) // Mostrar la carta del golero cuando sea su turno de atajar
+                ? PlayerCardMVP(
+                    playerName: goalkeeper!['name'],
+                    playerPosition: goalkeeper!['position'],
+                    playerLevel: goalkeeper!['level'],
+                    playerCountry: goalkeeper!['country'],
+                    playerImage: goalkeeper!['image'],
+                    shootingOptions: goalkeeper!['shooting_options'], // Atributos del golero
+                  )
+                : SizedBox.shrink(), // No mostrar nada si no es el turno del golero ni del ejecutante
+          ),
         ],
       ),
     );
@@ -400,66 +423,76 @@ class _PenaltyGameState extends State<PenaltyGame> {
     });
   }
 
-  // Maneja la acción cuando el jugador dispara
-  void handlePlayerShoot(int row, int col) {
-    // Verifica que el disparo esté dentro de las opciones de disparo válidas
-    if (shootingOptions.any((option) => option[0] == row && option[1] == col)) {
-      setState(() {
-        playerSelectedTiles = [
-          [row, col]
-        ];
-        cpuSelectSaveZone();
-        checkGoalOrSave();
-        Future.delayed(Duration(seconds: 1), () {
-          clearMatrix();
-          setState(() {
-            isPlayerTurn = false;
-            playerPenalties++;
-            selectedPlayer = null; // Reiniciar la selección para el siguiente penal
-            showPlayerList = false; // Mantener oculta la lista durante la atajada
+void handlePlayerShoot(int row, int col) {
+  // Verifica que el disparo esté dentro de las opciones de disparo válidas
+  if (shootingOptions.any((option) => option[0] == row && option[1] == col)) {
+    setState(() {
+      // Selecciona el cuadrado del jugador
+      playerSelectedTiles = [
+        [row, col]
+      ];
+      // La CPU selecciona una zona de atajada
+      cpuSelectSaveZone();
+      // Comprueba si fue gol o atajada
+      checkGoalOrSave();
 
-            // Si ya todos los jugadores ejecutaron, reiniciar la lista de usados
-            if (usedPlayers.length == userTeam.length - 1) {
-              usedPlayers.clear();
-            }
+      // Después de un pequeño retraso, limpiamos la matriz y avanzamos el turno
+      Future.delayed(Duration(seconds: 1), () {
+        clearMatrix(); // Limpia la matriz de shooting options y casillas seleccionadas
 
-            if (!gameEnded) handleNextRound(); // Llamar a la función para pasar al siguiente turno
-          });
+        setState(() {
+          isPlayerTurn = false; // Cambia el turno al portero
+          playerPenalties++;
+
+          // Una vez que el jugador dispara, eliminamos el jugador seleccionado
+          selectedPlayer = null;
+
+          // Oculta la lista de jugadores durante la atajada
+          showPlayerList = false;
+
+          // Si todos los jugadores han disparado, reiniciar la lista de jugadores usados
+          if (usedPlayers.length == userTeam.length - 1) {
+            usedPlayers.clear();
+          }
+
+          if (!gameEnded) {
+            handleNextRound(); // Continua con el próximo turno si el juego no ha terminado
+          }
         });
       });
-    } else {
-      print("El disparo no está dentro de las opciones válidas");
-    }
+    });
+  } else {
+    print("El disparo no está dentro de las opciones válidas");
   }
+}
 
   void handlePlayerSave(int row, int col) {
     // Obtener las shooting_options del portero para determinar el tamaño del área
     int goalkeeperShootingOptions = goalkeeper!['shooting_options'];
-    int goalkeeperZoneSize = 2; // Valor por defecto para el tamaño de la zona, correspondiente a 4 shooting options
+    int goalkeeperZoneSize = 2;  // Valor por defecto para el tamaño de la zona, correspondiente a 4 shooting options
 
     // Definir el tamaño de la zona basado en las shooting_options
     if (goalkeeperShootingOptions == 4) {
-      goalkeeperZoneSize = 2; // 2x2 área
+      goalkeeperZoneSize = 2;  // 2x2 área
     } else if (goalkeeperShootingOptions == 6) {
-      goalkeeperZoneSize = 3; // 3x3 área
+      goalkeeperZoneSize = 3;  // 3x3 área
     } else if (goalkeeperShootingOptions == 8) {
-      goalkeeperZoneSize = 4; // 4x4 área
+      goalkeeperZoneSize = 4;  // 4x4 área
     } else {
-      // Opcional: Manejar un valor inesperado de shooting options
       print("Error: Shooting options del golero no son válidos");
     }
 
     setState(() {
-      playerSelectedTiles = getGoalkeeperZone(row, col, goalkeeperZoneSize); // Zona determinada
+      playerSelectedTiles = getGoalkeeperZone(row, col, goalkeeperZoneSize);  // Zona determinada
       cpuSelectShootZone();
       checkGoalOrSave();
       Future.delayed(Duration(seconds: 1), () {
         clearMatrix();
         setState(() {
-          isPlayerTurn = true;
+          isPlayerTurn = true;  // Cambia el turno al jugador
           cpuPenalties++;
-          showPlayerList = true; // Volver a mostrar la lista de jugadores cuando sea turno del jugador
-          if (!gameEnded) handleNextRound(); // Llamar a la función para pasar al siguiente turno
+          showPlayerList = true;  // Vuelve a mostrar la lista de jugadores cuando sea turno del jugador
+          if (!gameEnded) handleNextRound();  // Llamar a la función para pasar al siguiente turno
         });
       });
     });
@@ -484,25 +517,26 @@ class _PenaltyGameState extends State<PenaltyGame> {
     return selectedTiles;
   }
 
-  // Función que maneja la lógica para avanzar al siguiente turno
-  void handleNextRound() {
-    if (playerPenalties == cpuPenalties) {
-      if (playerPenalties < 5) {
-        // Continuar el juego si ambos han ejecutado menos de 5 penales
-        return;
-      } else if (playerPenalties == 5) {
-        // Si ambos han ejecutado 5 penales, verificar si alguien ha ganado
-        if (playerScore != cpuScore) {
-          endGame();
-        }
-      } else {
-        // Después de 5 penales, el juego entra en muerte súbita
-        if ((playerScore > cpuScore) || (cpuScore > playerScore)) {
-          endGame();
-        }
+// Maneja el siguiente turno
+void handleNextRound() {
+  // Verifica si ambos jugadores han ejecutado la misma cantidad de penales
+  if (playerPenalties == cpuPenalties) {
+    // Continuar si ambos han ejecutado menos de 5 penales
+    if (playerPenalties < 5) {
+      return;
+    } else if (playerPenalties == 5) {
+      // Verificar si alguien ha ganado después de 5 penales
+      if (playerScore != cpuScore) {
+        endGame();
+      }
+    } else {
+      // Después de 5 penales, entra en muerte súbita
+      if (playerScore != cpuScore) {
+        endGame();
       }
     }
   }
+}
 
   void endGame() async {
     setState(() {
@@ -569,12 +603,14 @@ class _PenaltyGameState extends State<PenaltyGame> {
     );
   }
 
-  // Limpia la matriz después de cada penal
-  void clearMatrix() {
-    playerSelectedTiles.clear();
-    cpuSelectedTiles.clear();
-    shootingOptions.clear(); // Limpiar las opciones de disparo al terminar el penal
-  }
+void clearMatrix() {
+  setState(() {
+    playerSelectedTiles.clear(); // Limpia las casillas seleccionadas por el jugador
+    cpuSelectedTiles.clear();    // Limpia las casillas seleccionadas por la CPU
+    shootingOptions.clear();     // Limpia las opciones de disparo
+  });
+}
+
 
   void resetGame() {
     setState(() {
@@ -617,24 +653,25 @@ class _PenaltyGameState extends State<PenaltyGame> {
     });
   }
 
-  // Verificar si fue gol o atajada
-  void checkGoalOrSave() {
-    if (isPlayerTurn) {
-      if (cpuSelectedTiles.any((tile) => tile[0] == playerSelectedTiles[0][0] && tile[1] == playerSelectedTiles[0][1])) {
-        print("CPU atajo");
-      } else {
-        playerScore++;
-        print("USR gol");
-      }
+void checkGoalOrSave() {
+  if (isPlayerTurn) {
+    // Verifica si la CPU atajó el penal
+    if (cpuSelectedTiles.any((tile) => tile[0] == playerSelectedTiles[0][0] && tile[1] == playerSelectedTiles[0][1])) {
+      print("CPU atajó el disparo");
     } else {
-      if (playerSelectedTiles.any((tile) => tile[0] == cpuSelectedTiles[0][0] && tile[1] == cpuSelectedTiles[0][1])) {
-        print("USR atajo");
-      } else {
-        cpuScore++;
-        print("CPU gol");
-      }
+      playerScore++;
+      print("¡Gol del jugador!");
+    }
+  } else {
+    // Verifica si el jugador atajó el penal de la CPU
+    if (playerSelectedTiles.any((tile) => tile[0] == cpuSelectedTiles[0][0] && tile[1] == cpuSelectedTiles[0][1])) {
+      print("El jugador atajó el disparo de la CPU");
+    } else {
+      cpuScore++;
+      print("Gol de la CPU");
     }
   }
+}
 
   // Define los colores de los cuadros en la matriz
   Color getColorForTile(int row, int col) {

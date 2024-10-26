@@ -4,52 +4,148 @@ class PlayerCardMVP extends StatelessWidget {
   final String playerName;
   final String playerPosition;
   final int playerLevel;
+  final String playerCountry;
   final String playerImage;
+  final int shootingOptions;
+
 
   const PlayerCardMVP({
-    Key? key,
     required this.playerName,
     required this.playerPosition,
     required this.playerLevel,
+    required this.playerCountry,
     required this.playerImage,
-  }) : super(key: key);
+    required this.shootingOptions,
+  });
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
+
     return Container(
-      width: 150, // Tamaño de la carta
-      height: 200,
+      width: screenWidth * 0.28, // Ajusta el tamaño de la carta para la pantalla MVP
+      height: screenHeight * 0.48, // Ajusta la altura de la carta
       decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(12),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.2),
-            spreadRadius: 5,
-            blurRadius: 10,
-            offset: Offset(0, 5),
-          ),
-        ],
+        image: DecorationImage(
+          image: AssetImage('assets/fondo_cartas.png'), // Fondo de la carta
+        ),
+        borderRadius: BorderRadius.circular(19.0),
       ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
+      child: Stack(
         children: [
-          Image.network(
-            playerImage,
-            width: 100,
-            height: 100,
-            fit: BoxFit.cover,
-          ),
-          SizedBox(height: 10),
-          Text(
-            playerName,
-            style: TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.bold,
+          // Imagen del jugador
+          Positioned(
+            left: screenWidth * 0.07, // Ajusta la posición horizontal
+            top: screenHeight * 0.09, // Ajusta la posición vertical
+            child: Image.network(
+              playerImage, // URL de la imagen del jugador
+              height: screenHeight * 0.44, // Tamaño de la imagen
+              fit: BoxFit.fill,
             ),
           ),
-          Text(playerPosition),
-          Text('Nivel: $playerLevel'),
+          // Nombre del jugador
+          Positioned(
+            top: screenHeight * 0.010, // Ajusta la posición del texto
+            left: screenWidth * 0.077, // Ajusta la posición del texto
+            child: Text(
+              playerName.toUpperCase(),
+              style: TextStyle(
+                fontFamily: 'SPEED',
+                fontSize: screenWidth * 0.016, // Ajusta el tamaño del texto
+                fontWeight: FontWeight.w800,
+                color: const Color.fromARGB(255, 248, 248, 248),
+                shadows: [
+                  Shadow(
+                    color: const Color.fromARGB(255, 12, 78, 3),
+                    offset: Offset(2.0, 2.0),
+                    blurRadius: 2.0,
+                  ),
+                ],
+              ),
+            ),
+          ),
+          // Nivel del jugador
+          Positioned(
+            bottom: screenHeight * 0.026, // Ajusta la posición del nivel
+            right: screenWidth * 0.083, // Ajusta la posición
+            child: Text(
+              '$playerLevel',
+              style: TextStyle(
+                fontFamily: 'Black Ops One',
+                fontSize: screenWidth * 0.035, // Ajusta el tamaño del texto
+                color: const Color.fromARGB(255, 251, 253, 253),
+                shadows: [
+                  Shadow(
+                    color: Colors.black,
+                    offset: Offset(2.5, 2.5),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          // Posición del jugador
+          Positioned(
+            top: screenHeight * 0.3, // Ajusta la posición
+            right: screenWidth * 0.077, // Ajusta la posición
+            child: Container(
+              width: screenWidth * 0.07, // Ajusta el tamaño del contenedor
+              height: screenHeight * 0.035, // Ajusta el tamaño
+              decoration: BoxDecoration(
+                color: const Color.fromARGB(255, 5, 197, 28).withOpacity(1),
+                borderRadius: BorderRadius.circular(3.0),
+              ),
+              child: Center(
+                child: Text(
+                  playerPosition.toUpperCase(),
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontWeight: FontWeight.w600,
+                    color: Colors.white,
+                    fontSize: screenWidth * 0.014, // Ajusta el tamaño del texto
+                  ),
+                ),
+              ),
+            ),
+          ),
+          // Opciones de tiro (centrar número en un círculo con borde)
+          Positioned(
+            top: screenHeight * 0.20, // Ajusta según tu diseño
+            right: screenWidth * 0.075, // Ajusta según tu diseño
+            child: Container(
+              width: screenWidth * 0.035, // Ajusta el ancho para que sea más pequeño si es necesario
+              height: screenWidth * 0.035, // Ajusta la altura para que sea igual al ancho, formando un círculo
+              decoration: BoxDecoration(
+                color: Colors.red,
+                shape: BoxShape.circle, // Asegura que sea un círculo perfecto
+                border: Border.all( // Añadir un borde
+                  color: Colors.white,
+                  width: 1.4,
+                ),
+              ),
+              child: Center(
+                child: Text(
+                  '$shootingOptions',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: screenWidth * 0.020, // Ajusta el tamaño según tu diseño
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+            ),
+          ),
+
+          // Bandera del país (reducir tamaño)
+          Positioned(
+            top: screenHeight * 0.10, // Ajusta según tu diseño
+            right: screenWidth * 0.055, // Ajusta según tu diseño
+            child: Image.network(
+              playerCountry, // Aquí deberás pasar el URL de la bandera según tu lógica
+              width: screenWidth * 0.07, // Ajustado para reducir el ancho
+              height: screenHeight * 0.035, // Ajustado para reducir la altura
+            ),
+          ),
         ],
       ),
     );
