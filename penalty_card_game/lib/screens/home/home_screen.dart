@@ -222,7 +222,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       offset: Offset(screenWidth * 0.012, 1.5), // 0.6% of screen width
                     ),
                     Shadow(
-                      color: const Color.fromARGB(255, 188, 176, 43).withOpacity(0.66), // Verde con opacidad para el glow
+                      color: const Color.fromARGB(255, 188, 176, 43).withOpacity(0.70), // Verde con opacidad para el glow
                       blurRadius: 77.0, // Radio del blur para el glow
                     ),
                   ],
@@ -292,7 +292,6 @@ Widget _buildPlayerImage() {
             ),
           );
         }
-
         return PlayerCard(
           playerName: playerData['name'],
           playerPosition: playerData['position'],
@@ -345,7 +344,7 @@ Widget _buildPlayerImage() {
         decoration: BoxDecoration(
           boxShadow: [
             BoxShadow(
-              color: const Color.fromARGB(255, 0, 0, 0), // El color del brillo
+              color: const Color.fromARGB(226, 130, 236, 165).withOpacity(0.55), // El color del brillo
               spreadRadius: 3,
               blurRadius: 12,
               offset: Offset(0, 0),
@@ -357,7 +356,7 @@ Widget _buildPlayerImage() {
           onPressed: () {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => DraftScreen()),
+              createSlideRoute(DraftScreen()),
             );
           },
           style: ElevatedButton.styleFrom(
@@ -390,7 +389,7 @@ Widget _buildPlayerImage() {
         decoration: BoxDecoration(
           boxShadow: [
             BoxShadow(
-              color: const Color.fromARGB(255, 0, 0, 0), // El color del brillo
+              color: const Color.fromARGB(226, 130, 236, 165).withOpacity(0.55), // El color del brillo
               spreadRadius: 3,
               blurRadius: 12,
               offset: Offset(0, 0),
@@ -449,4 +448,26 @@ Widget _buildPlayerImage() {
       return {'playerId': '', 'collection': selectedCollection}; // Retorna valores vacíos si no hay jugadores
     }
   }
+
+  //----------------------Animacion slide----------------------------------------------------------
+  Route createSlideRoute(Widget page) {
+  return PageRouteBuilder(
+    pageBuilder: (context, animation, secondaryAnimation) => page,
+    transitionsBuilder: (context, animation, secondaryAnimation, child) {
+      const begin = Offset(2.0, 0.0);
+      const end = Offset.zero;
+      const curve = Curves.easeInOut;
+
+      var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+      var offsetAnimation = animation.drive(tween);
+
+      return SlideTransition(
+        position: offsetAnimation,
+        child: child,
+      );
+    },
+    transitionDuration: const Duration(milliseconds: 740),
+  );
+}
+
 }

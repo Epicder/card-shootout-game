@@ -320,7 +320,7 @@ void showPlayersForButton(BuildContext context, String position, int buttonIndex
                         selectedPlayers.add(playerId);
 
                         // Agregar jugador a la selección
-                        _addToDraft(position, buttonIndex, playerData);
+                        _addToDraft(position, buttonIndex, playerData, playerId);
 
                         Navigator.of(context).pop();
                       },
@@ -348,11 +348,28 @@ void showPlayersForButton(BuildContext context, String position, int buttonIndex
 }
 
 // ------------------ Funciones de selección de jugadores ------------------ //
-void _addToDraft(String position, int buttonIndex, Map<String, dynamic> playerData) {
+void _addToDraft(String position, int buttonIndex, Map<String, dynamic> playerData, String playerId) async {
   selectedCards[position]!.value = {
     ...selectedCards[position]!.value,
     buttonIndex: playerData,
   };
+  User? currentUser = FirebaseAuth.instance.currentUser;
+  if (currentUser != null) {
+    // referencia al documento del usuario actual
+    DocumentReference userRef = FirebaseFirestore.instance.collection('users').doc(currentUser.uid);
+    // añadir el jugador a la subcolección "my_draft" en el documento del usuario
+    await userRef.collection('my_draft').doc(playerId).set({
+      'name': playerData['name'],
+      'position': playerData['position'],
+      'level': playerData['level'],
+      'country': playerData['country'],
+      'image': playerData['image'],
+      'shooting_options': playerData['shooting_options'],
+    });
+    
+    // debug
+    print('${playerData['name']} ha sido añadido a my_draft.');
+  }
 }
 
 Future<bool> _checkDraftCompletion() async {

@@ -16,6 +16,7 @@ dependencies:
   flutter_bloc: ^8.1.6
   equatable: ^2.0.5
   cupertino_icons: ^1.0.8
+  firebase_storage: ^12.3.4
 
   user_repository:
     path: packages/user_repository

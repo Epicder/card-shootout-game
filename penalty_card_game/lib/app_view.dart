@@ -10,19 +10,46 @@ class MyAppView extends StatelessWidget {
   const MyAppView({super.key});
 
 @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Firebase Auth',
-      home: BlocBuilder<AuthenticationBloc, AuthenticationState>(
-        builder: (context, state) {
-          if(state.status == AuthenticationStatus.authenticated) {
-            return const HomeScreen();
-          } else {
-            return const WelcomeScreen();
-          }
-        }  
-      )
-    );
-  }
+Widget build(BuildContext context) {
+  return MaterialApp(
+    debugShowCheckedModeBanner: false,
+    title: 'Firebase Auth',
+    home: BlocBuilder<AuthenticationBloc, AuthenticationState>(
+      builder: (context, state) {
+        if (state.status == AuthenticationStatus.authenticated) {
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            Navigator.pushReplacement(
+              context,
+              createSlideRoute(const HomeScreen()),
+            );
+          });
+          // Muestra un widget vacío mientras se realiza la transición
+          return const SizedBox(); // Puedes mostrar un indicador de carga si lo prefieres
+        } else {
+          return const WelcomeScreen();
+        }
+      },
+    ),
+  );
+}
+    //----------------------Animacion slide----------------------------------------------------------
+  Route createSlideRoute(Widget page) {
+  return PageRouteBuilder(
+    pageBuilder: (context, animation, secondaryAnimation) => page,
+    transitionsBuilder: (context, animation, secondaryAnimation, child) {
+      const begin = Offset(2.0, 0.0);
+      const end = Offset.zero;
+      const curve = Curves.easeInOut;
+
+      var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+      var offsetAnimation = animation.drive(tween);
+
+      return SlideTransition(
+        position: offsetAnimation,
+        child: child,
+      );
+    },
+    transitionDuration: const Duration(milliseconds: 740),
+  );
+}
 }
