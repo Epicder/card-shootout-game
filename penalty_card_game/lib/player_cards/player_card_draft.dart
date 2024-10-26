@@ -53,7 +53,7 @@ Widget build(BuildContext context) {
               fontFamily: 'SPEED',
               fontSize: screenWidth * 0.0175, // 6% of screen width
               fontWeight: FontWeight.w800,
-              color: const Color.fromARGB(255, 56, 199, 73),
+              color: const Color.fromARGB(255, 248, 248, 248),
               shadows: [
                 Shadow(
                   color: const Color.fromARGB(255, 12, 78, 3),
@@ -85,7 +85,7 @@ Widget build(BuildContext context) {
         ),
         // Posición del jugador
         Positioned(
-          top: screenHeight * 0.16, // 20% of screen height
+          top: screenHeight * 0.225, // 20% of screen height
           right: screenWidth * -0.15, // 5% of screen width
           child: Container(
             padding: EdgeInsets.symmetric(
@@ -96,37 +96,45 @@ Widget build(BuildContext context) {
             width: screenWidth * 0.076, // 13% of screen width
             height: screenHeight * 0.047, // 7% of screen height
             decoration: BoxDecoration(
-              color: const Color.fromARGB(255, 56, 199, 73).withOpacity(0.7),
-              borderRadius: BorderRadius.circular(5.0),
-            ),
-            child: Text(
-              playerPosition.toUpperCase(),
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: screenWidth * 0.015, // 4% of screen width
-                fontStyle: FontStyle.italic,
+                color: const Color.fromARGB(255, 5, 197, 28).withOpacity(1),
+                borderRadius: BorderRadius.circular(3.0),
               ),
-            ),
+            child: Center( // Asegura que el texto esté centrado dentro del contenedor
+                child: Text(
+                  playerPosition.toUpperCase(),
+                  textAlign: TextAlign.center, // Centra el texto horizontalmente
+                  style: TextStyle(
+                    fontWeight: FontWeight.w600,
+                    color: Colors.white,
+                    fontSize: screenWidth * 0.014, // Ajusta el tamaño según tu diseño
+                    fontStyle: FontStyle.normal,
+                  ),
+                ),
+              ),
           ),
         ),
         ),
         // Opciones de tiro
         Positioned(
-          top: screenHeight * 0.325, // 27% of screen height
+          top: screenHeight * 0.170, // 27% of screen height
           right: screenWidth * 0.070, // 5% of screen width
           child: Container(
             width: screenWidth * 0.030, // 13% of screen width
-            height: screenHeight * 0.06, // 7% of screen height
-            decoration: BoxDecoration(
-              color: Colors.red.withOpacity(0.77),
-              borderRadius: BorderRadius.circular(5.0),
+            height: screenHeight * 0.136, // 7% of screen height
+             decoration: BoxDecoration(
+              color: Colors.red,
+              shape: BoxShape.circle, // Asegura que sea un círculo perfecto
+              border: Border.all( // Añadir un borde
+                color: Colors.white,
+                width: 1.4,
             ),
+             ),
             child: Center(
               child: Text(
                 '$shootingOptions',
                 style: TextStyle(
                   color: Colors.white,
-                  fontSize: screenWidth * 0.022, // 7% of screen width
+                  fontSize: screenWidth * 0.020, // 7% of screen width
                   fontWeight: FontWeight.bold,
                 ),
               ),
@@ -139,8 +147,8 @@ Widget build(BuildContext context) {
           right: screenWidth * 0.025, // 5% of screen width
           child: Image.network(
             playerCountry, // Aquí deberás pasar el URL de la bandera según tu lógica
-            width: screenWidth * 0.13, // 8% of screen width
-            height: screenHeight * 0.06, // 3% of screen height
+            width: screenWidth * 0.12, // 8% of screen width
+            height: screenHeight * 0.047, // 3% of screen height
           ),
         ),
       ],
