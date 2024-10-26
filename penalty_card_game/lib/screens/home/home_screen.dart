@@ -20,6 +20,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   String currentPlayerId = 'luis_suárez'; // ID del jugador actual
+  String currentCollection = 'Delanteros'; // Colección actual
 
   @override
   void initState() {
@@ -114,10 +115,10 @@ class _HomeScreenState extends State<HomeScreen> {
     final screenHeight = MediaQuery.of(context).size.height;
 
     return Align(
-      alignment: const Alignment(-0.65, -0.4),
+      alignment: const Alignment(-0.65, -0.18),
       child: Container(
         width: screenWidth * 0.4, // 80% of screen width
-        height: screenHeight * 0.6, // 40% of screen height
+        height: screenHeight * 0.58, // 40% of screen height
         decoration: BoxDecoration(
           color: const Color(0xD60B1415),
           borderRadius: BorderRadius.circular(20),
@@ -126,12 +127,12 @@ class _HomeScreenState extends State<HomeScreen> {
               blurRadius: 15.0,
               color: const Color.fromARGB(255, 247, 229, 39).withOpacity(0.30),
               offset: const Offset(0.0, 2.0),
-              spreadRadius: 5.0,
+              spreadRadius: 3.0,
             ),
           ],
           border: Border.all(
-            color: const Color.fromARGB(255, 194, 187, 2),
-            width: 3,
+            color: const Color.fromARGB(138, 194, 188, 2),
+            width: 2,
           ),
         ),
         child: Stack(
@@ -209,7 +210,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
             Align(
-              alignment: const Alignment(-0.1, -1.48),
+              alignment: const Alignment(-0.1, -1.69),
               child: Text(
                 'RECORD',
                 style: TextStyle(
@@ -221,7 +222,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       offset: Offset(screenWidth * 0.012, 1.5), // 0.6% of screen width
                     ),
                     Shadow(
-                      color: const Color.fromARGB(255, 247, 229, 39).withOpacity(0.66), // Verde con opacidad para el glow
+                      color: const Color.fromARGB(255, 188, 176, 43).withOpacity(0.66), // Verde con opacidad para el glow
                       blurRadius: 77.0, // Radio del blur para el glow
                     ),
                   ],
@@ -253,33 +254,57 @@ class _HomeScreenState extends State<HomeScreen> {
         .snapshots();
   }
 
-  // Widget para la carta del jugador desde Firestore
-  Widget _buildPlayerImage() {
-    return Align(
-      alignment: const Alignment(1.5, -0.31),
-      child: StreamBuilder<DocumentSnapshot>(
-        stream: FirebaseFirestore.instance
-            .collection('Delanteros')
-            .doc(currentPlayerId) // Usar el ID del jugador actual
-            .snapshots(),
-        builder: (context, snapshot) {
-          if (!snapshot.hasData) {
-            return CircularProgressIndicator();
-          }
-
-          var playerData = snapshot.data!.data() as Map<String, dynamic>;
-          return PlayerCard(
-            playerName: playerData['name'],
-            playerPosition: playerData['position'],
-            playerLevel: playerData['level'],
-            playerCountry: playerData['country'],
-            playerImage: playerData['image'],
-            shootingOptions: playerData['shooting_options'],
+// Widget para la carta del jugador desde Firestore
+Widget _buildPlayerImage() {
+  return Align(
+    alignment: const Alignment(1.45, -0.18),
+    child: StreamBuilder<DocumentSnapshot>(
+      stream: FirebaseFirestore.instance
+          .collection(currentCollection) // Usa la colección almacenada
+          .doc(currentPlayerId) // Usa el ID del jugador actual
+          .snapshots(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return CircularProgressIndicator(); // Mostramos un indicador de carga mientras se obtienen los datos
+        }
+        
+        if (!snapshot.hasData || !snapshot.data!.exists) {
+          // Si no hay datos o el documento no existe, mostramos un mensaje de error
+          return Text(
+            'Jugador no encontrado',
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 20.0,
+            ),
           );
-        },
-      ),
-    );
-  }
+        }
+
+        // Verificamos que los datos no sean null y realizamos el cast a Map<String, dynamic>
+        var playerData = snapshot.data!.data() as Map<String, dynamic>?;
+
+        if (playerData == null) {
+          // Si los datos del jugador son null, mostramos un mensaje de error
+          return Text(
+            'Datos del jugador no disponibles',
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 20.0,
+            ),
+          );
+        }
+
+        return PlayerCard(
+          playerName: playerData['name'],
+          playerPosition: playerData['position'],
+          playerLevel: playerData['level'],
+          playerCountry: playerData['country'],
+          playerImage: playerData['image'],
+          shootingOptions: playerData['shooting_options'],
+        );
+      },
+    ),
+  );
+}
 
   // Widget para el texto "ONE TO WATCH"
   Widget _buildOneToWatchText(BuildContext context) {
@@ -293,7 +318,7 @@ class _HomeScreenState extends State<HomeScreen> {
         style: TextStyle(
           fontFamily: 'SPORT',
           color: const Color.fromARGB(255, 255, 238, 1),
-          fontSize: screenWidth * 0.045, // 6% of screen width
+          fontSize: screenWidth * 0.050, // 6% of screen width
           letterSpacing: 2.0,
           fontWeight: FontWeight.bold,
           shadows: [
@@ -315,14 +340,14 @@ class _HomeScreenState extends State<HomeScreen> {
   // Widget para los botones del menú
   Widget _buildGameModeButton(BuildContext context, String text, Alignment alignment) {
     return Align(
-      alignment: const Alignment(-0.48, 0.84),
+      alignment: const Alignment(-0.45, 0.84),
       child: Container(
         decoration: BoxDecoration(
           boxShadow: [
             BoxShadow(
-              color: const Color.fromARGB(226, 130, 236, 165).withOpacity(0.55), // El color del brillo
-              spreadRadius: 5,
-              blurRadius: 18,
+              color: const Color.fromARGB(255, 0, 0, 0), // El color del brillo
+              spreadRadius: 3,
+              blurRadius: 12,
               offset: Offset(0, 0),
             ),
           ],
@@ -360,14 +385,14 @@ class _HomeScreenState extends State<HomeScreen> {
   // Widget para el botón "Change"
   Widget _buildChangePlayerButton(BuildContext context, String text, Alignment alignment) {
     return Align(
-      alignment: const Alignment(0.57, 0.84),
+      alignment: const Alignment(0.51, 0.84),
       child: Container(
         decoration: BoxDecoration(
           boxShadow: [
             BoxShadow(
-              color:const Color.fromARGB(226, 130, 236, 165).withOpacity(0.55), // El color del brillo
-              spreadRadius: 2,
-              blurRadius: 10,
+              color: const Color.fromARGB(255, 0, 0, 0), // El color del brillo
+              spreadRadius: 3,
+              blurRadius: 12,
               offset: Offset(0, 0),
             ),
           ],
@@ -375,16 +400,17 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
         child: ElevatedButton(
           onPressed: () async {
-            // Obtener un jugador al azar
-            var randomPlayerId = await _getRandomPlayerId();
+            // Obtener un jugador al azar y la colección correspondiente
+            var result = await _getRandomPlayer();
             setState(() {
-              currentPlayerId = randomPlayerId;
+              currentPlayerId = result['playerId'] ?? 'default_player_id'; // Proporciona un ID de jugador predeterminado si es null
+              currentCollection = result['collection'] ?? 'Delanteros'; // Utiliza 'Delanteros' como colección predeterminada
             });
           },
           style: ElevatedButton.styleFrom(
             backgroundColor: const Color.fromARGB(226, 130, 236, 165),
             foregroundColor: const Color.fromARGB(255, 255, 255, 255),
-            padding: const EdgeInsets.symmetric(horizontal: 28.0, vertical: 7.0),
+            padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 1.0),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(60),
             ),
@@ -393,7 +419,7 @@ class _HomeScreenState extends State<HomeScreen> {
             text,
             style: const TextStyle(
               fontFamily: 'SPORT',
-              fontSize: 27.0,
+              fontSize: 20.0,
               letterSpacing: 1.3,
               fontWeight: FontWeight.normal,
             ),
@@ -403,12 +429,24 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  // Método para obtener un jugador al azar
-  Future<String> _getRandomPlayerId() async {
-    var collection = FirebaseFirestore.instance.collection('Delanteros');
+  // Método para obtener un jugador al azar de cualquier posición
+  Future<Map<String, String>> _getRandomPlayer() async {
+    List<String> collections = ['Delanteros', 'Defensas', 'Mediocampistas', 'Goleros'];
+
+    // Selecciona una colección aleatoriamente
+    String selectedCollection = collections[Random().nextInt(collections.length)];
+
+    // Obtener un jugador aleatorio de la colección seleccionada
+    var collection = FirebaseFirestore.instance.collection(selectedCollection);
     var querySnapshot = await collection.get();
     var allPlayers = querySnapshot.docs;
-    var randomIndex = Random().nextInt(allPlayers.length);
-    return allPlayers[randomIndex].id;
+
+    if (allPlayers.isNotEmpty) {
+      var randomIndex = Random().nextInt(allPlayers.length);
+      String playerId = allPlayers[randomIndex].id; // Retorna el ID del jugador
+      return {'playerId': playerId, 'collection': selectedCollection}; // Retorna el jugador y la colección
+    } else {
+      return {'playerId': '', 'collection': selectedCollection}; // Retorna valores vacíos si no hay jugadores
+    }
   }
 }
