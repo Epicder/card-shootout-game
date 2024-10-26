@@ -39,6 +39,14 @@ class _DraftScreenState extends State<DraftScreen> {
         fetchUserData(user.uid); // fetchear la data del usuario para conseguir su nombre, filtrando por user id
       }
     });
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Navigator.of(context).popUntil((route) {
+        if (!route.isFirst) {
+          _clearDraftCollection();
+        }
+        return true;
+      });
+    });
   }
 
   Future<void> fetchUserData(String userId) async {
@@ -57,9 +65,31 @@ class _DraftScreenState extends State<DraftScreen> {
   }
 
   @override
+  void dispose() {
+    _clearDraftCollection();
+    super.dispose();
+  }
+
+  Future<void> _clearDraftCollection() async {
+    User? currentUser = FirebaseAuth.instance.currentUser;
+    if (currentUser != null) {
+      // referencia al documento del usuario actual
+      DocumentReference userRef = FirebaseFirestore.instance.collection('users').doc(currentUser.uid);
+      // obtener la colección "my_draft"
+      CollectionReference draftCollection = userRef.collection('my_draft');
+      // obtener todos los documentos en la colección
+      QuerySnapshot draftSnapshot = await draftCollection.get();
+      // borrar cada documento
+      for (DocumentSnapshot doc in draftSnapshot.docs) {
+        await doc.reference.delete();
+      }
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      
+return PopScope(
+      child: Scaffold(
       body: Stack(
         children: [
           _buildBackgroundImage(),
@@ -166,7 +196,8 @@ class _DraftScreenState extends State<DraftScreen> {
           ..._buildPlayerSlots(),
         ],
       ),
-    );
+    ),
+   );
   }
 
   Widget _buildBackgroundImage() {
