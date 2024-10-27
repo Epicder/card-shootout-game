@@ -1,10 +1,14 @@
+import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 import 'package:penalty_card_game/screens/home/home_screen.dart';
 import 'dart:math';
 import 'package:user_repository/user_repository.dart';
 import 'package:penalty_card_game/player_cards/player_card_mvp.dart';
+import 'package:vibration/vibration.dart';
 
 class PenaltyShootoutApp extends StatelessWidget {
   @override
@@ -57,7 +61,7 @@ class _PenaltyGameState extends State<PenaltyGame> {
     });
   }
 
-  // Obtener datos del usuario desde Firebase
+// firebase
   Future<void> fetchUserData(String userId) async {
     final docSnapshot = await FirebaseFirestore.instance
         .collection('users')
@@ -72,7 +76,6 @@ class _PenaltyGameState extends State<PenaltyGame> {
     }
   }
 
-  // Obtener el equipo del usuario desde Firebase
   Future<void> fetchUserTeam(String userId) async {
     final teamSnapshot = await FirebaseFirestore.instance
         .collection('users')
@@ -304,8 +307,6 @@ class _PenaltyGameState extends State<PenaltyGame> {
                       int col = index % 7;
 
                       return MouseRegion(
-                        onEnter: (_) => _onHoverEnter(row, col),
-                        onExit: (_) => _onHoverExit(),
                         child: GestureDetector(
                           onTap: () {
                             if (!gameEnded && (isPlayerTurn && selectedPlayer != null) || !isPlayerTurn) {
@@ -405,23 +406,86 @@ class _PenaltyGameState extends State<PenaltyGame> {
                   )
                 : SizedBox.shrink(), // No mostrar nada si no es el turno del golero ni del ejecutante
           ),
+
         ],
       ),
     );
   }
 
-  // Muestra el cuadro que está siendo "hovered" (cuando el mouse pasa por encima)
-  void _onHoverEnter(int row, int col) {
-    setState(() {
-      hoveredTile = [row, col];
-    });
-  }
+void showGoalAnimation() {
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return Dialog(
+        backgroundColor: Colors.transparent,
+        insetPadding: EdgeInsets.all(0),
+        child: Container(
+          width: 1000,
+          height: 1000,
+          child: Lottie.asset(
+            'assets/animations/confetti.json',
+            repeat: false,
+            fit: BoxFit.cover,
+            onLoaded: (composition) {
+              Timer(Duration(milliseconds: 2200), () {
+                Navigator.of(context).pop();
+              });
+            },
+          ),
+        ),
+      );
+    },
+  );
+}
 
-  void _onHoverExit() {
-    setState(() {
-      hoveredTile = null;
-    });
+void showGoalAnimation2() {
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return Dialog(
+        backgroundColor: Colors.transparent,
+        insetPadding: EdgeInsets.all(0),
+        child: Container(
+          width: 600,
+          height: 500,
+          child: Lottie.asset(
+            'assets/animations/goal.json',
+            repeat: false,
+            
+            onLoaded: (composition) {
+              Timer(Duration(milliseconds: 2350), () {
+                Navigator.of(context).pop();
+              });
+            },
+          ),
+        ),
+      );
+    },
+  );
+}
+
+void checkGoalOrSave() {
+  if (isPlayerTurn) {
+    // Verifica si la CPU atajó el penal
+    if (cpuSelectedTiles.any((tile) => tile[0] == playerSelectedTiles[0][0] && tile[1] == playerSelectedTiles[0][1])) {
+      print("CPU atajó el disparo");
+    } else {
+      playerScore++;
+      print("¡Gol del jugador!");
+      showGoalAnimation();
+      showGoalAnimation2();
+      Vibration.vibrate();
+    }
+  } else {
+    if (playerSelectedTiles.any((tile) => tile[0] == cpuSelectedTiles[0][0] && tile[1] == cpuSelectedTiles[0][1])) {
+      print("El jugador atajó el disparo de la CPU");
+    } else {
+      cpuScore++;
+      print("Gol de la CPU");
+    }
   }
+}
+
 
 void handlePlayerShoot(int row, int col) {
   // Verifica que el disparo esté dentro de las opciones de disparo válidas
@@ -538,7 +602,7 @@ void handleNextRound() {
   }
 }
 
-  void endGame() async {
+void endGame() async {
     setState(() {
       gameEnded = true;
     });
@@ -612,7 +676,7 @@ void clearMatrix() {
 }
 
 
-  void resetGame() {
+void resetGame() {
     setState(() {
       playerScore = 0;
       cpuScore = 0;
@@ -634,7 +698,7 @@ void clearMatrix() {
   }
 
   // Seleccionar automáticamente una zona de atajada para la CPU
-  void cpuSelectSaveZone() {
+void cpuSelectSaveZone() {
     setState(() {
       int row = Random().nextInt(3) + 1;
       int col = Random().nextInt(5) + 1;
@@ -643,7 +707,7 @@ void clearMatrix() {
   }
 
   // Seleccionar automáticamente una zona de disparo para la CPU
-  void cpuSelectShootZone() {
+void cpuSelectShootZone() {
     setState(() {
       int row = Random().nextInt(5);
       int col = Random().nextInt(7);
@@ -652,26 +716,6 @@ void clearMatrix() {
       ];
     });
   }
-
-void checkGoalOrSave() {
-  if (isPlayerTurn) {
-    // Verifica si la CPU atajó el penal
-    if (cpuSelectedTiles.any((tile) => tile[0] == playerSelectedTiles[0][0] && tile[1] == playerSelectedTiles[0][1])) {
-      print("CPU atajó el disparo");
-    } else {
-      playerScore++;
-      print("¡Gol del jugador!");
-    }
-  } else {
-    // Verifica si el jugador atajó el penal de la CPU
-    if (playerSelectedTiles.any((tile) => tile[0] == cpuSelectedTiles[0][0] && tile[1] == cpuSelectedTiles[0][1])) {
-      print("El jugador atajó el disparo de la CPU");
-    } else {
-      cpuScore++;
-      print("Gol de la CPU");
-    }
-  }
-}
 
   // Define los colores de los cuadros en la matriz
   Color getColorForTile(int row, int col) {
