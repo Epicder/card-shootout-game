@@ -8,7 +8,7 @@ import 'package:penalty_card_game/screens/home/home_screen.dart';
 import 'dart:math';
 import 'package:user_repository/user_repository.dart';
 import 'package:penalty_card_game/player_cards/player_card_mvp.dart';
-import 'package:vibration/vibration.dart';
+
 
 class PenaltyShootoutApp extends StatelessWidget {
   @override
@@ -474,7 +474,6 @@ void checkGoalOrSave() {
       print("¡Gol del jugador!");
       showGoalAnimation();
       showGoalAnimation2();
-      Vibration.vibrate();
     }
   } else {
     if (playerSelectedTiles.any((tile) => tile[0] == cpuSelectedTiles[0][0] && tile[1] == cpuSelectedTiles[0][1])) {
