@@ -17,6 +17,7 @@ dependencies:
   equatable: ^2.0.5
   cupertino_icons: ^1.0.8
   firebase_storage: ^12.3.4
+  lottie: ^3.1.3
 
   user_repository:
     path: packages/user_repository
@@ -31,11 +32,13 @@ flutter:
   assets:
     - assets/login_screen.jpg
     - assets/fondo_menu.jpg
-    - assets/cristiano.jpg
     - assets/fondo_menu.jpg
     - assets/fondo_draft.jpg
     - assets/fondo_cartas.png
     - assets/fondo_penales.png
+    - assets/animations/goal.json
+    - assets/animations/confetti.json
+
   fonts:
     - family: Speedway
       fonts:

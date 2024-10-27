@@ -19,7 +19,7 @@ void main() async {
   );
 
   // Llamar a la función de carga de jugadores
-  FirestoreService firestoreService = FirestoreService();
-  firestoreService.addMultiplePlayers();
+  //FirestoreService firestoreService = FirestoreService(); // Ya no se necesita, ya estan los jugadores en la base de datos, iniciar solo si se necesita agregar jugadores
+  //firestoreService.addMultiplePlayers();
   runApp(MyApp(FirebaseUserRepo()));
 }

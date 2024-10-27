@@ -125,13 +125,13 @@ class _HomeScreenState extends State<HomeScreen> {
           boxShadow: [
             BoxShadow(
               blurRadius: 15.0,
-              color: const Color.fromARGB(255, 247, 229, 39).withOpacity(0.30),
+              color: const Color.fromARGB(255, 247, 229, 39).withOpacity(0.40),
               offset: const Offset(0.0, 2.0),
               spreadRadius: 3.0,
             ),
           ],
           border: Border.all(
-            color: const Color.fromARGB(137, 127, 154, 17),
+            color: const Color.fromARGB(136, 154, 152, 17),
             width: 2,
           ),
         ),
@@ -194,8 +194,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                     fontStyle: FontStyle.normal,
                                     shadows: [
                                       Shadow(
-                                        color: resultColor.withOpacity(0.8), // Color del glow con opacidad
-                                        blurRadius: 50.0, // Radio del blur para el glow
+                                        color: resultColor.withOpacity(0.8),
+                                        blurRadius: 50.0,
                                       ),
                                     ],
                                   ),
@@ -203,10 +203,10 @@ class _HomeScreenState extends State<HomeScreen> {
                               ),
                             ),
                             Divider(
-                              color: const Color.fromARGB(255, 229, 255, 0), // Color de la línea separadora
-                              thickness: 0.5, // Grosor de la línea separadora
-                              indent: screenWidth * 0.03, // Indentación desde la izquierda
-                              endIndent: screenWidth * 0.03, // Indentación desde la derecha
+                              color: const Color.fromARGB(255, 229, 255, 0),
+                              thickness: 0.5,
+                              indent: screenWidth * 0.03,
+                              endIndent: screenWidth * 0.03,
                             ),
                           ],
                         );
@@ -225,12 +225,12 @@ class _HomeScreenState extends State<HomeScreen> {
                   color: const Color.fromARGB(255, 221, 204, 13),
                   shadows: [
                     Shadow(
-                      color: const Color.fromARGB(192, 5, 183, 11),
-                      offset: Offset( 2.012, 2.5), // 0.6% of screen width
+                      color: const Color.fromARGB(255, 0, 0, 0),
+                      offset: Offset(screenWidth * 0.012, 1.5) // dont change the responsive :P
                     ),
                     Shadow(
-                      color: const Color.fromARGB(255, 4, 4, 4).withOpacity(0.8), // Verde con opacidad para el glow
-                      blurRadius: 10.0, // Radio del blur para el glow
+                      color: const Color.fromARGB(255, 252, 255, 56).withOpacity(0.5), // NO LO CAMBIES DALE GAS JAJJAJA, TE DEJO LOS BOTONES CON EL BOX SHADOW NEGRO PERO DEJAME ESTO ASI
+                      blurRadius: 20.0, 
                     ),
                   ],
                   fontSize: screenWidth * 0.055, // 5.15% of screen width
@@ -323,7 +323,7 @@ Widget _buildPlayerImage() {
         'ONE\nTO\nWATCH',
         style: TextStyle(
           fontFamily: 'SPORT',
-          color: const Color.fromARGB(255, 255, 238, 1),
+          color: const Color.fromARGB(255, 226, 211, 0),
           fontSize: screenWidth * 0.050, // 6% of screen width
           letterSpacing: 2.0,
           fontWeight: FontWeight.bold,
