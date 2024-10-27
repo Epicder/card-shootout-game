@@ -39,6 +39,7 @@ flutter:
     - assets/fondo_penales.png
     - assets/animations/goal.json
     - assets/animations/confetti.json
+    - assets/animations/plus.json
 
   fonts:
     - family: Speedway

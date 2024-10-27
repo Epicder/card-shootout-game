@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 import 'package:penalty_card_game/player_cards/player_card_draft.dart';
 import 'package:penalty_card_game/screens/home/mvp_screen.dart';
 import 'package:user_repository/user_repository.dart';
@@ -95,21 +96,21 @@ return PopScope(
           _buildBackgroundImage(),
           // Texto "TEAM DRAFT"
           Align(
-            alignment: AlignmentDirectional(-0.9, -0.8),
+            alignment: AlignmentDirectional(-0.92, -0.8),
             child: Text(
-              'TEAM\n DRAFT',
+              'TEAM\n  DRAFT',
               style: TextStyle(
                 fontFamily: 'Speedway',
-                fontSize: 26.0,
+                fontSize: 28.0,
                 color: const Color.fromARGB(255, 221, 204, 13),
                   shadows: [
                     Shadow(
-                      color: const Color.fromARGB(255, 5, 183, 11),
+                      color: const Color.fromARGB(255, 0, 0, 0).withOpacity(0.8), // Verde con opacidad para el glow
                       offset: Offset( 2.012, 2.5), // 0.6% of screen width
                     ),
                     Shadow(
-                      color: const Color.fromARGB(255, 0, 0, 0).withOpacity(0.8), // Verde con opacidad para el glow
-                      blurRadius: 10.0, // Radio del blur para el glow
+                      color: const Color.fromARGB(255, 255, 235, 15).withOpacity(0.6), // Verde con opacidad para el glow
+                      blurRadius: 20.0, // Radio del blur para el glow
                     ),
                   ],
                 fontWeight: FontWeight.w600,
@@ -118,7 +119,7 @@ return PopScope(
             ),
           ),
           Align(
-            alignment: AlignmentDirectional(0.95, -0.08),
+            alignment: AlignmentDirectional(0.92, -0.08),
             child: Container(
               width: 120.0,
               height: 32.0,
@@ -158,18 +159,18 @@ return PopScope(
               bool isDraftComplete = await _checkDraftCompletion();
               if (isDraftComplete) {
                 Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => PenaltyGame()), 
+              context,
+              createSlideRoute(PenaltyGame()), 
                 );
               } else {
         _showIncompleteDraftPopup(context);
               }
             },
               child: Container(
-                width: 90.0,
-                height: 90.0,
+                width: 82.0,
+                height: 82.0,
                 decoration: BoxDecoration(
-                  color: const Color.fromARGB(255, 46, 208, 65),
+                  color: Color.fromARGB(255, 104, 184, 121),
                   shape: BoxShape.circle,
                   boxShadow: [
                     BoxShadow(
@@ -180,13 +181,13 @@ return PopScope(
                   ],
                   border: Border.all(
                     color: const Color.fromARGB(255, 255, 255, 255),
-                    width: 4.0,
+                    width: 3.0,
                   ),
                 ),
                 child: Icon(
                   Icons.check,
                   color: Colors.white,
-                  size: 70.0,
+                  size: 65.0,
                 ),
               ),
             ),
@@ -277,21 +278,12 @@ Widget _playerSlotButton(String position, double x, double y, int buttonIndex) {
                     borderRadius: BorderRadius.circular(10.0),
                   ),
                 ),
-                child: Text(
-                  '+',
-                  style: TextStyle(
-                    fontFamily: 'Azeret Mono',
-                    fontSize: 40.0,
-                    color: Colors.white,
-                    shadows: [
-                      Shadow(
-                        color: Colors.black54,
-                        offset: Offset(2.0, 2.0),
-                        blurRadius: 2.0,
-                      ),
-                    ],
-                  ),
-                ),
+                child: Lottie.asset(
+                  'assets/animations/plus.json',
+                  width: 40.0,
+                  height: 40.0,
+                  fit: BoxFit.cover,
+              ),
               );
       },
     ),
@@ -299,85 +291,104 @@ Widget _playerSlotButton(String position, double x, double y, int buttonIndex) {
 }
 
 void showPlayersForButton(BuildContext context, String position, int buttonIndex) {
-  showDialog(
+  showModalBottomSheet(
     context: context,
+    isScrollControlled: true,
+    backgroundColor: Colors.transparent,
     builder: (BuildContext context) {
-      return BackdropFilter(
-        filter: ImageFilter.blur(sigmaX: 3.0, sigmaY: 3.0),
-        child: AlertDialog(
-          backgroundColor: const Color.fromARGB(76, 2, 78, 32).withOpacity(0.8),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(Radius.circular(10.0)),
-            side: BorderSide(color: const Color.fromARGB(202, 247, 215, 7), width: 4.0),
-          ),
-          content: Container(
-            width: double.maxFinite,
-            decoration: BoxDecoration(
-              color: const Color.fromARGB(0, 255, 255, 255).withOpacity(0),
-              boxShadow: [
-                BoxShadow(
-                  color: const Color.fromARGB(0, 255, 255, 255).withOpacity(0.0),
-                  spreadRadius: 5.0,
+      return DraggableScrollableSheet(
+        initialChildSize: 0.65,
+        minChildSize: 0.3,
+        maxChildSize: 1,
+        builder: (BuildContext context, ScrollController scrollController) {
+          return BackdropFilter(
+            filter: ImageFilter.blur(sigmaX: 3.0, sigmaY: 3.0),
+            child: Container(
+              decoration: BoxDecoration(
+                color: const Color.fromARGB(76, 2, 78, 32).withOpacity(0.8),
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(10.0),
+                  topRight: Radius.circular(10.0),
                 ),
-              ],
-            ),
-            child: StreamBuilder<QuerySnapshot>(
-              stream: FirebaseFirestore.instance.collection(position).snapshots(),
-              builder: (context, snapshot) {
-                if (!snapshot.hasData) {
-                  return Center(child: CircularProgressIndicator());
-                }
-
-                var playerDocs = snapshot.data!.docs;
-
-                return GridView.builder(
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 3,
-                    crossAxisSpacing: 10.0,
-                    mainAxisSpacing: 10.0,
+                boxShadow: [
+                  BoxShadow(
+                    color: const Color.fromARGB(0, 255, 255, 255).withOpacity(0.0),
+                    spreadRadius: 5.0,
                   ),
-                  itemCount: playerDocs.length,
-                  itemBuilder: (context, index) {
-                    var playerData = playerDocs[index].data() as Map<String, dynamic>;
-                    String playerId = playerDocs[index].id;
-                    bool isSelected = selectedPlayers.contains(playerId);
+                ],
+                border: Border(
+                  top: BorderSide(
+                    color: Colors.yellow, 
+                    width: 3.0, 
+                  ),
+                  left: BorderSide(
+                    color: Colors.yellow,
+                    width: 3.0, 
+                  ),
+                  right: BorderSide(
+                    color: Colors.yellow, 
+                    width: 3.0, 
+                  ),
+                ),
+              ),
+              child: StreamBuilder<QuerySnapshot>(
+                stream: FirebaseFirestore.instance.collection(position).snapshots(),
+                builder: (context, snapshot) {
+                  if (!snapshot.hasData) {
+                    return Center(child: CircularProgressIndicator());
+                  }
 
-                    return GestureDetector(
-                      onTap: () {
-                        if (isSelected) return;
+                  var playerDocs = snapshot.data!.docs;
 
-                        // Marcar el botón como seleccionado
-                        playerSelectedStatus[position]![buttonIndex] = true;
-                        selectedPlayers.add(playerId);
+                  return GridView.builder(
+                    controller: scrollController,
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 3,
+                      crossAxisSpacing: 10.0,
+                      mainAxisSpacing: 10.0,
+                    ),
+                    itemCount: playerDocs.length,
+                    itemBuilder: (context, index) {
+                      var playerData = playerDocs[index].data() as Map<String, dynamic>;
+                      String playerId = playerDocs[index].id;
+                      bool isSelected = selectedPlayers.contains(playerId);
 
-                        // Agregar jugador a la selección
-                        _addToDraft(position, buttonIndex, playerData, playerId);
+                      return GestureDetector(
+                        onTap: () {
+                          if (isSelected) return;
 
-                        Navigator.of(context).pop();
-                      },
-                      child: Opacity(
-                        opacity: isSelected ? 0.5 : 1.0,
-                        child: PlayerCardDraft(
-                          playerName: playerData['name'],
-                          playerPosition: playerData['position'],
-                          playerLevel: playerData['level'],
-                          playerCountry: playerData['country'],
-                          playerImage: playerData['image'],
-                          shootingOptions: playerData['shooting_options'],
+                          // Marcar el botón como seleccionado
+                          playerSelectedStatus[position]![buttonIndex] = true;
+                          selectedPlayers.add(playerId);
+
+                          // Agregar jugador a la selección
+                          _addToDraft(position, buttonIndex, playerData, playerId);
+
+                          Navigator.of(context).pop();
+                        },
+                        child: Opacity(
+                          opacity: isSelected ? 0.5 : 1.0,
+                          child: PlayerCardDraft(
+                            playerName: playerData['name'],
+                            playerPosition: playerData['position'],
+                            playerLevel: playerData['level'],
+                            playerCountry: playerData['country'],
+                            playerImage: playerData['image'],
+                            shootingOptions: playerData['shooting_options'],
+                          ),
                         ),
-                      ),
-                    );
-                  },
-                );
-              },
+                      );
+                    },
+                  );
+                },
+              ),
             ),
-          ),
-        ),
+          );
+        },
       );
     },
   );
 }
-
 // ------------------ Funciones de selección de jugadores ------------------ //
 void _addToDraft(String position, int buttonIndex, Map<String, dynamic> playerData, String playerId) async {
   selectedCards[position]!.value = {
@@ -484,6 +495,26 @@ void _showIncompleteDraftPopup(BuildContext context) {
         ),
       );
     },
+  );
+}
+
+Route createSlideRoute(Widget page) {
+  return PageRouteBuilder(
+    pageBuilder: (context, animation, secondaryAnimation) => page,
+    transitionsBuilder: (context, animation, secondaryAnimation, child) {
+      const begin = Offset(2.0, 0.0);
+      const end = Offset.zero;
+      const curve = Curves.easeInOut;
+
+      var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+      var offsetAnimation = animation.drive(tween);
+
+      return SlideTransition(
+        position: offsetAnimation,
+        child: child,
+      );
+    },
+    transitionDuration: const Duration(milliseconds: 740),
   );
 }
 
