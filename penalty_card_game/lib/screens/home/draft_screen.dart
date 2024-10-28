@@ -124,7 +124,7 @@ return PopScope(
               width: 120.0,
               height: 32.0,
               decoration: BoxDecoration(
-                color: const Color.fromARGB(123, 242, 242, 242),
+                color: const Color.fromARGB(200, 155, 132, 22),
                 borderRadius: BorderRadius.circular(50.0),
                 border: Border.all(
                   color: const Color.fromARGB(255, 255, 255, 255), // Color del borde
@@ -260,9 +260,9 @@ Widget _playerSlotButton(String position, double x, double y, int buttonIndex) {
         return value.containsKey(buttonIndex)
             ? Image.network(
                 value[buttonIndex]!['image'],
-                width: 52.0,
-                height: 85.0,
-                fit: BoxFit.cover,
+                width: 70.0,
+                height: 120.0,
+                fit: BoxFit.fill,
               )
             : ElevatedButton(
                 onPressed: () {
@@ -449,24 +449,27 @@ void _showIncompleteDraftPopup(BuildContext context) {
           title: Text(
             "Incomplete Draft",
             style: TextStyle(
+              fontSize: 35.0,
               color: Colors.white,
               shadows: [
                 Shadow(
                   blurRadius: 10.0,
-                  color: Colors.white,
-                  offset: Offset(0, 0),
+                  color: const Color.fromARGB(255, 0, 0, 0),
+                  offset: Offset(2, 0),
                 ),
               ],
             ),
           ),
           content: Text(
-            "Complete your draft to Play!",
+            "COMPLETE YOUR DRAFT TO PLAY!",
             style: TextStyle(
-              color: Colors.white,
+              fontSize: 20.0,
+              fontWeight: FontWeight.bold,
+              color: const Color.fromARGB(255, 0, 0, 0),
               shadows: [
                 Shadow(
-                  blurRadius: 10.0,
-                  color: Colors.white,
+                  blurRadius: 5.0,
+                  color: const Color.fromARGB(255, 201, 246, 0),
                   offset: Offset(0, 0),
                 ),
               ],

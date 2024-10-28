@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'dart:math';
 
 
 class FirestoreService {
@@ -20,6 +21,36 @@ class FirestoreService {
       print('Error adding player $playerId: $e');
     }
   }
+    // Función para obtener un golero aleatorio para la CPU
+  Future<Map<String, dynamic>> getRandomCPUGoalkeeper() async {
+    final goalkeepersSnapshot = await _db.collection('Goleros').get();
+    final random = Random();
+
+    if (goalkeepersSnapshot.docs.isNotEmpty) {
+      final randomGoalkeeper = goalkeepersSnapshot.docs[random.nextInt(goalkeepersSnapshot.docs.length)];
+      return randomGoalkeeper.data();
+    } else {
+      throw Exception("No hay goleros disponibles en la colección.");
+    }
+  }
+
+  // Función para obtener un jugador de campo aleatorio para la CPU
+  Future<Map<String, dynamic>> getRandomCPUPlayer() async {
+    List<String> playerCollections = ['Delanteros', 'Mediocampistas', 'Defensas'];
+    final random = Random();
+
+    // Selecciona una colección aleatoria (delanteros, mediocampistas o defensas)
+    String randomCollection = playerCollections[random.nextInt(playerCollections.length)];
+    final playersSnapshot = await _db.collection(randomCollection).get();
+
+    if (playersSnapshot.docs.isNotEmpty) {
+      final randomPlayer = playersSnapshot.docs[random.nextInt(playersSnapshot.docs.length)];
+      return randomPlayer.data();
+    } else {
+      throw Exception("No hay jugadores disponibles en la colección de $randomCollection.");
+    }
+  }
+
   
 
   Future<void> addMultiplePlayers() async {

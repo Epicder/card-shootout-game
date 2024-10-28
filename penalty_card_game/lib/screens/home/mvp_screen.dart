@@ -8,6 +8,7 @@ import 'package:penalty_card_game/screens/home/home_screen.dart';
 import 'dart:math';
 import 'package:user_repository/user_repository.dart';
 import 'package:penalty_card_game/player_cards/player_card_mvp.dart';
+import 'package:penalty_card_game/firestore_service.dart';
 
 
 class PenaltyShootoutApp extends StatelessWidget {
@@ -41,12 +42,14 @@ class _PenaltyGameState extends State<PenaltyGame> {
   List<List<int>> cpuSelectedTiles = [];
   List<List<int>> shootingOptions = []; // Opciones de disparo generadas
   List<int>? hoveredTile;
+  final FirestoreService firestoreService = FirestoreService();
 
   // Equipo del usuario (cargado desde Firebase)
   List<Map<String, dynamic>> userTeam = [];
   List<Map<String, dynamic>> usedPlayers = []; // Jugadores que ya ejecutaron
   Map<String, dynamic>? selectedPlayer; // Jugador seleccionado para ejecutar el penal
   Map<String, dynamic>? goalkeeper; // Golero seleccionado automáticamente
+  Map<String, dynamic>? cpuGoalkeeper; // Golero de la CPU
   bool isLoading = true; // Indicador de carga
   bool showPlayerList = true; // Controlar si se muestra la lista de jugadores
 
@@ -56,7 +59,8 @@ class _PenaltyGameState extends State<PenaltyGame> {
     FirebaseAuth.instance.authStateChanges().listen((user) {
       if (user != null) {
         fetchUserData(user.uid);
-        fetchUserTeam(user.uid); // Asegúrate de llamar a esta función para cargar el equipo
+        fetchUserTeam(user.uid);
+        fetchCPUGoalkeeper(); // Asegúrate de llamar a esta función para cargar el equipo
       }
     });
   }
@@ -97,6 +101,18 @@ class _PenaltyGameState extends State<PenaltyGame> {
     print("Equipo cargado correctamente: $userTeam");
   }
 
+    // Función para obtener un golero CPU aleatorio
+  void fetchCPUGoalkeeper() async {
+    try {
+      final randomGoalkeeper = await firestoreService.getRandomCPUGoalkeeper();
+      setState(() {
+        cpuGoalkeeper = randomGoalkeeper;
+      });
+    } catch (e) {
+      print("Error al cargar el golero de la CPU: $e");
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -115,21 +131,21 @@ class _PenaltyGameState extends State<PenaltyGame> {
           // Texto "Selecciona tu ejecutante" arriba de la lista de jugadores
           if (showPlayerList)
             Positioned(
-              left: 30,
-              top: 20, // Ajusta la posición del texto en la pantalla
+              left: 280,  // Alineado con la matriz
+              top: 340,  // Colocado justo debajo de la matriz
               child: Text(
-                "SELECCIONA \nTU EJECUTANTE",
+                "SELECCIONA TU EJECUTANTE",
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                  fontFamily: 'SPORT',
+                  fontFamily: 'SPORT',  // Ajusta la fuente si lo deseas
                   fontSize: 25.0,
                   letterSpacing: 2.0,
                   fontWeight: FontWeight.bold,
                   color: const Color.fromARGB(255, 255, 230, 7),
                   shadows: [
                     Shadow(
-                      blurRadius: 10.0,
-                      color: const Color.fromARGB(255, 0, 0, 0).withOpacity(1),
+                      blurRadius: 5.0,
+                      color: const Color.fromARGB(255, 10, 10, 10).withOpacity(1),
                       offset: Offset(4, 4),
                     ),
                   ],
@@ -139,9 +155,9 @@ class _PenaltyGameState extends State<PenaltyGame> {
           // Colocar los botones de los jugadores a la izquierda
           if (showPlayerList)
             Positioned(
-              left: 40,
-              top: 75,
-              bottom: 10,
+              left: 35,
+              top: 20,
+              bottom: 0,
               child: SizedBox(
                 width: 100,
                 child: Column(
@@ -153,7 +169,7 @@ class _PenaltyGameState extends State<PenaltyGame> {
                           itemBuilder: (context, index) {
                             var player = userTeam.where((p) => p['position'] != 'Goalkeeper' && !usedPlayers.contains(p)).elementAt(index);
                             return Padding(
-                              padding: const EdgeInsets.symmetric(vertical: 8.0),
+                              padding: const EdgeInsets.symmetric(vertical: 10.0),
                               child: ElevatedButton(
                                 onPressed: () {
                                   setState(() {
@@ -167,22 +183,33 @@ class _PenaltyGameState extends State<PenaltyGame> {
                                   });
                                 },
                                 style: ElevatedButton.styleFrom(
-                                  padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
-                                  backgroundColor: const Color.fromARGB(255, 199, 189, 0),
+                                  padding: const EdgeInsets.symmetric(vertical: 5.0, horizontal: 5.0),
+                                  backgroundColor: const Color.fromARGB(202, 0, 0, 0),
                                   shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(12.0),
+                                    borderRadius: BorderRadius.circular(10),  // Mantén el borde redondeado
+                                    side: BorderSide(
+                                      color: const Color.fromARGB(255, 232, 248, 1),  // Agrega un borde blanco
+                                      width: 1.5,  // Grosor del borde
+                                    ),
                                   ),
-                                  elevation: 8,
-                                  shadowColor: Color.fromARGB(255, 0, 0, 0),
+                                  elevation: 5,  // Sombra bajo el botón
+                                  shadowColor: const Color.fromARGB(38, 0, 0, 0).withOpacity(1),  // Ajusta la opacidad de la sombra
                                 ),
                                 child: Text(
                                   player['name'],
                                   textAlign: TextAlign.center,
                                   style: const TextStyle(
-                                    fontFamily: '',
-                                    fontSize: 20.0,
-                                    color: Color.fromARGB(255, 0, 0, 0),
+                                    fontFamily: 'Anton',  // Si deseas puedes cambiar la fuente aquí
+                                    fontSize: 16.5,
+                                    color: Color.fromARGB(255, 231, 235, 178),
                                     fontWeight: FontWeight.bold,
+                                    shadows: [
+                                      Shadow(
+                                        blurRadius: 5.0,
+                                        color: Color.fromARGB(186, 0, 0, 0),
+                                        offset: Offset(2, 4),
+                                      ),
+                                    ],
                                   ),
                                 ),
                               ),
@@ -197,7 +224,7 @@ class _PenaltyGameState extends State<PenaltyGame> {
           // Insertar el "arco" usando los bordes del contenedor detrás de la matriz
           Positioned(
             top: 100, // Ajusta la posición del contenedor
-            left: 175, // Ajusta para alinear el arco con la matriz
+            left: 178, // Ajusta para alinear el arco con la matriz
             child: Container(
               width: 430, // Ajusta el tamaño horizontal del contenedor para que coincida con la matriz
               height: 225, // Ajusta el tamaño vertical del contenedor
@@ -257,35 +284,35 @@ class _PenaltyGameState extends State<PenaltyGame> {
           ),
           // Posicionar el contenido del juego (matriz y marcador)
           Positioned(
-            top: 10, // Ajusta para mover la matriz hacia abajo o arriba
-            left: 190, // Ajusta para mover la matriz hacia la izquierda o derecha
+            top: 8, // Ajusta para mover la matriz hacia abajo o arriba
+            left: 193, // Ajusta para mover la matriz hacia la izquierda o derecha
             child: Column(
               children: [
                 // Marcador
                 Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 30.0, vertical: 5.0),
+                  padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 5.0),
                   margin: const EdgeInsets.only(bottom: 20, top: 5),
                   decoration: BoxDecoration(
-                    color: const Color.fromARGB(255, 255, 0, 0).withOpacity(0.9),
-                    borderRadius: BorderRadius.circular(10.0),
+                    color: const Color.fromARGB(162, 139, 2, 2),
+                    borderRadius: BorderRadius.circular(5.0),
                     border: Border.all(
-                      color: const Color.fromARGB(255, 255, 255, 255),
-                      width: 4.0,
+                      color: const Color.fromARGB(255, 104, 99, 80).withOpacity(0.4),
+                      width: 2.0,
                     ),
-                    boxShadow: [
+                    boxShadow:[
                       BoxShadow(
-                        color: Colors.black.withOpacity(0.6),
-                        blurRadius: 12,
-                        offset: Offset(2, 4),
+                        color: const Color.fromARGB(239, 250, 110, 110).withOpacity(0.6),
+                        blurRadius: 22,
+                        offset: Offset(0, 0),
                       ),
                     ],
                   ),
                   child: Text(
                     "${currentUser?.name ?? 'Tú Fc'}  $playerScore  |  $cpuScore  CPU",
                     style: const TextStyle(
-                      fontSize: 28,
+                      fontSize: 30,
                       fontWeight: FontWeight.bold,
-                      color: Color.fromARGB(255, 255, 255, 255),
+                      color: Color.fromARGB(255, 252, 241, 148),
                       letterSpacing: 1.5,
                     ),
                   ),
@@ -334,58 +361,14 @@ class _PenaltyGameState extends State<PenaltyGame> {
                     },
                   ),
                 ),
-                // Mostrar el mensaje "Ataja (nombre del golero)" cuando sea el turno del usuario de atajar
-                if (!isPlayerTurn)
-                  Padding(
-                    padding: const EdgeInsets.only(top: 10.0),
-                    child: Text(
-                      "GK TURN  -  ${goalkeeper?['name'] ?? 'Golero'}",
-                      style: TextStyle(
-                        fontSize: 24,
-                        fontWeight: FontWeight.bold,
-                        color: const Color.fromARGB(255, 250, 238, 0),
-                        letterSpacing: 1.5,
-                        shadows: [
-                          Shadow(
-                            blurRadius: 5.0,
-                            color: Colors.black.withOpacity(0.8),
-                            offset: Offset(2, 2),
-                          ),
-                        ],
-                        decorationColor: Colors.black.withOpacity(0.9),
-                        decorationThickness: 8,
-                      ),
-                    ),
-                  ),
-                // Mostrar el mensaje "EJECUTA (nombre del jugador)" cuando sea el turno de disparar
-                if (isPlayerTurn && selectedPlayer != null)
-                  Padding(
-                    padding: const EdgeInsets.only(top: 10.0),
-                    child: Text(
-                      "PLAYER SHOOTING  -  ${selectedPlayer?['name'] ?? 'Jugador'}",
-                      style: TextStyle(
-                        fontSize: 24,
-                        fontWeight: FontWeight.bold,
-                        color: const Color.fromARGB(255, 250, 238, 0),
-                        letterSpacing: 1.5,
-                        shadows: [
-                          Shadow(
-                            blurRadius: 5.0,
-                            color: const Color.fromARGB(255, 0, 0, 0).withOpacity(0.8),
-                            offset: Offset(2, 2),
-                          ),
-                        ],
-                        decorationColor: Colors.black.withOpacity(0.8),
-                        decorationThickness: 8,
-                      ),
-                    ),
-                  ),
+
+
               ],
             ),
           ),
           Positioned(
-            right: -25, // Ajusta la posición a la derecha
-            top: 110, // Alinea con la parte superior de la pantalla
+            left: -15, // Ajusta la posición a la izquierda
+            top: 95, // Alinea con la parte superior de la pantalla
             child: isPlayerTurn && selectedPlayer != null
               ? PlayerCardMVP( // Mostrar la carta del ejecutante cuando sea el turno del jugador
                   playerName: selectedPlayer!['name'],
@@ -406,11 +389,26 @@ class _PenaltyGameState extends State<PenaltyGame> {
                   )
                 : SizedBox.shrink(), // No mostrar nada si no es el turno del golero ni del ejecutante
           ),
-
+          // Mostrar la carta del golero CPU cuando el usuario está ejecutando el penal
+          Positioned(
+            right: -25, // Ajusta la posición a la derecha
+            top: 95,    // Alinea con la parte superior de la pantalla
+            child: isPlayerTurn && cpuGoalkeeper != null // Mostrar la carta del golero CPU cuando el jugador ejecuta
+              ? PlayerCardMVP(
+                  playerName: cpuGoalkeeper!['name'],
+                  playerPosition: cpuGoalkeeper!['position'],
+                  playerLevel: cpuGoalkeeper!['level'],
+                  playerCountry: cpuGoalkeeper!['country'],
+                  playerImage: cpuGoalkeeper!['image'],
+                  shootingOptions: cpuGoalkeeper!['shooting_options'],
+                )
+              : SizedBox.shrink(), // No mostrar nada si no es el turno adecuado
+          ),
         ],
       ),
     );
   }
+
 
 void showGoalAnimation() {
   showDialog(
@@ -698,13 +696,24 @@ void resetGame() {
 
   // Seleccionar automáticamente una zona de atajada para la CPU
 void cpuSelectSaveZone() {
-    setState(() {
-      int row = Random().nextInt(3) + 1;
-      int col = Random().nextInt(5) + 1;
-      cpuSelectedTiles = getGoalkeeperZone(row, col, 3); // 3x3 fijo para la CPU
-    });
+  if (cpuGoalkeeper == null) return; // Asegúrate de que haya un golero cargado
+
+  int shootingOptions = cpuGoalkeeper!['shooting_options'];
+  int zoneSize = 2; // Por defecto, 2x2 (4 shooting options)
+
+  if (shootingOptions == 6) {
+    zoneSize = 3; // 3x3 área
+  } else if (shootingOptions == 8) {
+    zoneSize = 4; // 4x4 área
   }
 
+  setState(() {
+    int row = Random().nextInt(3) + 1;
+    int col = Random().nextInt(5) + 1;
+    cpuSelectedTiles = getGoalkeeperZone(row, col, zoneSize); // Definir el área de atajada
+  });
+}
+  
   // Seleccionar automáticamente una zona de disparo para la CPU
 void cpuSelectShootZone() {
     setState(() {
