@@ -462,6 +462,32 @@ void showGoalAnimation2() {
   );
 }
 
+void showGoalAnimation3() {
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return Dialog(
+        backgroundColor: Colors.transparent,
+        insetPadding: EdgeInsets.all(0),
+        child: Container(
+          width: 600,
+          height: 500,
+          child: Lottie.asset(
+            'assets/animations/fireworks.json',
+            repeat: false,
+            
+            onLoaded: (composition) {
+              Timer(Duration(milliseconds: 2350), () {
+                Navigator.of(context).pop();
+              });
+            },
+          ),
+        ),
+      );
+    },
+  );
+}
+
 void checkGoalOrSave() {
   if (isPlayerTurn) {
     // Verifica si la CPU atajó el penal
@@ -472,6 +498,7 @@ void checkGoalOrSave() {
       print("¡Gol del jugador!");
       showGoalAnimation();
       showGoalAnimation2();
+      showGoalAnimation3();
     }
   } else {
     if (playerSelectedTiles.any((tile) => tile[0] == cpuSelectedTiles[0][0] && tile[1] == cpuSelectedTiles[0][1])) {

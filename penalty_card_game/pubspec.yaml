@@ -39,6 +39,7 @@ flutter:
     - assets/animations/goal.json
     - assets/animations/confetti.json
     - assets/animations/plus.json
+    - assets/animations/fireworks.json
 
   fonts:
     - family: Speedway
