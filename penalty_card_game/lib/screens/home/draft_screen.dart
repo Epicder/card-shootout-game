@@ -124,7 +124,7 @@ return PopScope(
               width: 120.0,
               height: 32.0,
               decoration: BoxDecoration(
-                color: const Color.fromARGB(200, 155, 132, 22),
+                color: const Color.fromARGB(125, 116, 116, 116),
                 borderRadius: BorderRadius.circular(50.0),
                 border: Border.all(
                   color: const Color.fromARGB(255, 255, 255, 255), // Color del borde
@@ -449,27 +449,27 @@ void _showIncompleteDraftPopup(BuildContext context) {
           title: Text(
             "Incomplete Draft",
             style: TextStyle(
-              fontSize: 35.0,
-              color: Colors.white,
+              fontSize: 28.0,
+              color: const Color.fromARGB(255, 235, 235, 235),
               shadows: [
                 Shadow(
                   blurRadius: 10.0,
-                  color: const Color.fromARGB(255, 0, 0, 0),
+                  color: const Color.fromARGB(255, 230, 253, 125).withOpacity(0.5),
                   offset: Offset(2, 0),
                 ),
               ],
             ),
           ),
           content: Text(
-            "COMPLETE YOUR DRAFT TO PLAY!",
+            "Complete your draft to play!",
             style: TextStyle(
               fontSize: 20.0,
               fontWeight: FontWeight.bold,
-              color: const Color.fromARGB(255, 0, 0, 0),
+              color: const Color.fromARGB(255, 235, 235, 235),
               shadows: [
                 Shadow(
-                  blurRadius: 5.0,
-                  color: const Color.fromARGB(255, 201, 246, 0),
+                  blurRadius: 10.0,
+                  color: const Color.fromARGB(255, 230, 253, 125).withOpacity(0.5),
                   offset: Offset(0, 0),
                 ),
               ],
