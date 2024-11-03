@@ -9,7 +9,7 @@ import 'dart:math';
 import 'package:user_repository/user_repository.dart';
 import 'package:penalty_card_game/player_cards/player_card_mvp.dart';
 import 'package:penalty_card_game/firestore_service.dart';
-
+import 'dart:ui';
 
 class PenaltyShootoutApp extends StatelessWidget {
   @override
@@ -121,24 +121,23 @@ class _PenaltyGameState extends State<PenaltyGame> {
           // Fondo de pantalla con opacidad
           Positioned.fill(
             child: Opacity(
-              opacity: 1, // Ajusta la opacidad aquí
+              opacity: 1,
               child: Image.asset(
-                'assets/fondo_penales.png', // Asegúrate de que esta ruta sea correcta
+                'assets/fondo_penales.png',
                 fit: BoxFit.fill,
               ),
             ),
           ),
-          // Texto "Selecciona tu ejecutante" arriba de la lista de jugadores
           if (showPlayerList)
             Positioned(
-              left: 280,  // Alineado con la matriz
+              left: 200,  // Alineado con la matriz
               top: 340,  // Colocado justo debajo de la matriz
               child: Text(
-                "SELECCIONA TU EJECUTANTE",
+                "CHOOSE YOUR SHOOTER",
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                  fontFamily: 'SPORT',  // Ajusta la fuente si lo deseas
-                  fontSize: 25.0,
+                  fontFamily: 'Speedway',
+                  fontSize: 23.0,
                   letterSpacing: 2.0,
                   fontWeight: FontWeight.bold,
                   color: const Color.fromARGB(255, 255, 230, 7),
@@ -146,7 +145,11 @@ class _PenaltyGameState extends State<PenaltyGame> {
                     Shadow(
                       blurRadius: 5.0,
                       color: const Color.fromARGB(255, 10, 10, 10).withOpacity(1),
-                      offset: Offset(4, 4),
+                      offset: Offset(5, 2),
+                    ),
+                      Shadow(
+                      color: const Color.fromARGB(255, 247, 229, 39).withOpacity(0.53), // Verde con opacidad para el glow
+                      blurRadius: 40.0, // Radio del blur para el glow
                     ),
                   ],
                 ),
@@ -182,34 +185,32 @@ class _PenaltyGameState extends State<PenaltyGame> {
                                     }
                                   });
                                 },
-                                style: ElevatedButton.styleFrom(
-                                  padding: const EdgeInsets.symmetric(vertical: 5.0, horizontal: 5.0),
-                                  backgroundColor: const Color.fromARGB(202, 0, 0, 0),
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(10),  // Mantén el borde redondeado
-                                    side: BorderSide(
-                                      color: const Color.fromARGB(255, 232, 248, 1),  // Agrega un borde blanco
-                                      width: 1.5,  // Grosor del borde
-                                    ),
-                                  ),
-                                  elevation: 5,  // Sombra bajo el botón
-                                  shadowColor: const Color.fromARGB(38, 0, 0, 0).withOpacity(1),  // Ajusta la opacidad de la sombra
+                                style: TextButton.styleFrom(
+                                elevation: 6.0,
+                                backgroundColor: const Color.fromRGBO(91, 196, 95, 1),
+                                foregroundColor: Colors.white,
+                                padding: const EdgeInsets.symmetric(horizontal: 2.0, vertical: 10.0),
+                                shadowColor: const Color.fromARGB(255, 75, 255, 114).withOpacity(1),
+                                shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(50),
                                 ),
+                                ),
+                                
                                 child: Text(
                                   player['name'],
                                   textAlign: TextAlign.center,
                                   style: const TextStyle(
-                                    fontFamily: 'Anton',  // Si deseas puedes cambiar la fuente aquí
-                                    fontSize: 16.5,
-                                    color: Color.fromARGB(255, 231, 235, 178),
-                                    fontWeight: FontWeight.bold,
-                                    shadows: [
-                                      Shadow(
-                                        blurRadius: 5.0,
-                                        color: Color.fromARGB(186, 0, 0, 0),
-                                        offset: Offset(2, 4),
-                                      ),
-                                    ],
+                                  fontFamily: 'SPORT',  // Si deseas puedes cambiar la fuente aquí
+                                  fontSize: 20,
+                                  color: Color.fromARGB(255, 227, 228, 216),
+                                  fontWeight: FontWeight.bold,
+                                  shadows: [
+                                    Shadow(
+                                      blurRadius: 5.0,
+                                      color: Color.fromARGB(71, 0, 0, 0),
+                                      offset: Offset(2, 2),
+                                    ),
+                                  ],
                                   ),
                                 ),
                               ),
@@ -231,7 +232,7 @@ class _PenaltyGameState extends State<PenaltyGame> {
               decoration: BoxDecoration(
                 border: Border(
                   left: BorderSide(
-                    color: Colors.white, // Color para los postes laterales
+                    color: Colors.white,
                     width: 10.0, // Grosor de los postes
                   ),
                   right: BorderSide(
@@ -250,7 +251,7 @@ class _PenaltyGameState extends State<PenaltyGame> {
                 ),
                 boxShadow: [
                   BoxShadow(
-                    color: const Color.fromARGB(211, 0, 0, 0).withOpacity(0.7), // Color de la sombra
+                    color: const Color.fromARGB(211, 0, 0, 0).withOpacity(0.56), // Color de la sombra
                     blurRadius: 15, // Difuminado de la sombra
                     offset: Offset(4, 5), // Desplazamiento de la sombra
                   ),
@@ -284,7 +285,7 @@ class _PenaltyGameState extends State<PenaltyGame> {
           ),
           // Posicionar el contenido del juego (matriz y marcador)
           Positioned(
-            top: 8, // Ajusta para mover la matriz hacia abajo o arriba
+            top: 34, // Ajusta para mover la matriz hacia abajo o arriba
             left: 193, // Ajusta para mover la matriz hacia la izquierda o derecha
             child: Column(
               children: [
@@ -293,17 +294,17 @@ class _PenaltyGameState extends State<PenaltyGame> {
                   padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 5.0),
                   margin: const EdgeInsets.only(bottom: 20, top: 5),
                   decoration: BoxDecoration(
-                    color: const Color.fromARGB(162, 139, 2, 2),
+                    color: const Color.fromRGBO(91, 196, 95, 1).withOpacity(0.5),
                     borderRadius: BorderRadius.circular(5.0),
                     border: Border.all(
-                      color: const Color.fromARGB(255, 104, 99, 80).withOpacity(0.4),
+                      color: const Color.fromARGB(255, 96, 255, 56).withOpacity(0.2),
                       width: 2.0,
                     ),
                     boxShadow:[
                       BoxShadow(
-                        color: const Color.fromARGB(239, 250, 110, 110).withOpacity(0.6),
-                        blurRadius: 22,
-                        offset: Offset(0, 0),
+                        color: const Color.fromARGB(132, 82, 194, 82).withOpacity(0.5),
+                        blurRadius: 18,
+                        offset: Offset(5, 0),
                       ),
                     ],
                   ),
@@ -312,8 +313,9 @@ class _PenaltyGameState extends State<PenaltyGame> {
                     style: const TextStyle(
                       fontSize: 30,
                       fontWeight: FontWeight.bold,
-                      color: Color.fromARGB(255, 252, 241, 148),
-                      letterSpacing: 1.5,
+                      color: Color.fromARGB(255, 224, 224, 224),
+                      letterSpacing: 2,
+                      fontFamily: 'SPORT',
                     ),
                   ),
                 ),
@@ -346,12 +348,12 @@ class _PenaltyGameState extends State<PenaltyGame> {
                           },
                           child: GridTile(
                             child: Container(
-                              margin: const EdgeInsets.all(4.0),
+                              margin: const EdgeInsets.all(3.5),
                               decoration: BoxDecoration(
                                 color: getColorForTile(row, col),
                                 border: Border.all(
-                                  color: const Color.fromARGB(255, 166, 166, 166),
-                                  width: 3.0,
+                                  color: const Color.fromARGB(255, 136, 136, 136),
+                                  width: 2,
                                 ),
                               ),
                             ),
@@ -451,7 +453,7 @@ void showGoalAnimation2() {
             repeat: false,
             
             onLoaded: (composition) {
-              Timer(Duration(milliseconds: 2350), () {
+              Timer(Duration(milliseconds: 2000), () {
                 Navigator.of(context).pop();
               });
             },
@@ -655,37 +657,75 @@ void endGame() async {
     // Mostrar mensaje con el ganador
     String resultMessage;
     if (playerScore > cpuScore) {
-      resultMessage = "¡Ganaste la tanda de penales!";
+      resultMessage = "🎉 Congratulations! You won the penalty shootout.";
     } else {
-      resultMessage = "La CPU ganó la tanda de penales.";
+      resultMessage = "😢 You lost the penalty shootout. Try again!";
     }
 
-    // Mostrar diálogo al final del juego
     showDialog(
       context: context,
-      barrierDismissible: false, // Evita que se cierre el diálogo tocando fuera
+      barrierDismissible: false,
       builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text("Fin del juego"),
-          content: Text(resultMessage),
-          actions: <Widget>[
-            ElevatedButton(
-              onPressed: () {
-                Navigator.of(context).pop(); // Cierra el diálogo
-                resetGame(); // Reiniciar el juego
-              },
-              child: Text("Reiniciar partido"),
+        return BackdropFilter(
+          filter: ImageFilter.blur(sigmaX: 5.0, sigmaY: 5.0),
+          child: AlertDialog(
+            backgroundColor: const Color.fromARGB(255, 55, 196, 71).withOpacity(0.8),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(10.0)),
+              side: BorderSide(color: Colors.white, width: 2.0),
             ),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.of(context).pop(); // Cierra el diálogo
-                Navigator.of(context).pushReplacement(
-                  MaterialPageRoute(builder: (context) => HomeScreen()), // Salir al menú (debes tener esta pantalla configurada)
-                );
-              },
-              child: Text("Salir al menú"),
+            title: Text("Game Ended"),
+            titleTextStyle: TextStyle(
+              color: const Color.fromARGB(255, 235, 235, 235),
+              fontSize: 24,
+              fontWeight: FontWeight.bold,
+              shadows: [
+                Shadow(
+                  blurRadius: 10.0,
+                  color: const Color.fromARGB(255, 230, 253, 125).withOpacity(0.5),
+                  offset: Offset(2, 0),
+                ),
+              ],
             ),
-          ],
+            content: Text(resultMessage),
+            contentTextStyle: TextStyle(
+              fontSize: 16.0,
+              color: const Color.fromARGB(255, 235, 235, 235),
+              shadows: [
+                Shadow(
+                  blurRadius: 10.0,
+                  color: const Color.fromARGB(255, 230, 253, 125).withOpacity(0.5),
+                  offset: Offset(0, 0),
+                ),
+              ],
+            ),
+            actions: <Widget>[
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.of(context).pop(); // Cierra el diálogo
+                  resetGame(); // Reiniciar el juego
+                },
+                child: Text("Restart the match"),
+                style: ElevatedButton.styleFrom(
+                  foregroundColor: const Color.fromARGB(255, 235, 235, 235),
+                  backgroundColor: const Color.fromARGB(255, 29, 116, 39),
+                ),
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.of(context).pop(); // Cierra el diálogo
+                  Navigator.of(context).pushReplacement(
+                    MaterialPageRoute(builder: (context) => HomeScreen()), // Salir al menú (debes tener esta pantalla configurada)
+                  );
+                },
+                child: Text("Exit to menu"),
+                style: ElevatedButton.styleFrom(
+                  foregroundColor: const Color.fromARGB(255, 235, 235, 235),
+                  backgroundColor: const Color.fromARGB(255, 29, 116, 39),
+                ),
+              ),
+            ],
+          ),
         );
       },
     );
@@ -764,7 +804,7 @@ void cpuSelectShootZone() {
     } else if (hoveredTile != null && hoveredTile![0] == row && hoveredTile![1] == col) {
       return const Color.fromARGB(255, 91, 195, 107);
     }
-    return Colors.white;
+    return Colors.white.withOpacity(0.8);
   }
 
   List<List<int>> generateShootingOptions(int optionsCount) {
