@@ -59,7 +59,7 @@ class FirestoreService {
       {
         'name': 'Cristiano R.',
         'position': 'Forward',
-        'level': 93,
+        'level': 92,
         'country': 'https://firebasestorage.googleapis.com/v0/b/penalty-card-game-login.appspot.com/o/country_flags%2Fportugal.png?alt=media&token=90963739-20bd-4e8c-a943-f915d688d775',
         'image': 'https://firebasestorage.googleapis.com/v0/b/penalty-card-game-login.appspot.com/o/players_images%2Fcristiano_r.png?alt=media&token=f26aade5-87a2-4dbc-a849-d05501a1df77',
         'shooting_options': 8
@@ -67,7 +67,7 @@ class FirestoreService {
       {
         'name': 'Lionel Messi',
         'position': 'Forward',
-        'level': 94,
+        'level': 93,
         'country': 'https://firebasestorage.googleapis.com/v0/b/penalty-card-game-login.appspot.com/o/country_flags%2Fargentina.png?alt=media&token=1933ea2e-ed3b-4d03-8109-ecd926d057fe',
         'image': 'https://firebasestorage.googleapis.com/v0/b/penalty-card-game-login.appspot.com/o/players_images%2Flionel_messi.png?alt=media&token=b3437fe7-2b40-41c4-8300-c04a10b99e16',
         'shooting_options': 8
@@ -78,7 +78,7 @@ class FirestoreService {
         'level': 90,
         'country': 'https://firebasestorage.googleapis.com/v0/b/penalty-card-game-login.appspot.com/o/country_flags%2Fpoland.png?alt=media&token=1b44fafd-ae78-4125-a8ba-e35bb511f09b',
         'image': 'https://firebasestorage.googleapis.com/v0/b/penalty-card-game-login.appspot.com/o/players_images%2Frobert_lewa.png?alt=media&token=1369401d-51d0-4b2e-aa52-ad67b40e2fc4',
-        'shooting_options': 8
+        'shooting_options': 6
       },
       {
         'name': 'Kylian Mbappé',
@@ -99,15 +99,15 @@ class FirestoreService {
       {
         'name': 'Neymar Jr.',
         'position': 'Forward',
-        'level': 90,
+        'level': 89,
         'country': 'https://firebasestorage.googleapis.com/v0/b/penalty-card-game-login.appspot.com/o/country_flags%2Fbrazil.png?alt=media&token=292b2a01-dfc4-40c7-9872-a67bc7c1b252',
         'image': 'https://firebasestorage.googleapis.com/v0/b/penalty-card-game-login.appspot.com/o/players_images%2Fneymar_jr.png?alt=media&token=fb13ce28-5ef1-4f0f-8594-9fbbe6e8451a',
-        'shooting_options': 8
+        'shooting_options': 6
       },
       {
         'name': 'Karim Benzema',
         'position': 'Forward',
-        'level': 88,
+        'level': 86,
         'country': 'https://firebasestorage.googleapis.com/v0/b/penalty-card-game-login.appspot.com/o/country_flags%2Ffrance.png?alt=media&token=cce71ca2-1b5d-4f3e-a6be-bcbe180d0d2a',
         'image': 'https://firebasestorage.googleapis.com/v0/b/penalty-card-game-login.appspot.com/o/players_images%2Fkarim_benzema.png?alt=media&token=76010d2d-78c1-4ea0-bd5f-eb96b9e093d1',
         'shooting_options': 6
@@ -118,7 +118,7 @@ class FirestoreService {
         'level': 90,
         'country': 'https://firebasestorage.googleapis.com/v0/b/penalty-card-game-login.appspot.com/o/country_flags%2Fengland.png?alt=media&token=133cd839-d3a1-464a-9083-e93cb2be4b5c',
         'image': 'https://firebasestorage.googleapis.com/v0/b/penalty-card-game-login.appspot.com/o/players_images%2Fharry_kane.png?alt=media&token=814885ad-0969-430b-9cb5-0187868279b9',
-        'shooting_options': 8
+        'shooting_options': 6
       },
       {
         'name': 'Romelu Lukaku',
@@ -152,7 +152,7 @@ class FirestoreService {
       {
         'name': 'Luka Modrić',
         'position': 'Midfielder',
-        'level': 87,
+        'level': 86,
         'country': 'https://firebasestorage.googleapis.com/v0/b/penalty-card-game-login.appspot.com/o/country_flags%2Fcroatia.png?alt=media&token=7ff3d218-6a13-43ed-95b0-c8937623c7cf',
         'image': 'https://firebasestorage.googleapis.com/v0/b/penalty-card-game-login.appspot.com/o/players_images%2Fluka_modric.png?alt=media&token=7349e651-a743-47e2-bcdc-62b935bfd6e9',
         'shooting_options': 6
@@ -168,7 +168,7 @@ class FirestoreService {
       {
         'name': 'Joshua Kimmich',
         'position': 'Midfielder',
-        'level': 89,
+        'level': 88,
         'country': 'https://firebasestorage.googleapis.com/v0/b/penalty-card-game-login.appspot.com/o/country_flags%2Fgermany.png?alt=media&token=fc88da10-e951-4385-8779-65ad7817abfe',
         'image': 'https://firebasestorage.googleapis.com/v0/b/penalty-card-game-login.appspot.com/o/players_images%2Fjoshua_kimmich.png?alt=media&token=f8f5413a-a654-46d3-9147-6cc4a08175af',
         'shooting_options': 6
@@ -184,10 +184,10 @@ class FirestoreService {
       {
         'name': 'Marco Verratti',
         'position': 'Midfielder',
-        'level': 85,
+        'level': 84,
         'country': 'https://firebasestorage.googleapis.com/v0/b/penalty-card-game-login.appspot.com/o/country_flags%2Fitaly.png?alt=media&token=76826ce1-a667-4ac5-a7ac-20d4f49439d7',
         'image': 'https://firebasestorage.googleapis.com/v0/b/penalty-card-game-login.appspot.com/o/players_images%2Fmarco_verratti.png?alt=media&token=6149e06a-f3b2-47a6-b682-eeff11c25c58',
-        'shooting_options': 6
+        'shooting_options': 4
       },
       {
         'name': 'Paul Pogba',
@@ -195,7 +195,7 @@ class FirestoreService {
         'level': 84,
         'country': 'https://firebasestorage.googleapis.com/v0/b/penalty-card-game-login.appspot.com/o/country_flags%2Ffrance.png?alt=media&token=cce71ca2-1b5d-4f3e-a6be-bcbe180d0d2a',
         'image': 'https://firebasestorage.googleapis.com/v0/b/penalty-card-game-login.appspot.com/o/players_images%2Fpaul_pogba.png?alt=media&token=0dc0b091-793d-4b58-898a-4e4aaee15abd',
-        'shooting_options': 6
+        'shooting_options': 4
       },
       {
         'name': 'Bernardo Silva',
@@ -208,7 +208,7 @@ class FirestoreService {
       {
         'name': 'Frenkie de Jong',
         'position': 'Midfielder',
-        'level': 85,
+        'level': 86,
         'country': 'https://firebasestorage.googleapis.com/v0/b/penalty-card-game-login.appspot.com/o/country_flags%2Fnetherlands.png?alt=media&token=9afaef90-3151-4e7b-956d-6f6162dbae8a',
         'image': 'https://firebasestorage.googleapis.com/v0/b/penalty-card-game-login.appspot.com/o/players_images%2Ffrenkie_de_jong.png?alt=media&token=d7ac89a0-8cdd-4bc5-ad39-09c823e4e5e8',
         'shooting_options': 6
@@ -216,7 +216,7 @@ class FirestoreService {
       {
         'name': 'Casemiro',
         'position': 'Midfielder',
-        'level': 81,
+        'level': 82,
         'country': 'https://firebasestorage.googleapis.com/v0/b/penalty-card-game-login.appspot.com/o/country_flags%2Fbrazil.png?alt=media&token=292b2a01-dfc4-40c7-9872-a67bc7c1b252',
         'image': 'https://firebasestorage.googleapis.com/v0/b/penalty-card-game-login.appspot.com/o/players_images%2Fcasemiro.png?alt=media&token=edc56ba6-fa59-4fce-9ece-cbb95cd49eb1',
         'shooting_options': 4
@@ -232,15 +232,15 @@ class FirestoreService {
         'level': 91,
         'country': 'https://firebasestorage.googleapis.com/v0/b/penalty-card-game-login.appspot.com/o/country_flags%2Fnetherlands.png?alt=media&token=9afaef90-3151-4e7b-956d-6f6162dbae8a',
         'image': 'https://firebasestorage.googleapis.com/v0/b/penalty-card-game-login.appspot.com/o/players_images%2Fvirgil_v_d.png?alt=media&token=014d3355-0dd2-4092-a63b-77c71f653219',
-        'shooting_options': 8
+        'shooting_options': 6
       },
       {
         'name': 'Sergio Ramos',
         'position': 'Defender',
-        'level': 87,
+        'level': 85,
         'country': 'https://firebasestorage.googleapis.com/v0/b/penalty-card-game-login.appspot.com/o/country_flags%2Fspain.png?alt=media&token=ef07c766-0a06-4c9a-8ede-4a4c30db963b',
         'image': 'https://firebasestorage.googleapis.com/v0/b/penalty-card-game-login.appspot.com/o/players_images%2Fsergio_ramos.png?alt=media&token=4fc6a0f2-55be-4151-a7b3-ee0d7509f330',
-        'shooting_options': 6
+        'shooting_options': 4
       },
       {
         'name': 'Kalidou K.',
@@ -248,7 +248,7 @@ class FirestoreService {
         'level': 86,
         'country': 'https://firebasestorage.googleapis.com/v0/b/penalty-card-game-login.appspot.com/o/country_flags%2Fsenegal.png?alt=media&token=ea2b8062-17d9-4cd0-a8e0-15004f7d4ea8',
         'image': 'https://firebasestorage.googleapis.com/v0/b/penalty-card-game-login.appspot.com/o/players_images%2Fkalidou_k.png?alt=media&token=cd5c6952-b504-435f-9b2d-785d44b9a5b2',
-        'shooting_options': 6
+        'shooting_options': 4
       },
       {
         'name': 'Rúben Dias',
@@ -264,31 +264,31 @@ class FirestoreService {
         'level': 85,
         'country': 'https://firebasestorage.googleapis.com/v0/b/penalty-card-game-login.appspot.com/o/country_flags%2Fbrazil.png?alt=media&token=292b2a01-dfc4-40c7-9872-a67bc7c1b252',
         'image': 'https://firebasestorage.googleapis.com/v0/b/penalty-card-game-login.appspot.com/o/players_images%2Fmarquinhos.png?alt=media&token=f31e6225-f9b3-435e-ba43-810ecbc6f63f',
-        'shooting_options': 6
+        'shooting_options': 4
       },
       {
         'name': 'Thiago Silva',
         'position': 'Defender',
-        'level': 83,
+        'level': 81,
         'country': 'https://firebasestorage.googleapis.com/v0/b/penalty-card-game-login.appspot.com/o/country_flags%2Fbrazil.png?alt=media&token=292b2a01-dfc4-40c7-9872-a67bc7c1b252',
         'image': 'https://firebasestorage.googleapis.com/v0/b/penalty-card-game-login.appspot.com/o/players_images%2Fthiago_silva.png?alt=media&token=8d8110b0-510e-4ff9-b7bd-d9a158537709',
-        'shooting_options': 4
+        'shooting_options': 2
       },
       {
         'name': 'Raphaël Varane',
         'position': 'Defender',
-        'level': 84,
+        'level': 83,
         'country': 'https://firebasestorage.googleapis.com/v0/b/penalty-card-game-login.appspot.com/o/country_flags%2Ffrance.png?alt=media&token=cce71ca2-1b5d-4f3e-a6be-bcbe180d0d2a',
         'image': 'https://firebasestorage.googleapis.com/v0/b/penalty-card-game-login.appspot.com/o/players_images%2Frapahel_varane.png?alt=media&token=f3bf4a7d-5944-448a-a4d4-65ff57adb37b',
-        'shooting_options': 4
+        'shooting_options': 2
       },
       {
         'name': 'Jordi Alba',
         'position': 'Defender',
-        'level': 83,
+        'level': 82,
         'country': 'https://firebasestorage.googleapis.com/v0/b/penalty-card-game-login.appspot.com/o/country_flags%2Fspain.png?alt=media&token=ef07c766-0a06-4c9a-8ede-4a4c30db963b',
         'image': 'https://firebasestorage.googleapis.com/v0/b/penalty-card-game-login.appspot.com/o/players_images%2Fjordi_alba.png?alt=media&token=72f4955f-df7d-41aa-9fe1-e1459142aa62',
-        'shooting_options': 4
+        'shooting_options': 2
       },
       {
         'name': 'Trent A.A.',
@@ -304,7 +304,7 @@ class FirestoreService {
         'level': 87,
         'country': 'https://firebasestorage.googleapis.com/v0/b/penalty-card-game-login.appspot.com/o/country_flags%2Fscotland.png?alt=media&token=fab0ad08-6f43-498d-a29f-926563388dc7',
         'image': 'https://firebasestorage.googleapis.com/v0/b/penalty-card-game-login.appspot.com/o/players_images%2Fandrew_r.png?alt=media&token=69027220-70f6-4a43-87a0-d5b55ac3809a',
-        'shooting_options': 6
+        'shooting_options': 4
       }
       // Agrega más jugadores de defensas aquí
     ];
@@ -365,7 +365,7 @@ class FirestoreService {
         'level': 85,
         'country': 'https://firebasestorage.googleapis.com/v0/b/penalty-card-game-login.appspot.com/o/country_flags%2Fcosta_rica.png?alt=media&token=3ac2643c-adfc-46a7-81da-52f6df88f546',
         'image': 'https://firebasestorage.googleapis.com/v0/b/penalty-card-game-login.appspot.com/o/players_images%2Fkeylor_navas.png?alt=media&token=888b2008-bd60-45ba-b930-d66ce141263f',
-        'shooting_options': 6
+        'shooting_options': 4
       },
       {
         'name': 'Gianluigi Don.',
@@ -389,7 +389,7 @@ class FirestoreService {
         'level': 84,
         'country': 'https://firebasestorage.googleapis.com/v0/b/penalty-card-game-login.appspot.com/o/country_flags%2Ffrance.png?alt=media&token=cce71ca2-1b5d-4f3e-a6be-bcbe180d0d2a',
         'image': 'https://firebasestorage.googleapis.com/v0/b/penalty-card-game-login.appspot.com/o/players_images%2Fhugo_lloris.png?alt=media&token=47b680e2-1be6-44d0-be77-09106181812c',
-        'shooting_options': 6
+        'shooting_options': 4
       }
       // Agrega más jugadores de goleros aquí
     ];
