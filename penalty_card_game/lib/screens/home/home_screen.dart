@@ -229,7 +229,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       offset: Offset(screenWidth * 0.012, 1.5) // dont change the responsive :P
                     ),
                     Shadow(
-                      color: const Color.fromARGB(255, 252, 255, 56).withOpacity(0.5), // NO LO CAMBIES DALE GAS JAJJAJA, TE DEJO LOS BOTONES CON EL BOX SHADOW NEGRO PERO DEJAME ESTO ASI
+                      color: const Color.fromARGB(255, 112, 112, 104).withOpacity(0.5), // NO LO CAMBIES DALE GAS JAJJAJA, TE DEJO LOS BOTONES CON EL BOX SHADOW NEGRO PERO DEJAME ESTO ASI
                       blurRadius: 20.0, 
                     ),
                   ],

@@ -105,11 +105,11 @@ return PopScope(
                 color: const Color.fromARGB(255, 221, 204, 13),
                   shadows: [
                     Shadow(
-                      color: const Color.fromARGB(255, 0, 0, 0).withOpacity(0.8), // Verde con opacidad para el glow
+                      color: const Color.fromARGB(255, 0, 0, 0).withOpacity(0.8),
                       offset: Offset( 2.012, 2.5), // 0.6% of screen width
                     ),
                     Shadow(
-                      color: const Color.fromARGB(255, 255, 235, 15).withOpacity(0.6), // Verde con opacidad para el glow
+                      color: const Color.fromARGB(255, 116, 105, 105).withOpacity(0.6),
                       blurRadius: 20.0, // Radio del blur para el glow
                     ),
                   ],

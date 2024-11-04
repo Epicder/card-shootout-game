@@ -24,8 +24,8 @@ class PlayerCardMVP extends StatelessWidget {
     final screenHeight = MediaQuery.of(context).size.height;
 
     return Container(
-      width: screenWidth * 0.28, // Ajusta el tamaño de la carta para la pantalla MVP
-      height: screenHeight * 0.48, // Ajusta la altura de la carta
+      width: screenWidth * 0.27, // Ajusta el tamaño de la carta para la pantalla MVP
+      height: screenHeight * 0.53, // Ajusta la altura de la carta
       decoration: BoxDecoration(
         image: DecorationImage(
           image: AssetImage('assets/fondo_cartas.png'), // Fondo de la carta
@@ -36,8 +36,8 @@ class PlayerCardMVP extends StatelessWidget {
         children: [
           // Imagen del jugador
           Positioned(
-            left: screenWidth * 0.07, // Ajusta la posición horizontal
-            top: screenHeight * 0.09, // Ajusta la posición vertical
+            left: screenWidth * 0.065, // Ajusta la posición horizontal
+            top: screenHeight * 0.070, // Ajusta la posición vertical
             child: Image.network(
               playerImage, // URL de la imagen del jugador
               height: screenHeight * 0.44, // Tamaño de la imagen
@@ -46,13 +46,13 @@ class PlayerCardMVP extends StatelessWidget {
           ),
           // Nombre del jugador
           Positioned(
-            top: screenHeight * 0.010, // Ajusta la posición del texto
-            left: screenWidth * 0.077, // Ajusta la posición del texto
+            top: screenHeight * 0.015, // Ajusta la posición del texto
+            left: screenWidth * 0.070, // Ajusta la posición del texto
             child: Text(
               playerName.toUpperCase(),
               style: TextStyle(
                 fontFamily: 'SPEED',
-                fontSize: screenWidth * 0.016, // Ajusta el tamaño del texto
+                fontSize: screenWidth * 0.017, // Ajusta el tamaño del texto
                 fontWeight: FontWeight.w800,
                 color: const Color.fromARGB(255, 248, 248, 248),
                 shadows: [
@@ -67,8 +67,8 @@ class PlayerCardMVP extends StatelessWidget {
           ),
           // Nivel del jugador
           Positioned(
-            bottom: screenHeight * 0.026, // Ajusta la posición del nivel
-            right: screenWidth * 0.083, // Ajusta la posición
+            bottom: screenHeight * 0.033, // Ajusta la posición del nivel
+            right: screenWidth * 0.074, // Ajusta la posición
             child: Text(
               '$playerLevel',
               style: TextStyle(
@@ -86,10 +86,10 @@ class PlayerCardMVP extends StatelessWidget {
           ),
           // Posición del jugador
           Positioned(
-            top: screenHeight * 0.3, // Ajusta la posición
-            right: screenWidth * 0.077, // Ajusta la posición
+            top: screenHeight * 0.32, // Ajusta la posición
+            right: screenWidth * 0.068, // Ajusta la posición
             child: Container(
-              width: screenWidth * 0.07, // Ajusta el tamaño del contenedor
+              width: screenWidth * 0.082, // Ajusta el tamaño del contenedor
               height: screenHeight * 0.035, // Ajusta el tamaño
               decoration: BoxDecoration(
                 color: const Color.fromARGB(255, 5, 197, 28).withOpacity(1),
@@ -110,8 +110,8 @@ class PlayerCardMVP extends StatelessWidget {
           ),
           // Opciones de tiro (centrar número en un círculo con borde)
           Positioned(
-            top: screenHeight * 0.20, // Ajusta según tu diseño
-            right: screenWidth * 0.075, // Ajusta según tu diseño
+            top: screenHeight * 0.19, // Ajusta según tu diseño
+            right: screenWidth * 0.066, // Ajusta según tu diseño
             child: Container(
               width: screenWidth * 0.035, // Ajusta el ancho para que sea más pequeño si es necesario
               height: screenWidth * 0.035, // Ajusta la altura para que sea igual al ancho, formando un círculo
@@ -128,7 +128,7 @@ class PlayerCardMVP extends StatelessWidget {
                   '$shootingOptions',
                   style: TextStyle(
                     color: Colors.white,
-                    fontSize: screenWidth * 0.020, // Ajusta el tamaño según tu diseño
+                    fontSize: screenWidth * 0.024, // Ajusta el tamaño según tu diseño
                     fontWeight: FontWeight.bold,
                   ),
                 ),
@@ -138,8 +138,8 @@ class PlayerCardMVP extends StatelessWidget {
 
           // Bandera del país (reducir tamaño)
           Positioned(
-            top: screenHeight * 0.10, // Ajusta según tu diseño
-            right: screenWidth * 0.055, // Ajusta según tu diseño
+            top: screenHeight * 0.100, // Ajusta según tu diseño
+            right: screenWidth * 0.047, // Ajusta según tu diseño
             child: Image.network(
               playerCountry, // Aquí deberás pasar el URL de la bandera según tu lógica
               width: screenWidth * 0.07, // Ajustado para reducir el ancho

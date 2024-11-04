@@ -21,6 +21,7 @@ dependencies:
 
   user_repository:
     path: packages/user_repository
+  google_fonts: ^6.2.1
 
 dev_dependencies:
   flutter_test:
@@ -35,7 +36,8 @@ flutter:
     - assets/fondo_menu.jpg
     - assets/fondo_draft.jpg
     - assets/fondo_cartas.png
-    - assets/fondo_penales.png
+    - assets/sta_azuro.jpg
+    - assets/sta_tis.png
     - assets/animations/goal.json
     - assets/animations/confetti.json
     - assets/animations/plus.json
