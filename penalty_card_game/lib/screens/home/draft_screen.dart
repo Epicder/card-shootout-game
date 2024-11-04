@@ -124,7 +124,7 @@ return PopScope(
               width: 120.0,
               height: 32.0,
               decoration: BoxDecoration(
-                color: const Color.fromARGB(125, 116, 116, 116),
+                color: const Color.fromARGB(118, 255, 242, 0),
                 borderRadius: BorderRadius.circular(50.0),
                 border: Border.all(
                   color: const Color.fromARGB(255, 255, 255, 255), // Color del borde
@@ -447,14 +447,14 @@ void _showIncompleteDraftPopup(BuildContext context) {
             side: BorderSide(color: Colors.white, width: 2.0),
           ),
           title: Text(
-            "Incomplete Draft",
+            "INCOMPLETE DRAFT",
             style: TextStyle(
               fontSize: 28.0,
-              color: const Color.fromARGB(255, 235, 235, 235),
+              color: const Color.fromARGB(177, 7, 7, 7),
               shadows: [
                 Shadow(
-                  blurRadius: 10.0,
-                  color: const Color.fromARGB(255, 230, 253, 125).withOpacity(0.5),
+                  blurRadius: 2.0,
+                  color: const Color.fromARGB(255, 228, 91, 91).withOpacity(1),
                   offset: Offset(2, 0),
                 ),
               ],
@@ -462,15 +462,16 @@ void _showIncompleteDraftPopup(BuildContext context) {
           ),
           content: Text(
             "Complete your draft to play!",
+            textAlign: TextAlign.center,
             style: TextStyle(
               fontSize: 20.0,
               fontWeight: FontWeight.bold,
               color: const Color.fromARGB(255, 235, 235, 235),
               shadows: [
                 Shadow(
-                  blurRadius: 10.0,
-                  color: const Color.fromARGB(255, 230, 253, 125).withOpacity(0.5),
-                  offset: Offset(0, 0),
+                  blurRadius: 2.0,
+                  color: const Color.fromARGB(255, 4, 82, 0).withOpacity(1),
+                  offset: Offset(2, 2),
                 ),
               ],
             ),
@@ -482,12 +483,13 @@ void _showIncompleteDraftPopup(BuildContext context) {
               },
               child: Text(
                 "OK",
+                textAlign: TextAlign.center,
                 style: TextStyle(
-                  color: Colors.white,
+                  color: const Color.fromARGB(255, 249, 247, 247),
                   shadows: [
                     Shadow(
-                      blurRadius: 10.0,
-                      color: Colors.white,
+                      blurRadius: 5.0,
+                      color: const Color.fromARGB(255, 0, 0, 0),
                       offset: Offset(0, 0),
                     ),
                   ],
