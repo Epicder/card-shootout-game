@@ -51,7 +51,7 @@ Widget build(BuildContext context) {
             playerName.toUpperCase(),
             style: TextStyle(
               fontFamily: 'SPEED',
-              fontSize: screenWidth * 0.018, // 6% of screen width
+              fontSize: screenWidth * 0.01555, // 6% of screen width
               fontWeight: FontWeight.w800,
               color: const Color.fromARGB(255, 248, 248, 248),
               shadows: [
@@ -66,13 +66,13 @@ Widget build(BuildContext context) {
         ),
         // Nivel del jugador
         Positioned(
-          bottom: screenHeight * 0.033, // 3% of screen height
-          right: screenWidth * 0.272, // 8% of screen width
+          bottom: screenHeight * 0.032, // 3% of screen height
+          right: screenWidth * 0.2708, // 8% of screen width
           child: Text(
             '$playerLevel',
             style: TextStyle(
               fontFamily: 'Black Ops One',
-              fontSize: screenWidth * 0.040, // 15% of screen width
+              fontSize: screenWidth * 0.035, // 15% of screen width
               color: const Color.fromARGB(255, 251, 253, 253),
               shadows: [
                 Shadow(
@@ -106,7 +106,7 @@ Widget build(BuildContext context) {
                   style: TextStyle(
                     fontWeight: FontWeight.w600,
                     color: Colors.white,
-                    fontSize: screenWidth * 0.014, // Ajusta el tamaño según tu diseño
+                    fontSize: screenWidth * 0.012, // Ajusta el tamaño según tu diseño
                     fontStyle: FontStyle.normal,
                   ),
                 ),

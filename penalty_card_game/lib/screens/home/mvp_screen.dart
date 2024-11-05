@@ -171,7 +171,7 @@ Widget build(BuildContext context) {
                 shadows: [
                   Shadow(
                     blurRadius: 10.0,
-                    color: const Color.fromARGB(248, 216, 4, 4),
+                    color: const Color.fromARGB(248, 236, 255, 31).withOpacity(0.7),
                     offset: Offset(2, 1),
                   ),
                 ],
@@ -312,8 +312,8 @@ Widget build(BuildContext context) {
           ),
         // Marcador (posiciona este contenedor para mover solo el marcador)
         Positioned(
-          top: 15, // Ajusta la posición superior del marcador
-          left: 242, // Ajusta la posición izquierda del marcador
+          top: 30, // Ajusta la posición superior del marcador
+          left: 212, // Ajusta la posición izquierda del marcador
           child: Container(
             padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 4.0),
             decoration: BoxDecoration(
@@ -329,15 +329,15 @@ Widget build(BuildContext context) {
             ),
             child: Text(
               "${currentUser?.name ?? 'Tú Fc'}  $playerScore  |  $cpuScore  CPU",
-              style: GoogleFonts.nabla(
-                fontSize: 30,
+              style: GoogleFonts.graduate(
+                fontSize: 27,
                 fontWeight: FontWeight.w100,
-                color: const Color.fromARGB(255, 255, 254, 254),
+                color: const Color.fromARGB(248, 244, 232, 7),
                 letterSpacing: 1.5,
                 shadows: [
                   Shadow(
                     blurRadius: 20.0,
-                    color: const Color.fromARGB(255, 0, 0, 0).withOpacity(1),
+                    color: const Color.fromARGB(255, 238, 227, 12).withOpacity(0.7),
                     offset: Offset(0, 0),
                   ),
                 ],

@@ -124,7 +124,7 @@ return PopScope(
               width: 120.0,
               height: 32.0,
               decoration: BoxDecoration(
-                color: const Color.fromARGB(118, 255, 242, 0),
+                color: const Color.fromARGB(118, 130, 130, 128),
                 borderRadius: BorderRadius.circular(50.0),
                 border: Border.all(
                   color: const Color.fromARGB(255, 255, 255, 255), // Color del borde
@@ -140,8 +140,8 @@ return PopScope(
               ),
               padding: EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0), // Espaciado interno
               child: Text(
-                "${currentUser?.name ?? 'Your'} FC",
-                textAlign: TextAlign.right,
+                "    ${currentUser?.name ?? 'Your'}",
+                textAlign: TextAlign.left,
                 style: TextStyle(
                   fontFamily: 'Rubik Wet Paint',
                   color:  Color.fromARGB(255, 255, 255, 255), // Color del texto
@@ -340,45 +340,48 @@ void showPlayersForButton(BuildContext context, String position, int buttonIndex
 
                   var playerDocs = snapshot.data!.docs;
 
-                  return GridView.builder(
-                    controller: scrollController,
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 3,
-                      crossAxisSpacing: 10.0,
-                      mainAxisSpacing: 10.0,
-                    ),
-                    itemCount: playerDocs.length,
-                    itemBuilder: (context, index) {
-                      var playerData = playerDocs[index].data() as Map<String, dynamic>;
-                      String playerId = playerDocs[index].id;
-                      bool isSelected = selectedPlayers.contains(playerId);
+                  return Padding(
+                    padding: const EdgeInsets.only(top: 10.0),
+                    child: GridView.builder(
+                      controller: scrollController,
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 3,
+                        crossAxisSpacing: 10.0,
+                        mainAxisSpacing: 10.0,
+                      ),
+                      itemCount: playerDocs.length,
+                      itemBuilder: (context, index) {
+                        var playerData = playerDocs[index].data() as Map<String, dynamic>;
+                        String playerId = playerDocs[index].id;
+                        bool isSelected = selectedPlayers.contains(playerId);
 
-                      return GestureDetector(
-                        onTap: () {
-                          if (isSelected) return;
+                        return GestureDetector(
+                          onTap: () {
+                            if (isSelected) return;
 
-                          // Marcar el botón como seleccionado
-                          playerSelectedStatus[position]![buttonIndex] = true;
-                          selectedPlayers.add(playerId);
+                            // Marcar el botón como seleccionado
+                            playerSelectedStatus[position]![buttonIndex] = true;
+                            selectedPlayers.add(playerId);
 
-                          // Agregar jugador a la selección
-                          _addToDraft(position, buttonIndex, playerData, playerId);
+                            // Agregar jugador a la selección
+                            _addToDraft(position, buttonIndex, playerData, playerId);
 
-                          Navigator.of(context).pop();
-                        },
-                        child: Opacity(
-                          opacity: isSelected ? 0.5 : 1.0,
-                          child: PlayerCardDraft(
-                            playerName: playerData['name'],
-                            playerPosition: playerData['position'],
-                            playerLevel: playerData['level'],
-                            playerCountry: playerData['country'],
-                            playerImage: playerData['image'],
-                            shootingOptions: playerData['shooting_options'],
+                            Navigator.of(context).pop();
+                          },
+                          child: Opacity(
+                            opacity: isSelected ? 0.5 : 1.0,
+                            child: PlayerCardDraft(
+                              playerName: playerData['name'],
+                              playerPosition: playerData['position'],
+                              playerLevel: playerData['level'],
+                              playerCountry: playerData['country'],
+                              playerImage: playerData['image'],
+                              shootingOptions: playerData['shooting_options'],
+                            ),
                           ),
-                        ),
-                      );
-                    },
+                        );
+                      },
+                    ),
                   );
                 },
               ),
@@ -427,11 +430,11 @@ Future<bool> _checkDraftCompletion() async {
 
     // si hay 8 jugadores
     if (draftSnapshot.size == 8) {
-      return true; // El draft está completo
+      return true;
     }
   }
 
-  return false; // El draft no está completo
+  return false;
 }
 
 void _showIncompleteDraftPopup(BuildContext context) { 
@@ -447,14 +450,14 @@ void _showIncompleteDraftPopup(BuildContext context) {
             side: BorderSide(color: Colors.white, width: 2.0),
           ),
           title: Text(
-            "INCOMPLETE DRAFT",
+            "Incomplete Draft",
             style: TextStyle(
               fontSize: 28.0,
-              color: const Color.fromARGB(177, 7, 7, 7),
+              color: const Color.fromARGB(255, 235, 235, 235),
               shadows: [
                 Shadow(
-                  blurRadius: 2.0,
-                  color: const Color.fromARGB(255, 228, 91, 91).withOpacity(1),
+                  blurRadius: 10.0,
+                  color: const Color.fromARGB(255, 230, 253, 125).withOpacity(0.2),
                   offset: Offset(2, 0),
                 ),
               ],
@@ -462,16 +465,15 @@ void _showIncompleteDraftPopup(BuildContext context) {
           ),
           content: Text(
             "Complete your draft to play!",
-            textAlign: TextAlign.center,
             style: TextStyle(
               fontSize: 20.0,
               fontWeight: FontWeight.bold,
               color: const Color.fromARGB(255, 235, 235, 235),
               shadows: [
                 Shadow(
-                  blurRadius: 2.0,
-                  color: const Color.fromARGB(255, 4, 82, 0).withOpacity(1),
-                  offset: Offset(2, 2),
+                  blurRadius: 10.0,
+                  color: const Color.fromARGB(255, 230, 253, 125).withOpacity(0.1),
+                  offset: Offset(0, 0),
                 ),
               ],
             ),
@@ -483,13 +485,12 @@ void _showIncompleteDraftPopup(BuildContext context) {
               },
               child: Text(
                 "OK",
-                textAlign: TextAlign.center,
                 style: TextStyle(
-                  color: const Color.fromARGB(255, 249, 247, 247),
+                  color: Colors.white,
                   shadows: [
                     Shadow(
-                      blurRadius: 5.0,
-                      color: const Color.fromARGB(255, 0, 0, 0),
+                      blurRadius: 10.0,
+                      color: Colors.white,
                       offset: Offset(0, 0),
                     ),
                   ],

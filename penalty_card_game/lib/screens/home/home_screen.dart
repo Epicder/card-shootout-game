@@ -152,15 +152,16 @@ class _HomeScreenState extends State<HomeScreen> {
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         fontFamily: 'SPORT',
-                        color: const Color.fromARGB(255, 255, 222, 7),
+                        color: const Color.fromARGB(255, 242, 241, 241),
                         fontSize: screenWidth * 0.046, // 5% of screen width
                         letterSpacing: 4.0,
                         fontWeight: FontWeight.w500,
                         fontStyle: FontStyle.normal,
                         shadows: [
                           Shadow(
-                            color: const Color.fromARGB(255, 255, 255, 254),
+                            color: const Color.fromARGB(255, 246, 246, 79),
                             offset: Offset(1, 1),
+                            blurRadius: 30,
                             ),
                           ],
                       ),
@@ -229,7 +230,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       offset: Offset(screenWidth * 0.012, 1.5) // dont change the responsive :P
                     ),
                     Shadow(
-                      color: const Color.fromARGB(255, 112, 112, 104).withOpacity(0.5), // NO LO CAMBIES DALE GAS JAJJAJA, TE DEJO LOS BOTONES CON EL BOX SHADOW NEGRO PERO DEJAME ESTO ASI
+                      color: const Color.fromARGB(255, 255, 255, 45).withOpacity(0.35), // NO LO CAMBIES DALE GAS JAJJAJA, TE DEJO LOS BOTONES CON EL BOX SHADOW NEGRO PERO DEJAME ESTO ASI
                       blurRadius: 20.0, 
                     ),
                   ],

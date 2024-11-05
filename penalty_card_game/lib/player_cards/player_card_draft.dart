@@ -46,12 +46,12 @@ Widget build(BuildContext context) {
         // Nombre del jugador
         Positioned(
           top: screenHeight * 0.013, // 3% of screen height
-          left: screenWidth * 0.066, // 5% of screen width
+          left: screenWidth * 0.061, // 5% of screen width
           child: Text(
             playerName.toUpperCase(),
             style: TextStyle(
               fontFamily: 'SPEED',
-              fontSize: screenWidth * 0.0175, // 6% of screen width
+              fontSize: screenWidth * 0.0150, // 6% of screen width
               fontWeight: FontWeight.w800,
               color: const Color.fromARGB(255, 248, 248, 248),
               shadows: [
@@ -66,13 +66,13 @@ Widget build(BuildContext context) {
         ),
         // Nivel del jugador
         Positioned(
-          bottom: screenHeight * 0.033, // 3% of screen height
-          right: screenWidth * 0.0725, // 8% of screen width
+          bottom: screenHeight * 0.034, // 3% of screen height
+          right: screenWidth * 0.070, // 8% of screen width
           child: Text(
             '$playerLevel',
             style: TextStyle(
               fontFamily: 'Black Ops One',
-              fontSize: screenWidth * 0.035, // 15% of screen width
+              fontSize: screenWidth * 0.029, // 15% of screen width
               color: Colors.white,
               shadows: [
                 Shadow(
@@ -86,7 +86,7 @@ Widget build(BuildContext context) {
         // Posición del jugador
         Positioned(
           top: screenHeight * 0.225, // 20% of screen height
-          right: screenWidth * -0.15, // 5% of screen width
+          right: screenWidth * -0.153, // 5% of screen width
           child: Container(
             padding: EdgeInsets.symmetric(
               horizontal: screenWidth * 0.217, // 2.5% of screen width
@@ -106,7 +106,7 @@ Widget build(BuildContext context) {
                   style: TextStyle(
                     fontWeight: FontWeight.w600,
                     color: Colors.white,
-                    fontSize: screenWidth * 0.014, // Ajusta el tamaño según tu diseño
+                    fontSize: screenWidth * 0.012, // Ajusta el tamaño según tu diseño
                     fontStyle: FontStyle.normal,
                   ),
                 ),
@@ -117,7 +117,7 @@ Widget build(BuildContext context) {
         // Opciones de tiro
         Positioned(
           top: screenHeight * 0.170, // 27% of screen height
-          right: screenWidth * 0.067, // 5% of screen width
+          right: screenWidth * 0.064, // 5% of screen width
           child: Container(
             width: screenWidth * 0.030, // 13% of screen width
             height: screenHeight * 0.136, // 7% of screen height
@@ -144,7 +144,7 @@ Widget build(BuildContext context) {
         // País
         Positioned(
           top: screenHeight * 0.105, // 6.5% of screen height
-          right: screenWidth * 0.025, // 5% of screen width
+          right: screenWidth * 0.022, // 5% of screen width
           child: Image.network(
             playerCountry, // Aquí deberás pasar el URL de la bandera según tu lógica
             width: screenWidth * 0.12, // 8% of screen width
