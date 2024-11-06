@@ -36,7 +36,7 @@ class PlayerCardMVP extends StatelessWidget {
         children: [
           // Imagen del jugador
           Positioned(
-            left: screenWidth * 0.065, // Ajusta la posición horizontal
+            left: screenWidth * 0.061, // Ajusta la posición horizontal
             top: screenHeight * 0.070, // Ajusta la posición vertical
             child: Image.network(
               playerImage, // URL de la imagen del jugador
@@ -52,7 +52,7 @@ class PlayerCardMVP extends StatelessWidget {
               playerName.toUpperCase(),
               style: TextStyle(
                 fontFamily: 'SPEED',
-                fontSize: screenWidth * 0.017, // Ajusta el tamaño del texto
+                fontSize: screenWidth * 0.01555, // Ajusta el tamaño del texto
                 fontWeight: FontWeight.w800,
                 color: const Color.fromARGB(255, 248, 248, 248),
                 shadows: [
@@ -67,13 +67,13 @@ class PlayerCardMVP extends StatelessWidget {
           ),
           // Nivel del jugador
           Positioned(
-            bottom: screenHeight * 0.033, // Ajusta la posición del nivel
-            right: screenWidth * 0.074, // Ajusta la posición
+            bottom: screenHeight * 0.035, // Ajusta la posición del nivel
+            right: screenWidth * 0.076, // Ajusta la posición
             child: Text(
               '$playerLevel',
               style: TextStyle(
                 fontFamily: 'Black Ops One',
-                fontSize: screenWidth * 0.035, // Ajusta el tamaño del texto
+                fontSize: screenWidth * 0.030, // Ajusta el tamaño del texto
                 color: const Color.fromARGB(255, 251, 253, 253),
                 shadows: [
                   Shadow(
@@ -90,7 +90,7 @@ class PlayerCardMVP extends StatelessWidget {
             right: screenWidth * 0.068, // Ajusta la posición
             child: Container(
               width: screenWidth * 0.082, // Ajusta el tamaño del contenedor
-              height: screenHeight * 0.035, // Ajusta el tamaño
+              height: screenHeight * 0.044, // Ajusta el tamaño
               decoration: BoxDecoration(
                 color: const Color.fromARGB(255, 5, 197, 28).withOpacity(1),
                 borderRadius: BorderRadius.circular(3.0),
@@ -102,7 +102,7 @@ class PlayerCardMVP extends StatelessWidget {
                   style: TextStyle(
                     fontWeight: FontWeight.w600,
                     color: Colors.white,
-                    fontSize: screenWidth * 0.014, // Ajusta el tamaño del texto
+                    fontSize: screenWidth * 0.012, // Ajusta el tamaño del texto
                   ),
                 ),
               ),
@@ -110,11 +110,11 @@ class PlayerCardMVP extends StatelessWidget {
           ),
           // Opciones de tiro (centrar número en un círculo con borde)
           Positioned(
-            top: screenHeight * 0.19, // Ajusta según tu diseño
+            top: screenHeight * 0.191, // Ajusta según tu diseño
             right: screenWidth * 0.066, // Ajusta según tu diseño
             child: Container(
               width: screenWidth * 0.035, // Ajusta el ancho para que sea más pequeño si es necesario
-              height: screenWidth * 0.035, // Ajusta la altura para que sea igual al ancho, formando un círculo
+              height: screenWidth * 0.031, // Ajusta la altura para que sea igual al ancho, formando un círculo
               decoration: BoxDecoration(
                 color: Colors.red,
                 shape: BoxShape.circle, // Asegura que sea un círculo perfecto
@@ -128,7 +128,7 @@ class PlayerCardMVP extends StatelessWidget {
                   '$shootingOptions',
                   style: TextStyle(
                     color: Colors.white,
-                    fontSize: screenWidth * 0.024, // Ajusta el tamaño según tu diseño
+                    fontSize: screenWidth * 0.020, // Ajusta el tamaño según tu diseño
                     fontWeight: FontWeight.bold,
                   ),
                 ),
@@ -138,12 +138,12 @@ class PlayerCardMVP extends StatelessWidget {
 
           // Bandera del país (reducir tamaño)
           Positioned(
-            top: screenHeight * 0.100, // Ajusta según tu diseño
-            right: screenWidth * 0.047, // Ajusta según tu diseño
+            top: screenHeight * 0.087, // Ajusta según tu diseño
+            right: screenWidth * 0.055, // Ajusta según tu diseño
             child: Image.network(
               playerCountry, // Aquí deberás pasar el URL de la bandera según tu lógica
               width: screenWidth * 0.07, // Ajustado para reducir el ancho
-              height: screenHeight * 0.035, // Ajustado para reducir la altura
+              height: screenHeight * 0.053, // Ajustado para reducir la altura
             ),
           ),
         ],
