@@ -369,7 +369,7 @@ Widget _buildPlayerImage() {
           },
           style: ElevatedButton.styleFrom(
             backgroundColor:  const Color.fromARGB(226, 130, 236, 165),
-            foregroundColor: const Color.fromARGB(255, 255, 255, 255),
+            foregroundColor: const Color.fromARGB(255, 9, 9, 9),
             padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 7.0),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(60),
@@ -416,7 +416,7 @@ Widget _buildPlayerImage() {
           },
           style: ElevatedButton.styleFrom(
             backgroundColor: const Color.fromARGB(226, 130, 236, 165),
-            foregroundColor: const Color.fromARGB(255, 255, 255, 255),
+            foregroundColor: const Color.fromARGB(255, 0, 0, 0),
             padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 1.0),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(60),

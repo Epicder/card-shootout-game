@@ -42,6 +42,8 @@ flutter:
     - assets/animations/confetti.json
     - assets/animations/plus.json
     - assets/animations/fireworks.json
+    - assets/animations/dibu.png
+    - assets/animations/dibu_baile.jpg
 
   fonts:
     - family: Speedway

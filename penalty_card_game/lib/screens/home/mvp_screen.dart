@@ -158,31 +158,108 @@ Widget build(BuildContext context) {
         // Texto "Selecciona tu ejecutante" arriba de la lista de jugadores
         if (showPlayerList)
           Positioned(
-            left: 20,  // Alineado con la matriz
-            top: 30,  // Colocado justo debajo de la matriz
+            left: 250,  // Alineado con la matriz
+            bottom: 26,  // Colocado justo debajo de la matriz
             child: Text(
-              "SELECT\nYOUR SHOOTER",
+              "SELECT YOUR SHOOTER",
               textAlign: TextAlign.center,
               style: GoogleFonts.graduate(  // Cambia la fuente aquí a la que prefieras
-                fontSize: 15.0,
+                fontSize: 25.0,
                 letterSpacing: 2.0,
                 fontWeight: FontWeight.bold,
                 color: const Color.fromARGB(248, 244, 232, 7),
                 shadows: [
                   Shadow(
-                    blurRadius: 10.0,
-                    color: const Color.fromARGB(248, 236, 255, 31).withOpacity(0.7),
-                    offset: Offset(2, 1),
+                    blurRadius: 1.0,
+                    color: const Color.fromARGB(248, 4, 4, 4).withOpacity(1),
+                    offset: Offset(3, 3),
                   ),
                 ],
               ),
             ),
           ),
+                  // Nombre del equipo del usuario en el lado izquierdo, arriba de la lista de jugadores
+        Positioned(
+          left: 20, // Ajusta la posición horizontal
+          top: 10, // Ajusta la posición vertical
+          child: Text(
+            "${currentUser?.name ?? 'User Team'}", // Nombre del equipo del usuario
+            style: GoogleFonts.graduate(
+              fontSize: 35.0,
+              fontWeight: FontWeight.bold,
+              color: const Color.fromARGB(248, 0, 255, 140),
+              shadows: [
+                Shadow(
+                  blurRadius: 1.0,
+                  color: const Color.fromARGB(255, 9, 82, 1).withOpacity(0.5),
+                  offset: Offset(2, 2),
+                ),
+              ],
+            ),
+          ),
+        ),
+
+        // Nombre del equipo CPU en el lado derecho, arriba de las cartas CPU
+        Positioned(
+          right: 20, // Ajusta la posición horizontal
+          top: 10, // Ajusta la posición vertical
+          child: Text(
+            "CPU", // Nombre del equipo CPU
+            style: GoogleFonts.graduate(
+              fontSize: 35.0,
+              fontWeight: FontWeight.bold,
+              color: const Color.fromARGB(248, 244, 7, 7),
+              shadows: [
+                Shadow(
+                  blurRadius: 1.0,
+                  color: const Color.fromARGB(255, 246, 245, 245).withOpacity(0.6),
+                  offset: Offset(2, 2),
+                ),
+              ],
+            ),
+          ),
+        ),
+
+        // Marcador central con solo números
+        Positioned(
+          top: 10, // Ajusta la posición superior del marcador
+          left: 300, // Ajusta la posición izquierda del marcador
+          child: Container(
+            padding: EdgeInsets.symmetric(horizontal: 30.0, vertical: 5.0),
+            decoration: BoxDecoration(
+              color: const Color.fromARGB(6, 64, 64, 64),
+              borderRadius: BorderRadius.circular(2.0),
+              boxShadow: [
+                BoxShadow(
+                  color: const Color.fromARGB(155, 52, 52, 51).withOpacity(0.9),
+                  blurRadius: 5,
+                  offset: Offset(0, 0),
+                ),
+              ],
+            ),
+            child: Text(
+              "$playerScore  -  $cpuScore", // Solo muestra los números
+              style: GoogleFonts.graduate(
+                fontSize: 40,
+                fontWeight: FontWeight.w100,
+                color: const Color.fromARGB(248, 244, 232, 7),
+                letterSpacing: 1.5,
+                shadows: [
+                  Shadow(
+                    blurRadius: 20.0,
+                    color: const Color.fromARGB(255, 7, 7, 7).withOpacity(0.7),
+                    offset: Offset(0, 0),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
         // Colocar los botones de los jugadores a la izquierda
         if (showPlayerList)
           Positioned(
             left: 25,
-            top: 90,
+            top: 65,
             bottom: 68,
             child: SizedBox(
               width: 110,
@@ -310,42 +387,6 @@ Widget build(BuildContext context) {
               ),
             ),
           ),
-        // Marcador (posiciona este contenedor para mover solo el marcador)
-        Positioned(
-          top: 30, // Ajusta la posición superior del marcador
-          left: 212, // Ajusta la posición izquierda del marcador
-          child: Container(
-            padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 4.0),
-            decoration: BoxDecoration(
-              color: const Color.fromARGB(6, 64, 64, 64),
-              borderRadius: BorderRadius.circular(2.0),
-              boxShadow: [
-                BoxShadow(
-                  color: const Color.fromARGB(47, 53, 53, 51).withOpacity(0.9),
-                  blurRadius: 5,
-                  offset: Offset(0, 0),
-                ),
-              ],
-            ),
-            child: Text(
-              "${currentUser?.name ?? 'Tú Fc'}  $playerScore  |  $cpuScore  CPU",
-              style: GoogleFonts.graduate(
-                fontSize: 27,
-                fontWeight: FontWeight.w100,
-                color: const Color.fromARGB(248, 244, 232, 7),
-                letterSpacing: 1.5,
-                shadows: [
-                  Shadow(
-                    blurRadius: 20.0,
-                    color: const Color.fromARGB(255, 238, 227, 12).withOpacity(0.7),
-                    offset: Offset(0, 0),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ),
-
         // Matriz de 7x5 (posiciona este contenedor para mover solo la matriz)
         Positioned(
           top: 115, // Ajusta la posición superior de la matriz
@@ -522,6 +563,27 @@ Widget build(BuildContext context) {
     );
   }
 
+void showSaveAnimation() {
+  Future.delayed(Duration(milliseconds: 200), () {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return Dialog(
+          backgroundColor: Colors.transparent,
+          insetPadding: EdgeInsets.all(0),
+          child: Container(
+            width: 400, // Ajusta el tamaño según prefieras
+            height: 400,
+            child: SaveAnimationWidget(),
+          ),
+        );
+      },
+    );
+
+    // Llama a la animación de confeti después de mostrar la imagen de atajada
+    showGoalAnimation();
+  });
+}
 
 void showGoalAnimation() {
   showDialog(
@@ -538,7 +600,7 @@ void showGoalAnimation() {
             repeat: false,
             fit: BoxFit.cover,
             onLoaded: (composition) {
-              Timer(Duration(milliseconds: 2200), () {
+              Timer(Duration(milliseconds: 1500), () {
                 Navigator.of(context).pop();
               });
             },
@@ -564,7 +626,7 @@ void showGoalAnimation2() {
             repeat: false,
             
             onLoaded: (composition) {
-              Timer(Duration(milliseconds: 2350), () {
+              Timer(Duration(milliseconds: 1500), () {
                 Navigator.of(context).pop();
               });
             },
@@ -590,7 +652,7 @@ void showGoalAnimation3() {
             repeat: false,
             
             onLoaded: (composition) {
-              Timer(Duration(milliseconds: 2350), () {
+              Timer(Duration(milliseconds: 1500), () {
                 Navigator.of(context).pop();
               });
             },
@@ -614,8 +676,10 @@ void checkGoalOrSave() {
       showGoalAnimation3();
     }
   } else {
+    // Muestra la animación de atajada cuando el usuario detiene un penal de la CPU
     if (playerSelectedTiles.any((tile) => tile[0] == cpuSelectedTiles[0][0] && tile[1] == cpuSelectedTiles[0][1])) {
       print("El jugador atajó el disparo de la CPU");
+      showSaveAnimation(); // Llama a la animación de atajada
     } else {
       cpuScore++;
       print("Gol de la CPU");
@@ -987,5 +1051,41 @@ void cpuSelectShootZone() {
     }
 
     return shootingOptions;
+  }
+}
+
+class SaveAnimationWidget extends StatefulWidget {
+  @override
+  _SaveAnimationWidgetState createState() => _SaveAnimationWidgetState();
+}
+
+class _SaveAnimationWidgetState extends State<SaveAnimationWidget> {
+  @override
+  void initState() {
+    super.initState();
+    _startAnimation();
+  }
+
+  void _startAnimation() {
+    // Duración total de la animación (1.5 segundos)
+    Timer(Duration(milliseconds: 1500), () {
+      Navigator.of(context).pop(); // Cierra el diálogo después de la animación
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Dialog(
+      backgroundColor: const Color.fromARGB(76, 0, 0, 0), // Fondo transparente
+      insetPadding: EdgeInsets.all(0),
+      child: Container(
+        width: 600,
+        height: 500,
+        child: Image.asset(
+          'assets/animations/dibu.png', // Ruta de la imagen de atajada
+          fit: BoxFit.contain,
+        ),
+      ),
+    );
   }
 }

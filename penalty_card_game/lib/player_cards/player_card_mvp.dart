@@ -111,7 +111,7 @@ class PlayerCardMVP extends StatelessWidget {
           // Opciones de tiro (centrar número en un círculo con borde)
           Positioned(
             top: screenHeight * 0.191, // Ajusta según tu diseño
-            right: screenWidth * 0.066, // Ajusta según tu diseño
+            right: screenWidth * 0.064, // Ajusta según tu diseño
             child: Container(
               width: screenWidth * 0.035, // Ajusta el ancho para que sea más pequeño si es necesario
               height: screenWidth * 0.031, // Ajusta la altura para que sea igual al ancho, formando un círculo
@@ -138,12 +138,12 @@ class PlayerCardMVP extends StatelessWidget {
 
           // Bandera del país (reducir tamaño)
           Positioned(
-            top: screenHeight * 0.087, // Ajusta según tu diseño
+            top: screenHeight * 0.085, // Ajusta según tu diseño
             right: screenWidth * 0.055, // Ajusta según tu diseño
             child: Image.network(
               playerCountry, // Aquí deberás pasar el URL de la bandera según tu lógica
-              width: screenWidth * 0.07, // Ajustado para reducir el ancho
-              height: screenHeight * 0.053, // Ajustado para reducir la altura
+              width: screenWidth * 0.055, // Ajustado para reducir el ancho
+              height: screenHeight * 0.035, // Ajustado para reducir la altura
             ),
           ),
         ],
