@@ -51,7 +51,7 @@ Widget build(BuildContext context) {
             playerName.toUpperCase(),
             style: TextStyle(
               fontFamily: 'SPEED',
-              fontSize: screenWidth * 0.0185, // 6% of screen width
+              fontSize: screenWidth * 0.0160, // 6% of screen width
               fontWeight: FontWeight.w800,
               color: const Color.fromARGB(255, 248, 248, 248),
               shadows: [
@@ -66,8 +66,8 @@ Widget build(BuildContext context) {
         ),
         // Nivel del jugador
         Positioned(
-          bottom: screenHeight * 0.04, // 3% of screen height
-          right: screenWidth * 0.275, // 8% of screen width
+          bottom: screenHeight * 0.031, // 3% of screen height
+          right: screenWidth * 0.272, // 8% of screen width
           child: Text(
             '$playerLevel',
             style: TextStyle(

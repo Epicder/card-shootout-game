@@ -218,7 +218,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
             Align(
-              alignment: const Alignment(0.1, -1.69),
+              alignment: const Alignment(0.1, -1.83),
               child: Text(
                 'RECORD',
                 style: TextStyle(
