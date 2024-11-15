@@ -1,5 +1,5 @@
 import 'dart:ui';
-import 'dart:math'; // Importa la librería dart:math para obtener un jugador al azar
+import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -19,8 +19,8 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  String currentPlayerId = 'luis_suárez'; // ID del jugador actual
-  String currentCollection = 'Delanteros'; // Colección actual
+  String currentPlayerId = 'luis_suárez';
+  String currentCollection = 'Delanteros';
 
   @override
   void initState() {
@@ -33,7 +33,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   void dispose() {
-    // Restore the orientation to portrait mode when leaving the screen
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
       DeviceOrientation.portraitDown,
@@ -44,7 +43,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 60, 59, 59), // Fondo oscuro para resaltar los elementos
+      backgroundColor: const Color.fromARGB(255, 60, 59, 59),
       body: Stack(
         children: [
           // Fondo de campo de fútbol
@@ -52,7 +51,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
           // Botón de cuenta del usuario
           _buildAccountButton(),
-
 
           // Contenedor de "RECORD"
           _buildRecordContainer(context),
@@ -117,8 +115,8 @@ class _HomeScreenState extends State<HomeScreen> {
     return Align(
       alignment: const Alignment(-0.65, -0.18),
       child: Container(
-        width: screenWidth * 0.4, // 80% of screen width
-        height: screenHeight * 0.58, // 40% of screen height
+        width: screenWidth * 0.4,
+        height: screenHeight * 0.58,
         decoration: BoxDecoration(
           color: const Color(0xD60B1415),
           borderRadius: BorderRadius.circular(20),
@@ -153,7 +151,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       style: TextStyle(
                         fontFamily: 'SPORT',
                         color: const Color.fromARGB(255, 242, 241, 241),
-                        fontSize: screenWidth * 0.046, // 5% of screen width
+                        fontSize: screenWidth * 0.046,
                         letterSpacing: 4.0,
                         fontWeight: FontWeight.w500,
                         fontStyle: FontStyle.normal,
@@ -174,14 +172,13 @@ class _HomeScreenState extends State<HomeScreen> {
                         int playerScore = match['playerScore'];
                         int cpuScore = match['cpuScore'];
 
-                        // ASIGNAR TEXTO EN FUNCIÓN DE SI ES WIN O LOSE
                         String resultText = playerScore > cpuScore ? "WIN" : "LOSE";
                         Color resultColor = playerScore > cpuScore ? const Color(0xFF82eca5) : const Color.fromARGB(255, 197, 54, 43);
 
                         return Column(
                           children: [
                             Padding(
-                              padding: EdgeInsets.only(top: screenHeight * 0.01, left: screenWidth * 0.0), // 1% of screen height, 1% of screen width
+                              padding: EdgeInsets.only(top: screenHeight * 0.01, left: screenWidth * 0.0),
                               child: Align(
                                 alignment: Alignment.center,
                                 child: Text(
@@ -189,7 +186,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   style: TextStyle(
                                     fontFamily: 'SPORT',
                                     color: resultColor,
-                                    fontSize: screenWidth * 0.05, // 3.8% of screen width
+                                    fontSize: screenWidth * 0.05,
                                     letterSpacing: 7.0,
                                     fontWeight: FontWeight.w800,
                                     fontStyle: FontStyle.normal,
@@ -234,7 +231,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       blurRadius: 20.0, 
                     ),
                   ],
-                  fontSize: screenWidth * 0.055, // 5.15% of screen width
+                  fontSize: screenWidth * 0.055,
                   letterSpacing: 8,
                 ),
               ),
@@ -273,7 +270,7 @@ Widget _buildPlayerImage() {
           .snapshots(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return CircularProgressIndicator(); // Mostramos un indicador de carga mientras se obtienen los datos
+          return CircularProgressIndicator();
         }
         
         if (!snapshot.hasData || !snapshot.data!.exists) {
@@ -325,17 +322,17 @@ Widget _buildPlayerImage() {
         style: TextStyle(
           fontFamily: 'SPORT',
           color: const Color.fromARGB(255, 226, 211, 0),
-          fontSize: screenWidth * 0.050, // 6% of screen width
+          fontSize: screenWidth * 0.050,
           letterSpacing: 2.0,
           fontWeight: FontWeight.bold,
           shadows: [
             Shadow(
               color: const Color.fromARGB(255, 168, 95, 0),
-              offset: Offset(-screenWidth * 0.004, 0.0), // 0.6% of screen width
+              offset: Offset(-screenWidth * 0.004, 0.0),
             ),
             Shadow(
-                      color: const Color.fromARGB(255, 247, 229, 39).withOpacity(0.63), // Verde con opacidad para el glow
-                      blurRadius: 77.0, // Radio del blur para el glow
+                      color: const Color.fromARGB(255, 247, 229, 39).withOpacity(0.63),
+                      blurRadius: 77.0,
                     ),
           ],
           height: 1.8,
@@ -352,13 +349,13 @@ Widget _buildPlayerImage() {
         decoration: BoxDecoration(
           boxShadow: [
             BoxShadow(
-              color: const Color.fromARGB(225, 0, 0, 0).withOpacity(0.55), // El color del brillo
+              color: const Color.fromARGB(225, 0, 0, 0).withOpacity(0.55),
               spreadRadius: 3,
               blurRadius: 12,
               offset: Offset(0, 0),
             ),
           ],
-         borderRadius: BorderRadius.circular(60), // Bordes redondeados que coinciden con el botón
+         borderRadius: BorderRadius.circular(60),
         ),
         child: ElevatedButton(
           onPressed: () {
@@ -403,7 +400,7 @@ Widget _buildPlayerImage() {
               offset: Offset(0, 0),
             ),
           ],
-          borderRadius: BorderRadius.circular(60), // Bordes redondeados que coinciden con el botón
+          borderRadius: BorderRadius.circular(60),
         ),
         child: ElevatedButton(
           onPressed: () async {
